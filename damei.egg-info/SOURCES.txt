@@ -6,3 +6,7 @@ damei.egg-info/PKG-INFO
 damei.egg-info/SOURCES.txt
 damei.egg-info/dependency_links.txt
 damei.egg-info/top_level.txt
+damei/controls/__init__.py
+damei/controls/color.py
+damei/functions/__init__.py
+damei/functions/general.py

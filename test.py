@@ -1,9 +1,5 @@
-__version__ = '1.0.99'
+import damei as dm
 
+dm.ColorControl().r()
 
-def main():
-	print('dm test')
-
-
-if __name__ == '__main__':
-	main()
+help(dm.bbox_iou)

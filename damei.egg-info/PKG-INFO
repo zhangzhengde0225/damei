@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: damei
+Version: 1.0.5
+Summary: Da Mei project with deep learning general functions
+Home-page: https://github.com/zhangzhengde0225/damei
+Author: Zhengde Zhang
+Author-email: drivener@163.com
+License: MIT
+Description: 
+        damei库是一个深度学习库，包含了常用函数及控制台。
+        
+        # 1.安装
+        ```python
+        pip install git+https://github.com/zhangzhengde0225/damei.git
+        ```
+        
+        # 2.使用
+        ```python
+        import damei as dm
+        ```
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.0
+Description-Content-Type: text/markdown

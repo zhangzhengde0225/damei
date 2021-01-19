@@ -11,8 +11,6 @@ from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
 
-# import damei as dm
-
 # Package meta-data.
 NAME = 'damei'
 DESCRIPTION = 'Da Mei project with deep learning general functions.'
@@ -20,8 +18,11 @@ URL = 'https://github.com/zhangzhengde0225/damei'
 EMAIL = 'drivener@163.com'
 AUTHOR = 'Zhengde Zhang'
 REQUIRES_PYTHON = '>=3.6.0'
-# VERSION = dm.__version__
-VERSION = '1.0.8'
+
+with open('damei/version.py') as f:
+	data = f.readlines()
+VERSION = eval(data[0].split('=')[-1].strip())
+print(VERSION, len(VERSION))
 
 # What packages are required for this module to be executed?
 REQUIRED = [

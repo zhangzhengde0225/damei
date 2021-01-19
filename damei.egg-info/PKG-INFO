@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: damei
-Version: 1.0.7
+Version: 1.0.8
 Summary: Da Mei project with deep learning general functions
 Home-page: https://github.com/zhangzhengde0225/damei
 Author: Zhengde Zhang
@@ -12,7 +12,7 @@ Description:
         # 1.安装
         ```python
         pip install git+https://github.com/zhangzhengde0225/damei.git  # 从github安装
-        pip install damei -i https://pypi.Python.com/simple  # 从pypi安装
+        pip install damei -i https://pypi.Python.org/simple  # 从pypi安装
         ```
         
         # 2.使用

@@ -10,16 +10,18 @@ import sys
 from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
-import damei as dm
+
+# import damei as dm
 
 # Package meta-data.
 NAME = 'damei'
-DESCRIPTION = 'Da Mei project with deep learning general functions'
+DESCRIPTION = 'Da Mei project with deep learning general functions.'
 URL = 'https://github.com/zhangzhengde0225/damei'
 EMAIL = 'drivener@163.com'
 AUTHOR = 'Zhengde Zhang'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = dm.__version__
+# VERSION = dm.__version__
+VERSION = '1.0.8'
 
 # What packages are required for this module to be executed?
 REQUIRED = [

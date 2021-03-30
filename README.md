@@ -20,6 +20,10 @@ import damei as dm
 
 # 3.New Features:
 
+version 1.0.14
+
+    general.plot_one_box_trace_pose_stauts
+
 version 1.0.13:
 
     general.xyxy2xywh

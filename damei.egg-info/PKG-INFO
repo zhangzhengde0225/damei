@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: damei
-Version: 1.0.12
+Version: 1.0.13
 Summary: Da Mei project with deep learning general functions.
 Home-page: https://github.com/zhangzhengde0225/damei
 Author: Zhengde Zhang
@@ -20,6 +20,19 @@ Description:
         import damei as dm
         
         ```
+        
+        # 3.New Features:
+        version 1.0.13:
+           
+            general.xyxy2xywh
+        
+            general.xywh2xyxy
+        
+        
+        
+        
+        
+        
 Platform: UNKNOWN
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python

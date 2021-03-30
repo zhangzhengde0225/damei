@@ -102,3 +102,39 @@ def confusion2score(cm, round=5):
 		F1 = np.round(F1, round)
 		acc = np.round(acc, round)
 	return P, R, F1, acc
+
+
+def xyxy2xywh(x):
+	"""
+	:param x: bbox in [x1, y1, x2, y2] format of torch.tensor or np.array.
+	:return: bbox in [xc, yc, w, h] format.
+	"""
+	# Convert nx4 boxes from [x1, y1, x2, y2] to [x, y, w, h] where xy1=top-left, xy2=bottom-right
+	y = torch.zeros_like(x) if isinstance(x, torch.Tensor) else np.zeros_like(x)
+	y[:, 0] = (x[:, 0] + x[:, 2]) / 2  # x center
+	y[:, 1] = (x[:, 1] + x[:, 3]) / 2  # y center
+	y[:, 2] = x[:, 2] - x[:, 0]  # width
+	y[:, 3] = x[:, 3] - x[:, 1]  # height
+	return y
+
+
+def xywh2xyxy(x, need_scale=False, im0=None):
+	"""
+	:param x: bbox in [xc, yc, w, h] format of torch.tensor or np.array.
+	:return: bbox in [x1, y1, x2, y2] format
+	"""
+	# Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
+	y = torch.zeros_like(x) if isinstance(x, torch.Tensor) else np.zeros_like(x)
+	y[:, 0] = x[:, 0] - x[:, 2] / 2  # top left x
+	y[:, 1] = x[:, 1] - x[:, 3] / 2  # top left y
+	y[:, 2] = x[:, 0] + x[:, 2] / 2  # bottom right x
+	y[:, 3] = x[:, 1] + x[:, 3] / 2  # bottom right y
+	if need_scale:
+		assert im0 is not None
+		h, w = im0.shape[:2]
+		y[:, 0] = y[:, 0] * w
+		y[:, 1] = y[:, 1] * h
+		y[:, 2] = y[:, 2] * w
+		y[:, 3] = y[:, 3] * h
+		y = y.astype(np.int)
+	return y

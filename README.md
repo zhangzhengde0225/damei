@@ -20,6 +20,10 @@ import damei as dm
 
 # 3.New Features:
 
+v 1.0.15
+
+    general.letterbox
+
 version 1.0.14
 
     general.plot_one_box_trace_pose_stauts

@@ -8,6 +8,69 @@ import cv2
 import random
 
 
+def letterbox(
+		img, new_shape=640, color=(114, 114, 114), auto=True, scaleFill=False, scaleup=True, roi=None):
+	"""
+	resize image to new_shape with multiple of 32
+	:param img: np.array [w, h, 3]
+	:param new_shape: int or tuple, 640, [640, 320]
+	:param color: background color
+	:param auto: auto pad
+	:param scaleFill: stretch pad
+	:param scaleup: scale up and scale down if Ture else only scale down
+	:param roi: use roi or not
+	:return: img, ratio, (dw, dh), recover
+	"""
+	# Resize image to a 32-pixel-multiple rectangle https://github.com/ultralytics/yolov3/issues/232
+	shape = img.shape[:2]  # current shape [height, width]  720, 1280
+
+	if isinstance(new_shape, int):
+		new_shape = (new_shape, new_shape)
+
+	# Scale ratio (new / old)
+	r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
+	if not scaleup:  # only scale down, do not scale up (for better test mAP)
+		r = min(r, 1.0)
+
+	# Compute padding
+	ratio = r, r  # width, height ratios
+	new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
+	dw, dh = new_shape[1] - new_unpad[0], new_shape[0] - new_unpad[1]  # wh padding
+	# print(dw, dh, ratio)
+	if auto:  # minimum rectangle
+		dw, dh = np.mod(dw, 64), np.mod(dh, 64)  # wh padding
+	elif scaleFill:  # stretch
+		dw, dh = 0.0, 0.0
+		new_unpad = (new_shape[1], new_shape[0])
+		ratio = new_shape[1] / shape[1], new_shape[0] / shape[0]  # width, height ratios
+
+	# print(dw, dh)
+	dw /= 2  # divide padding into 2 sides
+	dh /= 2
+	# print(new_unpad)
+
+	if shape[::-1] != new_unpad:  # resize
+		img = cv2.resize(img, new_unpad, interpolation=cv2.INTER_LINEAR)
+
+	# roi
+	if roi is not None:
+		x1, x2 = roi[0] / shape[1] * new_unpad[0], roi[2] / shape[1] * new_unpad[0]  # convert from pixel to percet
+		y1, y2 = roi[1] / shape[0] * new_unpad[1], roi[3] / shape[0] * new_unpad[1]
+		img = img[int(y1):int(y2), int(x1):int(x2)]
+		rest_h = img.shape[0] % 32
+		rest_w = img.shape[1] % 32
+		dh = 0 if rest_h == 0 else (32 - rest_h) / 2
+		dw = 0 if rest_w == 0 else (32 - rest_w) / 2
+		recover = [new_shape[0], new_unpad[1], int(x1) - dw, int(y1) - dh]
+	else:
+		recover = None
+
+	top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
+	left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+	img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
+	return img, ratio, (dw, dh), recover
+
+
 def plot_one_box_trace_pose_status(
 		x, img, color=None, label=None, line_thickness=None, focus=False, trace=None, status=None,
 		keypoints=None, kp_score=None):

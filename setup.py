@@ -22,7 +22,7 @@ REQUIRES_PYTHON = '>=3.6.0'
 with open('damei/version.py') as f:
 	data = f.readlines()
 VERSION = eval(data[0].split('=')[-1].strip())
-print(VERSION, len(VERSION))
+print(f'Installing damei, version: {VERSION}')
 
 # What packages are required for this module to be executed?
 REQUIRED = [

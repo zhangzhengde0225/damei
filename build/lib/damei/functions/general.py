@@ -279,6 +279,17 @@ def imgAdd(small_img, big_image, x, y, alpha=0.5):
 	return big_image
 
 
+def imgMask(img1, img2, mask):
+	"""
+	mask为1的像素取img1, mask为0的像素取img2
+	:param img1: image 1 ndarray [h, w, c]
+	:param img2: image 2 ndarray [h, w, c]
+	:param mask: mask ndarray [h, w]
+	:return:
+	"""
+	pass
+
+
 def bbox_iou(box1, box2, x1y1x2y2=True, GIoU=False, DIoU=False, CIoU=False, return_np=False):
 	"""
 	input box1 and box2, return the iou.
@@ -379,15 +390,25 @@ def confusion2score(cm, round=5):
 
 def xyxy2xywh(x):
 	"""
+	既要支持多个bbox转，也要支持单个bbox转
 	:param x: bbox in [x1, y1, x2, y2] format of torch.tensor or np.array.
 	:return: bbox in [xc, yc, w, h] format.
 	"""
 	# Convert nx4 boxes from [x1, y1, x2, y2] to [x, y, w, h] where xy1=top-left, xy2=bottom-right
+	x = np.array(x)
 	y = torch.zeros_like(x) if isinstance(x, torch.Tensor) else np.zeros_like(x)
-	y[:, 0] = (x[:, 0] + x[:, 2]) / 2  # x center
-	y[:, 1] = (x[:, 1] + x[:, 3]) / 2  # y center
-	y[:, 2] = x[:, 2] - x[:, 0]  # width
-	y[:, 3] = x[:, 3] - x[:, 1]  # height
+	if x.ndim == 1:
+		y[0] = (x[0] + x[2]) / 2
+		y[1] = (x[1] + x[3]) / 2
+		y[2] = (x[2] - x[0]) / 2
+		y[3] = (x[3] - x[1]) / 2
+	elif x.ndim == 2:
+		y[:, 0] = (x[:, 0] + x[:, 2]) / 2  # x center
+		y[:, 1] = (x[:, 1] + x[:, 3]) / 2  # y center
+		y[:, 2] = x[:, 2] - x[:, 0]  # width
+		y[:, 3] = x[:, 3] - x[:, 1]  # height
+	else:
+		raise NotImplementedError(f'does not support ndim: {x.ndim}')
 	return y
 
 
@@ -411,3 +432,37 @@ def xywh2xyxy(x, need_scale=False, im0=None):
 		y[:, 3] = y[:, 3] * h
 		y = y.astype(np.int)
 	return y
+
+
+def pts2bbox(pts):
+	"""
+	points to bbox
+	:param pts: list or ndarray, [n, 2]
+	:return: bbox in ndarray
+	"""
+	pts = np.array(pts)
+	assert pts.ndim == 2
+	bbox = np.array(
+		[np.min(pts, axis=0)[0], np.min(pts, axis=0)[1],
+		 np.max(pts, axis=0)[0], np.max(pts, axis=0)[1]])
+	return bbox
+
+
+def mask2bbox(mask):
+	"""
+	:param mask: mask, [w, h] or [w, h, 1]
+	:return: bbox
+	"""
+	assert 2 <= mask.ndim <= 3
+	if len(mask.shape) == 3:
+		if mask.shape[2] != 1:
+			raise NameError(f'mask shape error, {mask.shape}')
+		mask = mask[:, :, 0]
+	if mask.max() - mask.min() == 0:
+		return None
+	mask = np.array(mask / (mask.max() - mask.min()), dtype=np.uint8)  # 转成0到1
+	# columns = np.argmax(mask, axis=0)
+	pts = np.argwhere(mask == 1)  # 返回的是索引
+	bbox = np.array([pts.min(axis=0)[1], pts.min(axis=0)[0], pts.max(axis=0)[1], pts.max(axis=0)[0]])
+	# print(pts, pts.shape, bbox)
+	return bbox

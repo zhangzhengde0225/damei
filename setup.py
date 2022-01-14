@@ -87,6 +87,12 @@ class UploadCommand(Command):
 		os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
 
 		self.status('Uploading the package to PyPI via Twine…')
+		try:
+			import twine  # 需要用twine上传，但twine不一定安装，如果没装报错
+		except:
+			raise NameError(
+				f'You need twine to upload the package to pypi.\n'
+				f'           Install twine with "pip install twine" or switch a environment with twine.')
 		os.system('twine upload dist/*')
 
 		self.status('Pushing git tags…')

@@ -5,6 +5,7 @@ import subprocess
 from damei import version
 
 __version__ = version.__version__
+__author__ = version.__author__
 
 # dmsystem
 from damei.dmsystem.system import current_system, system_lib_suffix
@@ -28,3 +29,9 @@ from damei.post import post
 from damei.tools.tools import Tools
 
 tools = Tools()
+from damei.tools.tools import video2frames
+
+from damei.tools.check_yolo import CheckYOLO
+
+# misc
+from damei.misc import misc

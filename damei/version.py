@@ -1,4 +1,5 @@
-__version__ = '1.0.157'
+__version__ = '1.0.158'
+__author__ = 'zhengzhengde  mail: drivener@163.com'
 
 """
 更新日志：
@@ -14,4 +15,5 @@ __version__ = '1.0.157'
 20211210 v1.0.155 dm.genral.pts2bbox 
 20211223 v1.0.156 dm.video2frames
 20211223 v1.0.157 dm.misc.list2table dm.misc.flatten_list
+20220114 v1.0.158 dm.general.torch_distributed_zero_first
 """

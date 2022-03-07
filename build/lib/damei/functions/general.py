@@ -2,11 +2,15 @@
 functions of dm
 """
 import math
-import torch
 import numpy as np
 import cv2
 import random
+from contextlib import contextmanager
 
+try:
+	import torch
+except Exception as e:
+	pass
 
 def letterbox(
 		img, new_shape=640, color=(114, 114, 114), auto=True, scaleFill=False, scaleup=True, roi=None):
@@ -388,6 +392,18 @@ def confusion2score(cm, round=5):
 	return P, R, F1, acc
 
 
+@contextmanager
+def torch_distributed_zero_first(local_rank: int):
+	"""
+	Decorator to make all processes in distributed training wait for each local_master to do something.
+	"""
+	if local_rank not in [-1, 0]:
+		torch.distributed.barrier()
+	yield
+	if local_rank == 0:
+		torch.distributed.barrier()
+
+
 def xyxy2xywh(x):
 	"""
 	既要支持多个bbox转，也要支持单个bbox转
@@ -395,20 +411,20 @@ def xyxy2xywh(x):
 	:return: bbox in [xc, yc, w, h] format.
 	"""
 	# Convert nx4 boxes from [x1, y1, x2, y2] to [x, y, w, h] where xy1=top-left, xy2=bottom-right
-	x = np.array(x)
+	# x = np.array(x)
 	y = torch.zeros_like(x) if isinstance(x, torch.Tensor) else np.zeros_like(x)
-	if x.ndim == 1:
+	if len(x.shape) == 1:
 		y[0] = (x[0] + x[2]) / 2
 		y[1] = (x[1] + x[3]) / 2
 		y[2] = (x[2] - x[0]) / 2
 		y[3] = (x[3] - x[1]) / 2
-	elif x.ndim == 2:
+	elif len(x.shape) == 2:
 		y[:, 0] = (x[:, 0] + x[:, 2]) / 2  # x center
 		y[:, 1] = (x[:, 1] + x[:, 3]) / 2  # y center
 		y[:, 2] = x[:, 2] - x[:, 0]  # width
 		y[:, 3] = x[:, 3] - x[:, 1]  # height
 	else:
-		raise NotImplementedError(f'does not support ndim: {x.ndim}')
+		raise NotImplementedError(f'does not support dim: {len(x.shape)} shape: {x.shape}')
 	return y
 
 

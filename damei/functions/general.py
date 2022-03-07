@@ -2,12 +2,15 @@
 functions of dm
 """
 import math
-import torch
 import numpy as np
 import cv2
 import random
 from contextlib import contextmanager
 
+try:
+	import torch
+except Exception as e:
+	pass
 
 def letterbox(
 		img, new_shape=640, color=(114, 114, 114), auto=True, scaleFill=False, scaleup=True, roi=None):

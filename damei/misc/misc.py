@@ -1,5 +1,6 @@
 import functools
 import numpy as np
+import collections
 
 
 def list2table(a, float_bit=2, alignment='<'):
@@ -54,6 +55,56 @@ def flatten_list(a):
 	new_list = []
 	[new_list.extend(x) for x in a]
 	return new_list
+
+
+def dict2info(info_dict):
+	"""
+	把一个字典的键和值展开为带缩进、带颜色的字符串，易于打印
+	:param info_dict: 字典
+	:return: str
+	"""
+	# 先递归地展开
+	new_info_dict = collections.OrderedDict()
+	indents = []
+	indent_space = 4
+	for k, v in info_dict.items():
+		dict2info_recursive_func(k, v, new_info_dict, indents, indent_space=indent_space)
+	info_dict = new_info_dict
+
+	indents2color = {0: '32m', 1 * indent_space: '35m', 2 * indent_space: '36m', 3 * indent_space: '33m'}
+	lenth = np.max([len(x) for x in info_dict.keys()])
+	format_str = ''
+	for i, (k, v) in enumerate(info_dict.items()):
+		indent = indents[i]
+		# print(f'k: {k} {len(k)}')
+		k_str = f'{k.strip("*"):>{indent + lenth}}'
+		color = indents2color.get(indent, None)
+		k_str = f'\033[1;{color}{k_str}\033[0m' if color else k_str  # 上色
+		format_str += f'  {k_str} : {v}\n'
+	return format_str
+
+
+def dict2info_recursive_func(k, v, new_info_dict, indents, indent=0, indent_space=4):
+	"""递归拆分，原来的字典里，某些值可能还是dict，为了方便显示，递归展开，子dict的每个键作为新的顶层的键"""
+	if isinstance(v, dict):
+		while True:
+			if k not in new_info_dict.keys():
+				break
+			k = '*' + k
+		new_info_dict[f'{k}'] = f'({len(v.keys())})'
+		indents.append(indent)
+		indent += indent_space
+		for k2, v2 in v.items():
+			# print(f'k2: {k2} indent: {indent}', new_info_dict.keys())
+			dict2info_recursive_func(k2, v2, new_info_dict, indents, indent, indent_space=indent_space)
+	else:
+		while True:
+			if k not in new_info_dict.keys():
+				break
+			k = '*' + k
+		new_info_dict[f'{k}'] = v
+		indents.append(indent)
+	return new_info_dict
 
 
 if __name__ == '__main__':

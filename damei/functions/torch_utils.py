@@ -4,11 +4,14 @@ import time
 import logging
 from copy import deepcopy
 
-import torch
-import torch.backends.cudnn as cudnn
-import torch.nn as nn
-import torch.nn.functional as F
-import torchvision.models as models
+try:
+	import torch
+	import torch.backends.cudnn as cudnn
+	import torch.nn as nn
+	import torch.nn.functional as F
+	import torchvision.models as models
+except Exception as e:
+	pass
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +81,8 @@ def initialize_weights(model):
 			m.inplace = True
 
 
-def find_modules(model, mclass=nn.Conv2d):
+def find_modules(model, mclass=None):
+	mclass = mclass if mclass else nn.Conv2d
 	# Finds layer indices matching module class 'mclass'
 	return [i for i, m in enumerate(model.module_list) if isinstance(m, mclass)]
 

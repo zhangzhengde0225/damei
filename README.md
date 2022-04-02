@@ -31,7 +31,6 @@ import damei as dm
 ```python
 """
 20200808 v1.0.0 初始版本
-xx更新了什么忘记了
 20210303 v1.0.15 general.letterbox
 				general.plot_one_box_trace_pose_status
 				general.xyxy2xywh
@@ -67,8 +66,7 @@ xx更新了什么忘记了
                         dmpeg.push_stream(img)  # 推流
                 # 取流：ffplay rtmp://127.0.0.1:1935/live
     
-    
-20220310 v1.0.17  dm.
+
 # TODO v1.1.0版本起，damei不仅支持库使用，还作为一个应用程序使用，命令行输入dm [命令] [选项] [参数]
 # TODO v1.2.0版本起，damei提供高效波函数求解器wavelib。
 """

@@ -10,15 +10,17 @@ damei(大妹)library是一个宝藏库。
 
 简单安装:
 
-```python
-pip
-install
-damei  
+```
+pip install damei  
 ```
 
-源码安装：
+源码安装：[Download](https://github.com/zhangzhengde0225/damei/archive/refs/heads/master.zip).
 
-Github仓库：[https://github.com/zhangzhengde0225/damei](https://github.com/zhangzhengde0225/damei)
+```
+unzip damei-master.zip
+cd damei-master
+python setup.py install
+```
 
 # 2.使用
 

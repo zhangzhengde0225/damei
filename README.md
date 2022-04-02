@@ -1,15 +1,24 @@
-damei库是一个深度学习库，包含了常用函数及控制台。
+# damei
+
+damei(大妹)library是一个宝藏库。
+
+涉及深度学习和量子力学交叉。
+
+提供常用函数、控制台、解算器等。
 
 # 1.安装
+
+简单安装:
+
 ```python
 pip
 install
-git + https: // github.com / zhangzhengde0225 / damei.git  # 从github安装
-pip
-install
-damei - i
-https: // pypi.Python.org / simple  # 从pypi安装
+damei  
 ```
+
+源码安装：
+
+Github仓库：[https://github.com/zhangzhengde0225/damei](https://github.com/zhangzhengde0225/damei)
 
 # 2.使用
 
@@ -22,7 +31,7 @@ import damei as dm
 ```python
 """
 20200808 v1.0.0 初始版本
-
+xx更新了什么忘记了
 20210303 v1.0.15 general.letterbox
 				general.plot_one_box_trace_pose_status
 				general.xyxy2xywh
@@ -48,8 +57,20 @@ import damei as dm
                   dm.rsa.decrypt(ciphertext, pubk=None, privk=None, length=1024)  # 用私钥或公钥对密文解密
                   dm.rsa.sign(message, privk, hash_method='MD5')
                   dm.rsa.verify(message, signature, pubk)
-
-# 20220305 v1.1.0 从该版本起，damei不仅支持库使用，还作为一个应用程序使用，命令行输入dm [命令] [选项] [参数]
+20220309 v1.0.163 cfg = dm.PyConfig(cfg_file)
+                    print(cfg.info())  # 查看配置
+                    cfg.merge(cfg2)  # 合并配置      
+20220322 v1.0.164 dm.ffmpeg.push_stream(  # 把视频推成流
+                source, ip='127.0.0.1', port=1935, stream_type='rtmp', key=None))
+20220323 v1.0.165 dmpeg = dm.DmFFMPEG()  # 传入一堆参数
+                    for img in imgs:  # 循环中推流
+                        dmpeg.push_stream(img)  # 推流
+                # 取流：ffplay rtmp://127.0.0.1:1935/live
+    
+    
+20220310 v1.0.17  dm.
+# TODO v1.1.0版本起，damei不仅支持库使用，还作为一个应用程序使用，命令行输入dm [命令] [选项] [参数]
+# TODO v1.2.0版本起，damei提供高效波函数求解器wavelib。
 """
 ```
 

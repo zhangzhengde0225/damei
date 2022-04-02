@@ -33,7 +33,7 @@ def letterbox(
 
 	# Scale ratio (new / old)
 	r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
-	if not scaleup:  # only scale down, do not scale up (for better test mAP)
+	if not scaleup:  # only scale down, do not scale up (for better tests mAP)
 		r = min(r, 1.0)
 
 	# Compute padding

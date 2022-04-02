@@ -30,6 +30,9 @@ from damei.tools.tools import Tools
 
 # from damei.tools.tools import video2frames
 tools = Tools()
+from damei.tools.ffmpeg import DmFFMPEG
+
+ffmpeg = DmFFMPEG()
 
 from damei.tools.check_yolo import CheckYOLO
 
@@ -40,3 +43,5 @@ from damei.misc.time import current_time, plus_time, within_time
 from damei.misc.dm_rsa import DmRsa
 
 rsa = DmRsa()
+from damei.misc.config_loader import PyConfig
+from damei.misc.scrcpy.scrcpy import Scrcpy

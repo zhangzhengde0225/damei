@@ -13,15 +13,15 @@ def current_time(format='%Y-%m-%d %H:%M:%S'):
 	return datetime.datetime.now().strftime(format)
 
 
-def plus_time(current_time=None, seconds=1, format='%Y-%m-%d %H:%M:%S'):
+def plus_time(ct=None, seconds=1, format='%Y-%m-%d %H:%M:%S'):
 	"""
 	添加时间
-	:param current_time: current time, str
+	:param ct: current time, str
 	:param seconds: seconds, int
 	:param format: format, str
 	:return: time, str
 	"""
-	ct = current_time if current_time else current_time(format=format)
+	ct = ct if ct else current_time(format=format)
 	ct = datetime.datetime.strptime(ct, format)
 	return (ct + datetime.timedelta(seconds=seconds)).strftime(format)
 

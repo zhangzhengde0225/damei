@@ -1,0 +1,5 @@
+*.pem
+build
+damei.egg-info
+dist
+tests

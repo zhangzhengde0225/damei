@@ -7,9 +7,14 @@ def list2table(a, float_bit=2, alignment='<'):
 	"""
 	格式化，列表变表格，返回能直接打印的字符串。
 	:param a: list, 长度为n，每个元素内由是一个str bool int float None list或dict
+		example：
+			[['COLUME1', 'COLUME2', 'COLUME2'], [1, True, 3.1415926]]]
 	:param float_bit: 浮点数的小数位数
 	:param alignment: 表格对齐方式
-	:return: None
+	:return: format str:
+		example:
+			COLUME1 COLUME2 COLUME3
+			1       True    3.14
 	"""
 	assert isinstance(a, list)
 

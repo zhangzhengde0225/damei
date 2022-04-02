@@ -33,10 +33,9 @@ ct = dm.current_time()
 et = dm.plus_time(ct, 1 * 24 * 60 * 60)
 within = dm.within_time(expiration_time=et)
 print(f'ct: {ct}, et: {et} within: {within}')
-exit()
 
 # 加密模块测试
-logger.info('test dm.rsa')
+logger.info('tests dm.rsa')
 dm.rsa.gen_rsa(num=2)
 raw_plaintext = 'im dacongmei'
 plaintext = copy.copy(raw_plaintext)

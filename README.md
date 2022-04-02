@@ -1,3 +1,10 @@
+[![Stars](https://img.shields.io/github/stars/zhangzhengde0225/damei)](
+https://github.com/zhangzhengde0225/damei)
+[![Open issue](https://img.shields.io/github/issues/zhangzhengde0225/damei)](
+https://github.com/zhangzhengde0225/damei/issues)
+[![Source_codes](https://img.shields.io/static/v1?label=Download&message=src&color=orange)](
+https://github.com/zhangzhengde0225/damei/archive/refs/heads/master.zip)
+
 # damei
 
 damei(大妹)library是一个宝藏库。

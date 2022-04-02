@@ -15,7 +15,7 @@ damei(大妹)library是一个宝藏库。
 
 # 1.安装
 
-简单安装:
+pypi安装:
 
 ```
 pip install damei  

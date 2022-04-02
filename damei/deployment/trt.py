@@ -1,3 +1,4 @@
+import os, sys
 import ctypes
 import numpy as np
 import torch
@@ -5,62 +6,13 @@ import pycuda.driver as cuda
 import pycuda.autoinit
 import tensorrt as trt
 
+from pathlib import Path
+pydir = Path(os.path.abspath(__file__)).parent
+sys.path.append(f'{pydir.parent}/functions')
+from general import xywh2xyxy, non_max_suppression
+
 CONF_THRESH = 0.1
 IOU_THRESHOLD = 0.4
-
-def xywh2xyxy(x, need_scale=False, im0=None):
-	"""
-	:param x: bbox in [xc, yc, w, h] format of torch.tensor or np.array.
-	:return: bbox in [x1, y1, x2, y2] format
-	"""
-	# Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
-	y = torch.zeros_like(x) if isinstance(x, torch.Tensor) else np.zeros_like(x)
-	y[:, 0] = x[:, 0] - x[:, 2] / 2  # top left x
-	y[:, 1] = x[:, 1] - x[:, 3] / 2  # top left y
-	y[:, 2] = x[:, 0] + x[:, 2] / 2  # bottom right x
-	y[:, 3] = x[:, 1] + x[:, 3] / 2  # bottom right y
-	if need_scale:
-		assert im0 is not None
-		h, w = im0.shape[:2]
-		y[:, 0] = y[:, 0] * w
-		y[:, 1] = y[:, 1] * h
-		y[:, 2] = y[:, 2] * w
-		y[:, 3] = y[:, 3] * h; y = y.type(torch.IntTensor) if isinstance(y, torch.Tensor) else y.astype(np.int)
-	return y
-
-
-def hand_write_nms(bboxes, scores, threshold):
-	x1 = bboxes[:, 0]
-	y1 = bboxes[:, 1]
-	x2 = bboxes[:, 2]
-	y2 = bboxes[:, 3]
-	areas = (x2-x1)*(y2-y1)   # [N,] 每个bbox的面积
-	_, order = scores.sort(0, descending=True)    # 降序排列
-
-	keep = []
-	while order.numel() > 0:       # torch.numel()返回张量元素个数
-		if order.numel() == 1:     # 保留框只剩一个
-			i = order.item()
-			keep.append(i)
-			break
-		else:
-			i = order[0].item()    # 保留scores最大的那个框box[i]
-			keep.append(i)
-
-		# 计算box[i]与其余各框的IOU
-		xx1 = x1[order[1:]].clamp(min=x1[i])   # [N-1,]
-		yy1 = y1[order[1:]].clamp(min=y1[i])
-		xx2 = x2[order[1:]].clamp(max=x2[i])
-		yy2 = y2[order[1:]].clamp(max=y2[i])
-		inter = (xx2-xx1).clamp(min=0) * (yy2-yy1).clamp(min=0)   # [N-1,]
-
-		iou = inter / (areas[i]+areas[order[1:]]-inter)  # [N-1,]
-		idx = (iou <= threshold).nonzero().squeeze()  # 注意此时idx为[N-1,] 而order为[N,]
-		if idx.numel() == 0:
-			break
-		order = order[idx+1]  # 修补索引之间的差值
-	return torch.LongTensor(keep)   # Pytorch的索引值为LongTensor
-
 
 class trt_wrapper(object):
     '''
@@ -215,7 +167,7 @@ class trt_wrapper(object):
                           im0=np.zeros(self.ori_imgsize))
         # Do nms
         # indices = torchvision.ops.nms(boxes, scores, iou_threshold=IOU_THRESHOLD).cpu()
-        indices = hand_write_nms(boxes, scores, IOU_THRESHOLD)
+        indices = non_max_suppression(boxes, scores, IOU_THRESHOLD)
         result_boxes = boxes[indices, :].cpu()
         result_scores = scores[indices].cpu()
         result_classid = classid[indices].cpu()

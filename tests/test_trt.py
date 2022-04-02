@@ -1,7 +1,11 @@
+import os
+import sys
 import ctypes
-import cv2
 import numpy as np
 import torch
+from pathlib import Path
+pydir = Path(os.path.abspath(__file__)).parent
+sys.path.append(f'{pydir.parent}/damei/deployment')
 
 from trt import trt_wrapper
 

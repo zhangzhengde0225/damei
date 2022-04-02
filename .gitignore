@@ -3,3 +3,4 @@ build
 damei.egg-info
 dist
 tests
+.idea

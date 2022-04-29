@@ -102,18 +102,60 @@ def dict2info_recursive_func(k, v, new_info_dict, indents, indent=0, indent_spac
 		for k2, v2 in v.items():
 			# print(f'k2: {k2} indent: {indent}', new_info_dict.keys())
 			dict2info_recursive_func(k2, v2, new_info_dict, indents, indent, indent_space=indent_space)
-	else:
-		while True:
-			if k not in new_info_dict.keys():
-				break
-			k = '*' + k
-		new_info_dict[f'{k}'] = v
-		indents.append(indent)
-	return new_info_dict
+    else:
+        while True:
+            if k not in new_info_dict.keys():
+                break
+            k = '*' + k
+        new_info_dict[f'{k}'] = v
+        indents.append(indent)
+    return new_info_dict
+
+
+def uncomment(string):
+    """去除行内注释和换行符"""
+    string = string.strip()
+    return string.split('#')[0]
+
+
+def rcfile2dict(rc_file):
+    """
+    读取.xxxrc文件，保存为dict.
+    目前仅支持2层
+    """
+    data_dict = {}
+    with open(rc_file, 'r') as f:
+        data = f.readlines()
+
+    data = [x for x in data if x.strip() and not x.startswith('#')]  # 去除空行和注释行
+    names = [x for x in data if not x.startswith('\t')]  # 顶格的变量
+
+    for i, name in enumerate(names):
+        idx = data.index(name)
+        cn = uncomment(name)  # clear_name 去除行内注释
+        cn = [x.strip() for x in cn.split(':')]  # 分割变量名和值
+        assert len(cn) == 2, f'{name} format error'
+        key, value = cn
+        if value != '':
+            # print(f'{key}: {value}')
+            data_dict[key] = value
+        else:
+            end_idx = data.index(names[i + 1]) if i < len(names) - 1 else len(data)
+            content = data[idx + 1:end_idx]  # 包含的内容
+            ct_dict = dict()
+            for ct in content:
+                ct = uncomment(ct)
+                ct = [x.strip() for x in ct.split(':')]
+                assert len(ct) == 2, f'{ct} format error'
+                key2, value2 = ct
+                ct_dict[key2] = value2
+            data_dict[key] = ct_dict
+
+    return data_dict
 
 
 if __name__ == '__main__':
-	a = [[22, '1', ['xxx', 22]], 'x', {'a': 1, 'b': 3}]
-	print(a[2].keys())
-	ret = list2table(a)
-	print(ret)
+    a = [[22, '1', ['xxx', 22]], 'x', {'a': 1, 'b': 3}]
+    print(a[2].keys())
+    ret = list2table(a)
+    print(ret)

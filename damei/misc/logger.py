@@ -4,15 +4,19 @@ from pathlib import Path
 import logging
 
 
+def get_logger(name=None, **kwargs):
+    return getLogger(name, **kwargs)
+
+
 def getLogger(name=None, **kwargs):
-	name = name if name else 'root'
-	name_lenth = kwargs.get('name_lenth', 12)
-	name = f'{name:<{name_lenth}}'
-	logger = logging.getLogger(name)
-	level = kwargs.get('level', logging.INFO)
-	format_str = f"\033[1;35m[%(asctime)s]\033[0m \033[1;32m[%(name)s]\033[0m " \
-				 f"\033[1;36m[%(levelname)s]:\033[0m %(message)s"
-	logging.basicConfig(level=level,
+    name = name if name else 'root'
+    name_lenth = kwargs.get('name_lenth', 12)
+    name = f'{name:<{name_lenth}}'
+    logger = logging.getLogger(name)
+    level = kwargs.get('level', logging.INFO)
+    format_str = f"\033[1;35m[%(asctime)s]\033[0m \033[1;32m[%(name)s]\033[0m " \
+                 f"\033[1;36m[%(levelname)s]:\033[0m %(message)s"
+    logging.basicConfig(level=level,
 						format=format_str,
 						# datefmt='%d %b %Y %H:%M:%S'
 						)

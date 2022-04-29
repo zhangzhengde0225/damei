@@ -38,10 +38,15 @@ from damei.tools.check_yolo import CheckYOLO
 
 # misc
 from damei.misc import misc
-from damei.misc.logger import getLogger
+from damei.misc.logger import getLogger, get_logger
 from damei.misc.time import current_time, plus_time, within_time
 from damei.misc.dm_rsa import DmRsa
+from damei.misc import fake_argparse as argparse
 
 rsa = DmRsa()
-from damei.misc.config_loader import PyConfig
+# from damei.misc.config_loader import PyConfig
 from damei.misc.scrcpy.scrcpy import Scrcpy
+
+# nn
+import damei.nn as nn
+from damei.nn.api.utils import Config

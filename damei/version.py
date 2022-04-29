@@ -1,4 +1,4 @@
-__version__ = '1.0.165'
+__version__ = '1.1.2'
 __author__ = 'zhengzhengde  mail: drivener@163.com'
 
 """

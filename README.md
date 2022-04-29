@@ -75,9 +75,13 @@ import damei as dm
                         dmpeg.push_stream(img)  # 推流
                 # 取流：ffplay rtmp://127.0.0.1:1935/live
     
+20220408 v1.1.0 # 新增dm.nn
+            uaii = dm.nn.api.UAII()
+         v1.1.1 # 新增dm.argparse，只读取默认值，不解析命令行参数
+            parser = dm.argparse.ArgumentParser()
 
-# TODO v1.1.0版本起，damei不仅支持库使用，还作为一个应用程序使用，命令行输入dm [命令] [选项] [参数]
-# TODO v1.2.0版本起，damei提供高效波函数求解器wavelib。
+# TODO v1.2.0版本起，damei不仅支持库使用，还作为一个应用程序使用，命令行输入dm [命令] [选项] [参数]
+# TODO v1.3.0版本起，damei提供高效波函数求解器wavelib。
 """
 ```
 

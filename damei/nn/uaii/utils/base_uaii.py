@@ -118,20 +118,84 @@ class BaseUAII(object):
             ])
         return: stream object
         """
-
+        is_req = kwargs.get('is_req', False)  # 是否gRPC的请求，如果是，返回值需要重新定义，不能返回对象
         name = cfg['type']
+        # 判断算法流是否已经存在
         if name in self.streams.names:
             logger.warn(f'Build stream, name:{name} exist, return existing stream.')
-            return self.get_stream(name=name)
-
+            if is_req:
+                return 0, f'stream: {name} exist.'  # 失败0，成功1
+            else:
+                return self.get_stream(name=name)
+        # 创建新的算法流
+        # print(cfg)
         self.streams.build_new_stream(cfg, **kwargs)
 
-        return self.get_stream(name)
+        if is_req:
+            return 1, name
+        else:
+            return self.get_stream(name)
 
     def get_stream(self, name):
         """获得存在的流，并初始化内部的所有模块"""
         stream = self.get_module(name=name, cls='STREAM')
         return stream
+
+    def get_stream_info(self, stream=None, stream_name=None, **kwargs):
+        """获得流的信息"""
+        is_req = kwargs.pop('is_req', False)
+        stream = stream if stream else stream_name
+        stream = self.get_stream(stream) if isinstance(stream, str) else stream
+        assert stream is not None, f'Stream: {stream} not found.'
+        if is_req:
+            return 1, stream.info(**kwargs)
+        return stream.info(**kwargs)
+
+    def get_stream_cfg(self, stream=None, stream_name=None, addr='/', **kwargs):
+        """
+        获得流的配置参数
+        """
+        is_req = kwargs.pop('is_req', False)  # 是否gRPC的请求，如果是，返回值需要重新定义，
+        ret_fmt = kwargs.pop('ret_fmt', 'Config object')  # 返回格式，默认是xai.Config对象
+        assert ret_fmt in ['Config object', 'dict'], f'Ret format: {ret_fmt} not supported.'
+
+        stream = stream if stream else stream_name
+        stream = self.get_stream(stream) if isinstance(stream, str) else stream
+        assert stream is not None, f'Stream: {stream} not found.'
+        config = stream.get_cfg(addr=addr, **kwargs)
+        # print(config)
+        # logger.info(f'Get stream config: {config} {type(config)}')
+        if is_req:
+            return 1, config.to_dict()
+        else:
+            if ret_fmt == 'Config object':
+                return config
+            return config.to_dict()
+
+    def set_stream_cfg(self, cfg, stream=None, stream_name=None, addr='/', **kwargs):
+        """
+        设置流的参数
+        :param cfg:  流的参数配置，dict, list, str, int, float, bool, etc.
+        :param stream: 流对象，如果为None，则根据stream_name获取流对象, xai.Stream对象
+        :param stream_name: 流名称，str
+        :param addr: 需要修改的流配置的的地址，str
+            for example:
+                addr = '/'  # 表示修改整个配置
+                addr = '/model_name'  # 表示修改流内某个model配置
+                addr = '/model_name/param_name'  # 表示修改流内某个model的具体某个param配置，以此类推
+        :return: uaii调用时返回xai.Config对象
+                grpc调用时返回(1, 字典类型的配置) or (0, 错误信息)
+        """
+        is_req = kwargs.pop('is_req', False)  # 是否gRPC的请求，如果是，返回值需要重新定义，不能返回对象
+        stream = stream if stream else stream_name
+        stream = self.get_stream(stream) if isinstance(stream, str) else stream
+        assert stream is not None, f'Stream not found. {stream}'
+        config = stream.set_cfg(addr=addr, value=cfg, **kwargs)
+        # print(config)
+        if is_req:
+            return 1, config.to_dict()
+        else:
+            return config
 
     def get_model(self, name):
         """读取单独的模块，内部是把单独的模块组装成流"""
@@ -152,8 +216,11 @@ class BaseUAII(object):
     def stream_info(self, name):
         return self.get_stream(name=name).info()
 
-    def ps(self, stream=None, module=None, io=None, script=None):
+    def ps(self, stream=None, module=None, io=None, script=None, **kwargs):
         """返回全部模块的状态"""
+        ret_fmt = kwargs.get('ret_fmt', 'string')
+        assert ret_fmt in ['string', 'list'], f'Error: ret_fmt: {ret_fmt} not supported.'
+
         ps0 = [['ID', 'TYPE', 'NAME', 'STATUS', 'TAG', 'INCLUDE', 'DESCRIPTION']]
         if stream is None and module is None and io is None and script is None:
             tmp = self.streams.ps(include_dict=self.modules.name2id_dict)
@@ -180,8 +247,10 @@ class BaseUAII(object):
         # lenth = np.max(lenth, axis=0)  # (4,)
         # ps_list = [[f'{x:<{lenth[i]}}' for i, x in enumerate(xx)] for xx in ps_all]
         # ps_str = '\n'.join(['  '.join(x) for x in ps_list])
-        ps_str = dm.misc.list2table(ps0)
-        return ps_str
+        if ret_fmt == 'string':
+            return dm.misc.list2table(ps0)
+        else:
+            return ps0
 
     def show_vis(self, ret, im0, target_names):
 

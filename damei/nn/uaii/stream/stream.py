@@ -88,10 +88,7 @@ class Stream(object):
 
     @property
     def cfg(self):
-        if self.is_mono:
-            # model_names = self.model_names
-            return self.get_cfg(addr=f'/{self.model_names[0]}')
-
+        """流的配置文件，不包含模块的配置"""
         return self._cfg
 
     @property
@@ -112,43 +109,59 @@ class Stream(object):
         # sys.exit(1)
         return module_names
 
-    def get_cfg(self, addr='/'):
+    def get_cfg(self, addr='/', **kwargs):
         """
-        获取配置
+        获取配置，包含流的配置和子模块的配置，其中mono流的配置即内部模块的配置
         :param addr: 配置路径, 例如：/带代表stream自身配置，/seyolov5代表流的seyolov5模块的配置，/seyolov5/input_stream代表流的模块的input_stream的配置
         :return: 配置dict
         """
+
+        if self.is_mono:
+            addr = f'{addr}{self.model_names[0]}' if addr == '/' else addr
+
         if addr == '/':  # 全部配置
-            return self.cfg
+            stream_cfg = self.cfg
+            for model_name in self.model_names:
+                model_cfg = self.model_cfgs[model_name]
+                model_cfg_dict = model_cfg.to_dict()
+                stream_cfg[model_name] = model_cfg_dict
+            # print(stream_cfg, stream_cfg.keys())
+            return Config.from_dict(stream_cfg)
         else:  # 子模块配置
             attrs = [x for x in addr.split('/') if x != '']
             assert len(attrs) >= 1
             mname = attrs.pop(0)  # module name
             cfg = self.model_cfgs[mname]
-            """
-            m = self.models[mname]
-            if m.status == 'stopped':
-                cfg = self.model_cfgs[mname]
-            else:  # ready running
-                cfg = m.cfg  # 可能会merge之后的也是PyConfigLoader对象
-            """
-
             for sub_attr in attrs:
                 cfg = cfg[sub_attr]
             return cfg
 
-    def set_cfg(self, addr='/', value=None):
+    def set_cfg(self, addr='/', value=None, **kwargs):
         """
         更新配置
-        :param addr:
+        :param addr: address
+        :param value: config value
         :return:
         """
         assert value is not None
-        if addr == '/':
-            raise NotImplementedError(f"You cannot set config of the stream")
+
+        # 处理mono流的配置，当传入的addr是/时，其实是更新里面的模型的配置
+        if self.is_mono:  # mono流，传入/时，更新为/model_name
+            addr = f'/{self.model_names[0]}' if addr == '/' else addr
+
+        if addr == '/':  # multi-module流, update all
+            # 不能修改type, description, models配置项，对每个子模块，都要更新配置
+            for model_name in self.model_names:
+                model_cfg = self.model_cfgs[model_name]
+                new_model_cfg = Config.from_dict(value[model_name])
+                model_cfg.merge(new_model_cfg)
+            # raise NotImplementedError(f"You cannot set config of the stream")
+            return self.get_cfg(addr=addr, **kwargs)
         else:
             attrs = [x for x in addr.split('/') if x != '']
             assert len(attrs) >= 1
+            if len(attrs) == 1:  # 即addr=/seyolov5这类情形
+                value = Config.from_dict(value)
             mname = attrs.pop(0)
             m = self.models[mname]
             if m.status != 'stopped':
@@ -158,6 +171,7 @@ class Stream(object):
             mcfg.update_item(attrs, value)
             self.model_cfgs[mname] = mcfg
             # print(f'newcfg: {mcfg.info()}')
+            return self.get_cfg(addr='/', **kwargs)
 
     def ps(self, *args, **kwargs):
         return self.info(*args, **kwargs)

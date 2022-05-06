@@ -5,9 +5,9 @@
 
 
 class Scrcpy(object):
-	"""
-	基于scrcpy的安卓设备高效截屏、控制器
-	"""
+    """
+    基于scrcpy的安卓设备高效截屏、控制器
+    """
 
-	def __init__(self):
-		pass
+    def __init__(self):
+        pass

@@ -12,15 +12,33 @@ logger = dm.get_logger(__name__)
 
 
 class PyConfigLoader(collections.UserDict):
-    def __init__(self, cfg_file=None, name=None, root_path=None):
+    def __init__(self, cfg_file=None, name=None, root_path=None, cfg_dict=None):
         super(PyConfigLoader, self).__init__()
         work_dir = os.getcwd()
-        self.root_path = root_path if root_path else f'{work_dir}'  # 上上级路径
+        self.root_path = root_path if root_path else f'{work_dir}'  # 默认当前工作目录
         self._name = name if name else f'{cfg_file}'  # 其实是path
-        self._items = dict()
-        self.init_config(cfg_file)  # 根据配置文件把内容和属性注册到items里
 
+        self._items = dict()
+        self._load_items(cfg_file, cfg_dict)
         self.check_items()  # TODO
+
+    def _load_items(self, cfg_file, cfg_dict):
+        assert cfg_file or cfg_dict, 'cfg_file or cfg_dict must be not None'
+        assert not (cfg_file and cfg_dict), 'only one of cfg_file and cfg_dict can have value'
+        if cfg_file:
+            self.init_config_by_file(cfg_file)  # 根据配置文件把内容和属性注册到items里
+        else:
+            self.init_config_by_dict(cfg_dict)
+
+    def init_config_by_dict(self, cfg_file):
+        """从字典初始化配置"""
+        for k, v in cfg_file.items():
+            attr, attr_value = k, v
+            self._items[attr] = attr_value
+            if isinstance(attr_value, dict):
+                setattr(self, attr, EasyDict(self._items[attr]))
+            else:
+                setattr(self, attr, self._items[attr])
 
     def __len__(self):
         return len(self._items)
@@ -51,11 +69,18 @@ class PyConfigLoader(collections.UserDict):
         self.data[str(key)] = item
 
     def __getattr__(self, key):
+        # print(f'{key}')
         return self.data[str(key)]
 
     @staticmethod
     def fromfile(cfg_file, name=None, root_path=None):
         return PyConfigLoader(cfg_file, name, root_path)
+
+    @staticmethod
+    def from_dict(cfg_dict, name=None, root_path=None):
+        """从字典创建配置对象"""
+        name = name if name else 'cfg_from_dict'
+        return PyConfigLoader(name=name, root_path=root_path, cfg_dict=cfg_dict)
 
     def info(self):
         """查看当前所有配置信息"""
@@ -65,7 +90,7 @@ class PyConfigLoader(collections.UserDict):
         info_str += dm.misc.dict2info(info_dict)
         return info_str
 
-    def init_config(self, cfg_file):
+    def init_config_by_file(self, cfg_file):
         if cfg_file is None:
             return
         rp = self.root_path
@@ -127,6 +152,7 @@ class PyConfigLoader(collections.UserDict):
 
         # 注册属性到_items里，注册属性到self的属性里。
         for attr in attrs:
+            # print('xxx', attr)
             if hasattr(cfg, attr):
                 exec(f"self._items[attr] = cfg.{attr}")
                 attr_value = self._items[attr]
@@ -232,3 +258,8 @@ class PyConfigLoader(collections.UserDict):
             return self._items[key]
         else:
             return default
+
+    def to_dict(self):
+        # raise NotImplementedError('to_dict is not implemented.')
+        return self._items
+        pass

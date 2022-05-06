@@ -10,11 +10,13 @@ usage:
     dmscp server list  #
     dmscp config_server
 """
-import os, sys
 import argparse
-import damei as dm
+import os
 from pathlib import Path
+
 import paramiko
+
+import damei as dm
 
 logger = dm.getLogger('dmscp', name_lenth=5)
 

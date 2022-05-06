@@ -1,11 +1,32 @@
 damei库各模块使用方法
 
+安装```pip install damei```
+
+导入damei库
+
+```python
+import damei as dm
+```
+
+## 关于时间
+
+```python
+ct = dm.current_time()  # 当前时间，str, 格式是：2020-01-01 00:00:00
+et = dm.plus_time(ct=None, seconds=1)  # 未来某个到期时间
+bool = dm.within_time(et, ct=None)  # 输入到期时间，判断当前时间是否在内 
+```
+
 ## misc
 
-```
+```python
+import damei as dm
+
 data = dm.misc.rcfile2dict(rcfile)  # 从.rc文件中读取配置，返回字典
 # 颜色
 
+# 
+dmtools = dm.Tools()
+dmtools.check_YOLO(dp='/path/to/yolo_dataset')
 ```
 
 ## dmscp
@@ -57,14 +78,14 @@ from damei.nn.api.registry import MODULES, SCRIPTS, IOS
 from damei.nn.api.utils import Config
 ```
 
-```
+```python
 uaii = dm.nn.api.UAII()
 stream = uaii.get_stream(name='test')
-stream_cfg = stream.get_config('/moduel_name)
+stream_cfg = stream.get_config('/module_name')
 
 ret = stream.run()  # 在主线程中运行，结果直接返回
 stream.start()  # 在新线程中运行，结果从队列中获取
-ret = stream.train()  # 在主进程运行训练
+ret = stream.train()  # 在主进程运行训练，只有mono_stream才有效
 ret = stream.evalute()  # 在主进程运行评估
 ret = stream.infer()  # 在主进程运行推理
 ret = stream.start_train()  # 在新进程中运行训练

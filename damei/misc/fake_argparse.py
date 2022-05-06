@@ -8,9 +8,6 @@ python的argparse模块不能使用两个，
 
 """
 
-import argparse
-import sys
-
 
 class Args(object):
     def __init__(self, *args, **kwargs):

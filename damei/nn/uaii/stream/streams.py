@@ -66,19 +66,22 @@ class Streams(object):
         if isinstance(cfgs, dict):
             cfgs = [cfgs]
 
+        # 获取最大的id
         ids = self.ids
         max_id = np.max([int(x[1::]) for x in self.ids]) if len(ids) != 0 else 0  # [s01, s02, s03, ...]
-        is_mono = len(cfgs) == 1
-        for i, stream_cfg in enumerate(cfgs):
+        # print(len(cfgs))
+        # is_mono = len(cfgs) == 1
+        for i, stream_cfg in enumerate(cfgs):  # 这里是单个或多个流
             name = stream_cfg['type']
+            is_mono = len(stream_cfg['models']) == 1
             stream = Stream(
                 parent=self.parent,
                 id=f'S{max_id + i + 1:0>2}',
-                stream_cfg=stream_cfg,
+                stream_cfg=stream_cfg,  # 这里是每个流有单个或多个模型
                 is_mono=is_mono, )
             self._module_dict[name] = stream
 
-        # 合并cfg
+        # 合并cfg，列表
         self._cfg += cfgs
 
     def get(self, module_name):

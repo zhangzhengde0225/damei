@@ -149,6 +149,10 @@ class UAII(BaseUAII):
     def run(self, stream, **kwargs):
         return self.run_stream(stream, run_in_main_thread=True, **kwargs)
 
+    def start_stream(self, stream, **kwargs):
+        # is_req = kwargs.get('is_req', False)
+        return self.run_stream(stream, run_in_main_thread=False, **kwargs)
+
     def run_stream(self, stream, **kwargs):
         """
         运行流
@@ -159,6 +163,7 @@ class UAII(BaseUAII):
         run_in_main_thread = kwargs.get('run_in_main_thread', False)
         mtask = kwargs.get('task', 'infer')
         stream_cfg = kwargs.get('stream_cfg', None)
+        is_req = kwargs.get('is_req', False)
         # mi = kwargs.get('mi', None)
         # mo = kwargs.get('mo', None)
 
@@ -184,7 +189,12 @@ class UAII(BaseUAII):
                 continue
 
             result = self.run_module(m=m, mtask=mtask, run_in_main_thread=run_in_main_thread)
-            if stream.is_mono:
+            if stream.is_mono or i + 1 == len(stream.models):
+                if is_req:
+                    if result:
+                        return 1, f'Successfully run stream {stream.name}.'
+                    else:
+                        return 0, f'Run stream {stream.name} failed.'
                 return result
 
         return
@@ -192,6 +202,7 @@ class UAII(BaseUAII):
     def run_module(self, m, mtask=None, mi=None, mo=None, daemon=True, run_in_main_thread=False):
         """
         run module in stream.
+        return: iterable result object if run in main thread, True/False if run in thread
         """
         if run_in_main_thread:
             retsult = self.run_module_in_main_thread(m, mtask)

@@ -35,7 +35,7 @@ python setup.py install
 import damei as dm
 ```
 
-查看[usage.md](https://github.com/zhangzhengde0225/damei/blob/master/docs/usage.md)
+使用示例查看[usage.md](https://github.com/zhangzhengde0225/damei/blob/master/docs/usage.md)
 文件
 
 # 3.Features

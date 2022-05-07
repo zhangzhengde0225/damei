@@ -158,6 +158,10 @@ def rcfile2dict(rc_file):
     return data_dict
 
 
+def count_codes(root_path, suffixed=None, show_detail=False):
+    return count_lines_and_chars(root_path, suffixed, show_detail)
+
+
 def count_lines_and_chars(root_path, suffixes=None, show_detail=False):
     suffixes = suffixes if suffixes else ['.py', '.pyx', '.c', '.cpp', '.h', '.hpp']
     suffixes = [suffixes] if isinstance(suffixes, str) else suffixes

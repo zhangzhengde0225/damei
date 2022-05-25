@@ -63,10 +63,24 @@ dmscp xx.zip  # 最简单形式，从本地上传文件/文件夹到默认服务
 
 ```
 
-## dm.nn
+## tools
+
+```python
+from pathlib import Path
+import damei as dm
+
+dmtools = dm.Tools()  # 实例化工具
+
+"""1. 检查YOLO格式的数据集"""
+dp = f'{Path.home()}/datasets/AID_datasets/real_rsi'  # 指定数据集路径
+dmtools.check_YOLO(dp, trte='test', save_dir=None)
+# 参数：trte: train or test, 指定检查训练集或测试集，默认为train
+#      save_dir: 指定保存的路径，默认为None，绘制后只显示，不保存
 
 ```
+
 uaii = dm.nn.api.UAII()
+
 ```
 
 API：

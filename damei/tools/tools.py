@@ -63,14 +63,14 @@ class Tools(object):
 		cc = CheckCOCO(json_path, img_dir=img_dir, line_thickness=line_thicknes)
 		cc(only_show_id=only_show_id)
 
-	def check_YOLO(self, dp, trte=None):
+	def check_YOLO(self, dp, trte=None, **kwargs):
 		"""
 		check YOLO dataset
 		:param dp: yolo dataset dir, for example: /xxx/xxx_yolo_format
 		:return: None
 		"""
 		cy = CheckYOLO(dp=dp)
-		cy(trte=trte)
+		cy(trte=trte, **kwargs)
 
 
 def video2frames(video_path, output_path=None, decoder='ffmpeg', *args, **kwargs):

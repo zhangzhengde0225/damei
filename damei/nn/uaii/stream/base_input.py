@@ -13,3 +13,31 @@ class AbstractInput(object):
             self.que = AbstractQue(maxlen, *args, **kwargs)
         else:
             self.que = None
+
+        self._attrs = []
+        self._items = dict()
+
+    @property
+    def attrs(self):
+        return self._attrs
+
+    @property
+    def items(self):
+        return self._items
+
+    def _init_from_PyConfigLoader(self, cfg):
+        """支持dm.nn.api.Config类型的参数配置"""
+        assert 'input' in cfg.keys()
+        input_cfg = cfg['input']
+        self._items = input_cfg
+        # print(input_cfg, type(input_cfg))
+        # for k, v in input_cfg.items():
+        #     assert isinstance(k, str)
+        #     if k not in self.attrs:
+        #         self._attrs.append(k)
+        #     if hasattr(self, k):
+        #         delattr(self, k)
+        #     setattr(self, k, v)
+        #
+        # print(self.attrs)
+        # print(self.items)

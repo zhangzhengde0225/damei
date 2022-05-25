@@ -10,7 +10,7 @@ from damei.nn.api.registry import MODULES, SCRIPTS, IOS
 from damei.nn.uaii.stream.base_output import AbstractOutput
 
 
-@IOS.register_module(name='uaii_output')
+# @IOS.register_module(name='uaii_output')
 class UaiiOutput(AbstractOutput):
     name = 'uaii_output'
     status = 'stopped'
@@ -21,7 +21,7 @@ class UaiiOutput(AbstractOutput):
         super(UaiiOutput, self).__init__(maxlen=maxlen, *args, **kwargs)
 
 
-@IOS.register_module(name='uaii_yolov5_output')
+# @IOS.register_module(name='uaii_yolov5_output')
 class SEYOLOv5OutStream(AbstractOutput):
     name = 'uaii_yolov5_output'
     status = 'stopped'
@@ -104,7 +104,7 @@ class SEYOLOv5OutStream(AbstractOutput):
         print(f'{"-":-<30} {"End Print":^25} {"-":-<30}')
 
 
-@IOS.register_module(name='uaii_deepsort_output')
+# @IOS.register_module(name='uaii_deepsort_output')
 class DeepSortOutStream(AbstractOutput):
     name = 'uaii_deepsort_output'
     status = 'stopped'

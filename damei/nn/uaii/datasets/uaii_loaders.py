@@ -11,7 +11,7 @@ from .dataloader import Dataloader
 logger = dm.getLogger('uaii loaders')
 
 
-@MODULES.register_module(name='visible_loader')
+# @MODULES.register_module(name='visible_loader')
 class VisibleLoader(Dataloader):
     name = 'visible_loader'
     status = 'stopped'

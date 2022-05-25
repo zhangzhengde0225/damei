@@ -9,7 +9,7 @@ from damei.nn.api.registry import MODULES, SCRIPTS, IOS
 from damei.nn.uaii.stream.base_input import AbstractInput
 
 
-@IOS.register_module(name='visible_input')
+# @IOS.register_module(name='visible_input')
 class VisInputStream(AbstractInput):
     """
     iterable data_loader

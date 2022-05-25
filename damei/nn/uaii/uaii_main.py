@@ -143,7 +143,8 @@ class UAII(BaseUAII):
         if not enabled:
             return None
         io = self.get_module(name=module_name)  # input or output
-        io = io(m_cfg)
+        # print(f'{io_type} module: {module_name} m_cfg: {m_cfg}')
+        io = io(mcfg=m_cfg)
         return io
 
     def run(self, stream, **kwargs):
@@ -160,10 +161,10 @@ class UAII(BaseUAII):
         :return:
         """
         # 读取参数
-        run_in_main_thread = kwargs.get('run_in_main_thread', False)
-        mtask = kwargs.get('task', 'infer')
-        stream_cfg = kwargs.get('stream_cfg', None)
-        is_req = kwargs.get('is_req', False)
+        run_in_main_thread = kwargs.get('run_in_main_thread', True)  # 是否在主进程运行
+        mtask = kwargs.get('task', 'infer')  # 任务：infer/train/evaluate
+        stream_cfg = kwargs.get('stream_cfg', None)  # 流配置
+        is_req = kwargs.get('is_req', False)  # 是否是请求
         # mi = kwargs.get('mi', None)
         # mo = kwargs.get('mo', None)
 
@@ -175,29 +176,36 @@ class UAII(BaseUAII):
         if stream.status == 'stopped' or stream_cfg is not None:
             stream.init(stream_cfg=stream_cfg)  # stream_cfg不为None时，会强制初始化
 
+        last_generator = None
         for i, (mname, m) in enumerate(stream.models.items()):
+            is_first = i == 0
+            is_last = i == (len(stream.models))
             # mname = module['type']
             # m = stream.modules[mname]
             # print(f'm status: {m.status}')
-
-            assert m.status == 'ready', f'Status: {m.status}'
-            # TODO: ready状态交给stream处理
+            assert m.status == 'ready', f'Status of "{mname}" must be "ready" rather than "{m.status}".'
 
             if m.status == 'running':
-                logger.warn(f"Module: {mname} already run, specify 'force=True' if you want to stop and run.")
+                logger.warn(f'Module: {mname} already run, specify "force=True" if you want to stop and run.')
                 # TODO: force run_stream
+                last_generator = None
                 continue
 
+            logger.info(f'Run module: {mname} mtask: {mtask} main_thread: {run_in_main_thread}')
+            # 处理模块的mi
+            if not is_first:  # 非第1个模块，用上一个模块的输出来覆盖mi
+                # print(f'last_generator: {last_generator}')
+                m.mi = last_generator
             result = self.run_module(m=m, mtask=mtask, run_in_main_thread=run_in_main_thread)
-            if stream.is_mono or i + 1 == len(stream.models):
-                if is_req:
-                    if result:
-                        return 1, f'Successfully run stream {stream.name}.'
-                    else:
-                        return 0, f'Run stream {stream.name} failed.'
-                return result
+            # 返回值是generator，是一个生成器
+            last_generator = result
 
-        return
+        if is_req:
+            if last_generator:
+                return 1, f'Successfully run stream {stream.name}.'
+            else:
+                return 0, f'Run stream {stream.name} failed.'
+        return last_generator
 
     def run_module(self, m, mtask=None, mi=None, mo=None, daemon=True, run_in_main_thread=False):
         """
@@ -241,7 +249,7 @@ class UAII(BaseUAII):
             return m.__call__()
         # 推理任务
         elif mtask == 'infer':
-            result = m.infer(mi=mi, mo=mo)
+            result = m.infer()
         # 训练任务
         elif mtask == 'train':  # TODO
             result = m.train()

@@ -6,6 +6,7 @@ import os, sys
 import numpy as np
 import damei as dm
 import cv2
+import json
 
 logger = dm.getLogger('base_uaii')
 from . import general
@@ -166,11 +167,20 @@ class BaseUAII(object):
         # print(config)
         # logger.info(f'Get stream config: {config} {type(config)}')
         if is_req:
-            return 1, config.to_dict()
+            return 1, config.to_json()
         else:
             if ret_fmt == 'Config object':
                 return config
-            return config.to_dict()
+            return config.to_json()
+
+    def get_stream_status(self, stream, **kwargs):
+        """获得流的状态"""
+        is_req = kwargs.pop('is_req', False)
+        stream = self.get_stream(stream) if isinstance(stream, str) else stream
+        assert stream is not None, f'Stream: {stream} not found.'
+        if is_req:
+            return 1, stream.status
+        return stream.status
 
     def set_stream_cfg(self, cfg, stream=None, stream_name=None, addr='/', **kwargs):
         """
@@ -193,7 +203,7 @@ class BaseUAII(object):
         config = stream.set_cfg(addr=addr, value=cfg, **kwargs)
         # print(config)
         if is_req:
-            return 1, config.to_dict()
+            return 1, config.to_json()
         else:
             return config
 
@@ -219,7 +229,20 @@ class BaseUAII(object):
     def ps(self, stream=None, module=None, io=None, script=None, **kwargs):
         """返回全部模块的状态"""
         ret_fmt = kwargs.get('ret_fmt', 'string')
-        assert ret_fmt in ['string', 'list'], f'Error: ret_fmt: {ret_fmt} not supported.'
+        xai_type = kwargs.get('type', None)  # xai_type: 'stream', 'module', 'io', 'script'
+        if xai_type is None:
+            pass
+        else:
+            if xai_type == 'stream':
+                stream = True
+            elif xai_type == 'module':
+                module = True
+            elif xai_type == 'io':
+                io = True
+            elif xai_type == 'script':
+                script = True
+            else:
+                raise ValueError(f'xai_type: {xai_type} not supported.')
 
         ps0 = [['ID', 'TYPE', 'NAME', 'STATUS', 'TAG', 'INCLUDE', 'DESCRIPTION']]
         if stream is None and module is None and io is None and script is None:
@@ -249,8 +272,12 @@ class BaseUAII(object):
         # ps_str = '\n'.join(['  '.join(x) for x in ps_list])
         if ret_fmt == 'string':
             return dm.misc.list2table(ps0)
-        else:
+        elif ret_fmt == 'json':
+            return json.dumps(ps0, indent=4, ensure_ascii=False)
+        elif ret_fmt == 'list':
             return ps0
+        else:
+            raise NotImplementedError(f'{ret_fmt} not implemented.')
 
     def show_vis(self, ret, im0, target_names):
 

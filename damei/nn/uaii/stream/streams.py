@@ -56,6 +56,14 @@ class Streams(object):
         names = [x[2] for x in self.ps()]
         return names
 
+    def verify_input_cfg(self, cfg):
+        """校验必要键：type, models"""
+        keys = list(cfg.keys())
+        if 'type' not in keys:
+            raise ValueError(f'Config error. Stream cfg must specify "type", keys: {keys}')
+        if 'models' not in keys:
+            raise ValueError(f'Config error. Stream cfg must specify "models", keys: {keys}')
+
     def build_new_stream(self, cfgs, **kwargs):
         """
         build new stream by stream cfgs
@@ -63,6 +71,7 @@ class Streams(object):
             for example:
                 [stream1, stream2, stream3], where streamx is a dict
         """
+        # print(cfgs, type(cfgs))
         if isinstance(cfgs, dict):
             cfgs = [cfgs]
 
@@ -72,6 +81,9 @@ class Streams(object):
         # print(len(cfgs))
         # is_mono = len(cfgs) == 1
         for i, stream_cfg in enumerate(cfgs):  # 这里是单个或多个流
+            # 校验stream_cfg的必须字段是否存在
+            self.verify_input_cfg(stream_cfg)
+
             name = stream_cfg['type']
             is_mono = len(stream_cfg['models']) == 1
             stream = Stream(
@@ -112,5 +124,5 @@ class Streams(object):
                 include = ' '.join(include)
             # config = module.cfg
             # ret.append([id, type, name, status, include, description, config])
-            ret.append([id, type, name, status, '', include, description])
+            ret.append([id, type, name, status, '-', include, description])
         return ret

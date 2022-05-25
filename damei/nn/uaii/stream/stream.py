@@ -7,6 +7,7 @@ import numpy as np
 import collections
 import copy
 import damei as dm
+import json
 # from ..utils.config_loader import PyConfigLoader
 from damei.nn.api.utils import Config
 
@@ -57,7 +58,8 @@ class Stream(object):
             _modules[mname] = module  # 存入模块
             setattr(self, mname, module)  # 存入属性, self.module_name = module
             # cfg = PyConfigLoader(module.default_cfg)  # 这是默认配置
-            cfg = Config(module.default_cfg)
+            assert module.default_cfg is not None, f'"{mname}" has no default_cfg'
+            cfg = Config(module.default_cfg)  # 使用模块的默认配置，的
 
             if model_cfg:  # 如果外部设置流的同时指定了配置文件，合并配置
                 full_cfg_path = f'{self.parent.root_path}/{model_cfg}'
@@ -77,6 +79,56 @@ class Stream(object):
             mtask='infer',
             mi=input,
         )
+
+    def init(self, stream_cfg=None, **kwargs):
+        """初始化流内模块
+        初始化流的意思的：对流内每个模块进行初始化，并配置好模块的I/O
+        模块可能的状态有：stopped, ready, running.
+        stopped时，直接初始化
+        ready或running时，如果force_init=True, 先停止，再初始化
+                如果force_init=False, 则不初始化
+        """
+        # TODO: 通用的monoflow和multiflow的传入stream_cfg的实现方法
+        logger.info(f'Initializing ...')
+        force_init = stream_cfg is not None  # 当传入stream_cfg时，强制初始化
+
+        if self.status != 'stopped':
+            if force_init:
+                self.stop()
+            else:
+                logger.warning(f'Stream {self.name} is not stopped, skip initialization')
+                return
+
+        if self.status == 'stopped':
+            models = self.models  # 所有的模型
+            model_cfgs = self.model_cfgs  # 所有的配置
+            for i, (mname, model) in enumerate(models.items()):
+                model_cfg = model_cfgs[mname]
+                is_first = i == 0
+                is_last = i == len(models) - 1
+                # print(model.status, force_init, self.status)
+                model = model(cfg=model_cfg)
+
+                mi = self.parent.build_io_instance('input', model_cfg) if is_first else None
+                mo = self.parent.build_io_instance('output', model_cfg) if is_last else None
+
+                if mi is not None:
+                    if hasattr(model, 'mi'):
+                        delattr(model, 'mi')
+                    setattr(model, 'mi', mi)
+                if mo is not None:
+                    if hasattr(model, 'mo'):
+                        delattr(model, 'mo')
+                    setattr(model, 'mo', mo)
+
+                if hasattr(self, mname):
+                    delattr(self, mname)
+                setattr(self, mname, model)  # 变成初始化后的模型
+
+                self._inited_modules[mname] = model  # 把初始化后的模型存进去
+        else:
+            logger.warning(f'Stream {self.name} is not stopped, skip initialization')
+        self.status = 'ready'
 
     def register_attrs(self):
         """把包含的子模块注册为本流的属性"""
@@ -109,6 +161,9 @@ class Stream(object):
         # sys.exit(1)
         return module_names
 
+    def get_config(self, addr='/', **kwargs):
+        return self.get_cfg(addr=addr, **kwargs)
+
     def get_cfg(self, addr='/', **kwargs):
         """
         获取配置，包含流的配置和子模块的配置，其中mono流的配置即内部模块的配置
@@ -136,7 +191,10 @@ class Stream(object):
                 cfg = cfg[sub_attr]
             return cfg
 
-    def set_cfg(self, addr='/', value=None, **kwargs):
+    def set_config(self, value=None, addr='/', **kwargs):
+        return self.set_cfg(value, addr, **kwargs)
+
+    def set_cfg(self, value=None, addr='/', **kwargs):
         """
         更新配置
         :param addr: address
@@ -161,7 +219,10 @@ class Stream(object):
             attrs = [x for x in addr.split('/') if x != '']
             assert len(attrs) >= 1
             if len(attrs) == 1:  # 即addr=/seyolov5这类情形
-                value = Config.from_dict(value)
+                if isinstance(value, dict):
+                    value = Config.from_dict(value)
+                else:  # 有可能本来就是Config对象，即<class 'damei.nn.uaii.utils.config_loader.PyConfigLoader'>
+                    pass
             mname = attrs.pop(0)
             m = self.models[mname]
             if m.status != 'stopped':
@@ -176,8 +237,12 @@ class Stream(object):
     def ps(self, *args, **kwargs):
         return self.info(*args, **kwargs)
 
+    def get_info(self, *args, **kwargs):
+        return self.info(*args, **kwargs)
+
     def info(self, *args, **kwargs):
-        format_str = ''
+        ret_fmt = kwargs.get('ret_fmt', 'string')
+
         info = dict()
         info['class'] = f'<class "{self.__class__.__name__}">'
         info['name'] = self.name
@@ -204,10 +269,18 @@ class Stream(object):
             #    cfg = m.cfg  # 可能会merge之后的也是PyConfigLoader对象
 
             info[f'{mname} config'] = cfg.items
-
-        format_str += self.dict2info(info)
-        # format_str += dm.misc.dict2info(info)
-        return format_str
+        # print(ret_fmt)
+        # exit()
+        if ret_fmt == 'string':
+            format_str = self.dict2info(info)
+            # format_str += dm.misc.dict2info(info)
+            return format_str
+        elif ret_fmt == 'dict':
+            return info
+        elif ret_fmt == 'json':
+            return json.dumps(info, indent=4, ensure_ascii=False)
+        else:
+            raise ValueError(f"Unknown format: {ret_fmt}")
 
     def dict2info(self, info_dict):
         # 先递归地展开
@@ -257,60 +330,6 @@ class Stream(object):
             return [x['type'] for x in self.modules_list_config]
         else:
             return ' '.join([x['type'] for x in self.modules_list_config])
-
-    def init(self, stream_cfg=None, **kwargs):
-        """初始化流内模块
-        初始化流的意思的：对流内每个模块进行初始化，并配置好模块的I/O
-        模块可能的状态有：stopped, ready, running.
-        stopped时，直接初始化
-        ready或running时，如果force_init=True, 先停止，再初始化
-                如果force_init=False, 则不初始化
-        """
-        # TODO: 通用的monoflow和multiflow的传入stream_cfg的是实现方法
-        logger.info(f'Initializing...')
-        force_init = stream_cfg is not None
-
-        if self.status != 'stopped':
-            if force_init:
-                self.stop()
-            else:
-                logger.warning(f'Stream {self.name} is not stopped, skip initialization')
-                return
-
-        if self.status == 'stopped':
-            models = self.models
-            model_cfgs = self.model_cfgs
-            for i, (mname, model) in enumerate(models.items()):
-                model_cfg = model_cfgs[mname]
-
-                # print(model.status, force_init, self.status)
-                model = model(cfg=model_cfg)
-
-                mi = self.parent.build_io_instance('input', model_cfg)
-                mo = self.parent.build_io_instance('output', model_cfg)
-
-                if mi is not None:
-                    if hasattr(model, 'mi'):
-                        delattr(model, 'mi')
-                    setattr(model, 'mi', mi)
-                if mo is not None:
-                    if hasattr(model, 'mo'):
-                        delattr(model, 'mo')
-                    setattr(model, 'mo', mo)
-
-                if hasattr(self, mname):
-                    delattr(self, mname)
-                setattr(self, mname, model)
-
-                if i + 1 == len(models):  # 最后一个模块
-                    # print(model.mo)
-                    if hasattr(self, 'mo'):
-                        delattr(self, 'mo')
-                    setattr(self, 'mo', model.mo)
-
-                # self._modules[mname] = model  # 初始化后赋值回去
-                self._inited_modules[mname] = model
-        self.status = 'ready'
 
     def pop(self, wait=True, timeout=None):
         return self.mo.pop(wait=wait, timeout=timeout)

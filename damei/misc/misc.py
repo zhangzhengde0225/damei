@@ -158,32 +158,38 @@ def rcfile2dict(rc_file):
     return data_dict
 
 
-def count_codes(root_path, suffixed=None, show_detail=False):
-    return count_lines_and_chars(root_path, suffixed, show_detail)
+def count_codes(root_path, suffix=None, show_detail=False):
+    return count_lines_and_chars(root_path, suffix, show_detail)
 
 
-def count_lines_and_chars(root_path, suffixes=None, show_detail=False):
-    suffixes = suffixes if suffixes else ['.py', '.pyx', '.c', '.cpp', '.h', '.hpp']
-    suffixes = [suffixes] if isinstance(suffixes, str) else suffixes
+def count_lines_and_chars(root_path, suffix=None, show_detail=True, ):
+    suffix = suffix if suffix else ['.py', '.pyx', '.c', '.cpp', '.h', '.hpp']
+    suffix = [suffix] if isinstance(suffix, str) else suffix
     # print(root_path, suffixes)
     assert os.path.isdir(root_path), f'{root_path} is not a directory'
 
     num_lines = 0
     num_chars = 0
+    blank = 30
     for root, dirs, files in os.walk(root_path):
         for file in files:
             # print(len(files), file)
-            if f'{Path(file).suffix}' in suffixes:
+            if f'{Path(file).suffix}' in suffix:
                 path = os.path.join(root, file)
                 with open(path, 'r') as f:
                     lines = f.readlines()
+                lines = [x for x in lines if x.strip()]
                 num_char = sum([len(x) for x in lines])
                 num_lines += len(lines)
                 num_chars += num_char
                 if show_detail:
                     rel_path = path.replace(f'{root_path}/', '')
-                    print(f'path: {rel_path:<40} {len(lines):<4} lines, {num_char:<5} chars')
-    return num_lines, num_chars
+                    blank = max(len(rel_path), blank)
+                    print(f'path: {rel_path:<{blank}} {len(lines):<4} lines, {num_char:<5} chars')
+
+    ret = f'Count codes on: {root_path}:\n {num_lines} lines, {num_chars} chars'
+    print(ret)
+    return (num_lines, num_chars)
 
 
 if __name__ == '__main__':

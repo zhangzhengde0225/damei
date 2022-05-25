@@ -6,6 +6,8 @@ import collections
 import copy
 import re
 import damei as dm
+import json
+import argparse
 
 pydir = Path(os.path.abspath(__file__)).parent
 logger = dm.get_logger(__name__)
@@ -22,7 +24,7 @@ class PyConfigLoader(collections.UserDict):
         self._load_items(cfg_file, cfg_dict)
         self.check_items()  # TODO
 
-    def _load_items(self, cfg_file, cfg_dict):
+    def _load_items(self, cfg_file=None, cfg_dict=None):
         assert cfg_file or cfg_dict, 'cfg_file or cfg_dict must be not None'
         assert not (cfg_file and cfg_dict), 'only one of cfg_file and cfg_dict can have value'
         if cfg_file:
@@ -71,6 +73,10 @@ class PyConfigLoader(collections.UserDict):
     def __getattr__(self, key):
         # print(f'{key}')
         return self.data[str(key)]
+
+    @staticmethod
+    def from_file(cfg_file, name=None, root_path=None):
+        return PyConfigLoader(cfg_file, name, root_path)
 
     @staticmethod
     def fromfile(cfg_file, name=None, root_path=None):
@@ -215,6 +221,14 @@ class PyConfigLoader(collections.UserDict):
             self._items[attrs[0]][attrs[1]][attrs[2]][attrs[3]] = value
         self.check_items()
 
+    def merge2opt(self, opt):
+        """
+        合并配置文件到opt, 合并规则：没想好，先放着
+        return: opt
+        """
+        assert isinstance(opt, argparse.Namespace), 'opt must be argparse.Namespace'
+        raise NotImplementedError(f'未实现')
+
     def merge(self, cfg2):
         """合并另一个配置文件到内部，是inplace的"""
         if cfg2 is None:
@@ -262,4 +276,6 @@ class PyConfigLoader(collections.UserDict):
     def to_dict(self):
         # raise NotImplementedError('to_dict is not implemented.')
         return self._items
-        pass
+
+    def to_json(self):
+        return json.dumps(self._items, indent=4, ensure_ascii=False)

@@ -48,10 +48,28 @@ class AbstractModule(object):
         return self._cfg
 
     def train(self, *args, **kwargs):
-        pass
+        raise NotImplementedError(f'{self.name}.train()')
 
     def infer(self, *args, **kwargs):
-        pass
+        raise NotImplementedError(f'{self.name}.infer()')
 
     def evaluate(self, *args, **kwargs):
+        raise NotImplementedError(f'{self.name}.evaluate()')
+
+    def before_train_run(self, *args, **kwargs):
+        pass
+
+    def before_train_epoch(self, *args, **kwargs):
+        pass
+
+    def before_train_iter(self, *args, **kwargs):
+        pass
+
+    def after_train_iter(self, *args, **kwargs):
+        pass
+
+    def after_epoch(self, *args, **kwargs):
+        pass
+
+    def after_run(self, *args, **kwargs):
         pass

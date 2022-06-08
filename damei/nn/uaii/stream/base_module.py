@@ -9,6 +9,7 @@ class AbstractModule(object):
     status = 'stopped'
     description = 'default_description'
     default_cfg = None
+    cfg_meta = None
     tag = 'cloud'  # default tag, edge or cloud, edge for edge node, cloud for center node
 
     def __init__(self, default_cfg=None, cfg=None, **kwargs):

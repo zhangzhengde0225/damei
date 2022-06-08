@@ -14,6 +14,11 @@ logger = dm.get_logger(__name__)
 
 
 class PyConfigLoader(collections.UserDict):
+    """
+    从字典、.py文件等获取的配置对象
+    v1.0.1 支持元数据
+    """
+
     def __init__(self, cfg_file=None, name=None, root_path=None, cfg_dict=None):
         super(PyConfigLoader, self).__init__()
         work_dir = os.getcwd()
@@ -21,10 +26,13 @@ class PyConfigLoader(collections.UserDict):
         self._name = name if name else f'{cfg_file}'  # 其实是path
 
         self._items = dict()
-        self._load_items(cfg_file, cfg_dict)
+        self._load_items(cfg_file, cfg_dict)  # 从配置文件或配置字典初始化配置，配置添加到_items和对应的属性里
         self.check_items()  # TODO
 
     def _load_items(self, cfg_file=None, cfg_dict=None):
+        if cfg_file is None and cfg_dict is None:
+            return
+
         assert cfg_file or cfg_dict, 'cfg_file or cfg_dict must be not None'
         assert not (cfg_file and cfg_dict), 'only one of cfg_file and cfg_dict can have value'
         if cfg_file:

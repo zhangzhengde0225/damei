@@ -39,7 +39,7 @@ class trt_wrapper(object):
         bindings = []
 
         for binding in engine:
-            # Engine contains 2 bindings: 'data' and 'prob' whose sizes are (3, 384, 640)
+            # Engine contains 2 bindings: 'demo_for_dm.data' and 'prob' whose sizes are (3, 384, 640)
             # and (6001, 1, 1) respectively. engine.max_batch_size is declared when engine
             # created. trt volume is the opreation that mutiples each dims of bindings.
             size = trt.volume(engine.get_binding_shape(
@@ -110,7 +110,7 @@ class trt_wrapper(object):
             host_inputs[0] = host_inputs[0].reshape(
             	batch_size, source[0].ravel().shape[0])
             host_outputs[0] = host_outputs[0].reshape(batch_size, 6001)
-            # transfer input data into GPU
+            # transfer input demo_for_dm.data into GPU
             [cuda.memcpy_htod_async(cuda_inputs[0], host_input, stream)
              for host_input in host_inputs[0]]
             context.execute_async(

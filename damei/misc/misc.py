@@ -65,6 +65,10 @@ def flatten_list(a):
     return new_list
 
 
+def dict2string(info_dict):
+    return dict2info(info_dict)
+
+
 def dict2info(info_dict):
     """
     把一个字典的键和值展开为带缩进、带颜色的字符串，易于打印

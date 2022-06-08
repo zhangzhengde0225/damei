@@ -22,23 +22,23 @@ def ImDU(x, power=3):
 
 if __name__ == '__main__':
 	#
-	ax = plt.gca()
-	ax.spines['right'].set_color('none')
-	ax.spines['top'].set_color('none')
-	ax.xaxis.set_ticks_position('bottom')
-	ax.yaxis.set_ticks_position('left')
-	ax.spines['bottom'].set_position(('data', 0))
-	ax.spines['left'].set_position(('data', 0))
-	ax.xaxis.set_major_locator(MultipleLocator(0.5))
-	ax.yaxis.set_major_locator(MultipleLocator(0.5))
+    ax = plt.gca()
+    ax.spines['right'].set_color('none')
+    ax.spines['top'].set_color('none')
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
+    ax.spines['bottom'].set_position(('demo_for_dm.data', 0))
+    ax.spines['left'].set_position(('demo_for_dm.data', 0))
+    ax.xaxis.set_major_locator(MultipleLocator(0.5))
+    ax.yaxis.set_major_locator(MultipleLocator(0.5))
 
-	x = np.linspace(0, 2, 100)
-	print(x)
-	f = FastPower
-	# f = ImDU
-	y = f(x, power=8)
-	y = ImDU(x, 8)
-	print(y)
+    x = np.linspace(0, 2, 100)
+    print(x)
+    f = FastPower
+    # f = ImDU
+    y = f(x, power=8)
+    y = ImDU(x, 8)
+    print(y)
 	color = '#EE3B3B'
 	# plt.plot((-1, 0), (0, 0), color=color, linewidth=5)
 	# plt.plot((0, 0), (0, 1), color=color, linewidth=5)

@@ -11,7 +11,7 @@ from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
 
-# Package meta-data.
+# Package meta-demo_for_dm.data.
 NAME = 'damei'
 DESCRIPTION = 'Da Mei project with deep learning general functions.'
 URL = 'https://github.com/zhangzhengde0225/damei'
@@ -24,13 +24,22 @@ with open('damei/version.py') as f:
 VERSION = eval(data[0].split('=')[-1].strip())
 print(f'Installing damei, version: {VERSION}')
 
-# What packages are required for this module to be executed?
-REQUIRED = [
-	# 'requests', 'maya', 'records',
-]
+
+def read_requirements():
+	with open('requirements.txt') as f:
+		return f.read().splitlines()
+
+
+REQUIRED = read_requirements()
+# REQUIRED = [
+# 	"numpy==1.21.2",
+# 	"opencv-python",
+# 	"easydict",
+# ]
 
 # What packages are optional?
 EXTRAS = {
+	'rsa': ['rsa'],
 	# 'fancy feature': ['django'],
 }
 

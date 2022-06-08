@@ -152,6 +152,27 @@ class BaseUAII(object):
             return 1, stream.info(**kwargs)
         return stream.info(**kwargs)
 
+    def get_stream_cfg_meta(self, stream=None, stream_name=None, addr='/', **kwargs):
+        """获得流的配置文件的元信息"""
+        is_req = kwargs.pop('is_req', False)
+        ret_fmt = kwargs.pop('ret_fmt', 'Config object')
+
+        stream = stream if stream else stream_name
+        stream = self.get_stream(stream) if isinstance(stream, str) else stream
+        assert stream is not None, f'Stream: {stream} not found.'
+        config_meta = stream.get_cfg_meta(addr=addr, **kwargs)
+        if is_req:
+            return 1, config_meta.to_json()
+        else:
+            if ret_fmt == 'Config object':
+                return config_meta
+            elif ret_fmt == 'dict':
+                return config_meta.to_dict()
+            elif ret_fmt == 'json':
+                return config_meta.to_json()
+            else:
+                raise NotImplementedError(f'UAII get_stream_cfg_meta ret_fmt: {ret_fmt} not implemented.')
+
     def get_stream_cfg(self, stream=None, stream_name=None, addr='/', **kwargs):
         """
         获得流的配置参数

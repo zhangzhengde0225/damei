@@ -29,7 +29,7 @@ class Stream(object):
         self.modules_list_config = stream_cfg['models']  # list，每个元素是dict，是模块的配置，type和cfg
         # print('初始化', parent)
         self.parent = parent  # uaii
-        self._modules, self._module_cfgs = self.init_about_models()  # 未初始化的模块和对应的配置
+        self._modules, self._module_cfgs, self._module_cfgs_meta = self.init_about_models()  # 未初始化的模块和对应的配置
         self._inited_modules = collections.OrderedDict()  # 已经初始化的模块
         # self.register_attrs()
         # print('xx', self.seyolov5)
@@ -50,6 +50,7 @@ class Stream(object):
         """
         _modules = collections.OrderedDict()
         _module_cfgs = collections.OrderedDict()
+        _module_cfgs_meta = collections.OrderedDict()
         for i, module in enumerate(self.modules_list_config):
             mname = module['type']  # 必须存在
             model_cfg = module.pop('cfg', None)  # 可以为无，默认为None
@@ -68,7 +69,11 @@ class Stream(object):
                 cfg = cfg.merge(cfg2)
             _module_cfgs[mname] = cfg
 
-        return _modules, _module_cfgs
+            cfg_meta_file = module.cfg_meta
+            cfg_meta = Config(cfg_file=cfg_meta_file)
+            _module_cfgs_meta[mname] = cfg_meta
+
+        return _modules, _module_cfgs, _module_cfgs_meta
 
     def __call__(self, input, *args, **kwargs):
         """单条目运行"""
@@ -155,6 +160,10 @@ class Stream(object):
         return self._module_cfgs
 
     @property
+    def model_cfgs_meta(self):
+        return self._module_cfgs_meta
+
+    @property
     def model_names(self):
         module_names = [x['type'] for x in self.modules_list_config]
         # print(self.models)
@@ -163,6 +172,26 @@ class Stream(object):
 
     def get_config(self, addr='/', **kwargs):
         return self.get_cfg(addr=addr, **kwargs)
+
+    def get_cfg_meta(self, addr='/', **kwargs):
+        if self.is_mono:
+            addr = f'{addr}/{self.model_names[0]}' if addr == '/' else addr
+
+        if addr == '/':
+            stream_cfg = self.cfg
+            for mname in self.model_names:
+                model_cfg_meta = self.model_cfgs_meta[mname]
+                model_cfg_meta_dict = model_cfg_meta.to_dict()
+                stream_cfg[mname] = model_cfg_meta_dict
+            return Config.from_dict(stream_cfg)
+        else:
+            attrs = [x for x in addr.split('/') if x != '']
+            assert len(attrs) >= 1, 'addr must be like /xxx/xxx/xxx'
+            mname = attrs.pop(0)
+            cfg_meta = self.model_cfgs_meta[mname]
+            for sub_attr in attrs:
+                cfg_meta = cfg_meta[sub_attr]
+            return cfg_meta
 
     def get_cfg(self, addr='/', **kwargs):
         """

@@ -1,7 +1,5 @@
 import base64
 
-import rsa as raw_rsa
-
 
 class DmRsa(object):
     """这是加密Encrypt方案"""
@@ -10,7 +8,16 @@ class DmRsa(object):
         """
         :param plan: 加密方案Encrypt或签密方案SignEncripy
         """
+        # import rsa as raw_rsa
+        self._raw_rsa = None
         self.length = 1024
+
+    @property
+    def raw_rsa(self):
+        if not self._raw_rsa:
+            import rsa as raw_rsa
+            self._raw_rsa = raw_rsa
+        return self._raw_rsa
 
     def gen_rsa(self, num=1, length=None):
         """在随机生成公钥-私钥对，存储在当前路径pubk.txt和privk.txt里"""
@@ -22,7 +29,7 @@ class DmRsa(object):
             self._save(pubk=pubk, privk=privk, suffix=f'{i + 1}')
 
     def gen_pair(self, length):
-        pub_key_obj, priv_key_obj = raw_rsa.newkeys(length)
+        pub_key_obj, priv_key_obj = self.raw_rsa.newkeys(length)
         pub_key_str = pub_key_obj.save_pkcs1()
         pub_key_code = base64.standard_b64encode(pub_key_str).decode()
 
@@ -49,7 +56,7 @@ class DmRsa(object):
                 with open(pubk, 'r') as f:
                     pubk = f.read()
             pubk = base64.standard_b64decode(pubk)  # 对公钥解密
-            pubk = raw_rsa.PublicKey.load_pkcs1(pubk)  # 加载公钥
+            pubk = self.raw_rsa.PublicKey.load_pkcs1(pubk)  # 加载公钥
             # print(f'pubk2: {pubk}')
             return pubk
         elif privk:
@@ -57,7 +64,7 @@ class DmRsa(object):
                 with open(privk, 'r') as f:
                     privk = f.read()
             privk = base64.standard_b64decode(privk)  # 私钥解密
-            privk = raw_rsa.PrivateKey.load_pkcs1(privk)  # 加载私钥
+            privk = self.raw_rsa.PrivateKey.load_pkcs1(privk)  # 加载私钥
             return privk
         else:
             raise KeyError(f'Both public key and private key are None.')
@@ -77,7 +84,7 @@ class DmRsa(object):
         ciphertext_list = []
         for i in range(0, len(plaintext), enable_length):
             v = plaintext[i:i + enable_length]
-            val = raw_rsa.encrypt(v.encode(), pk)  # 加密，加密后是bytes类型
+            val = self.raw_rsa.encrypt(v.encode(), pk)  # 加密，加密后是bytes类型
             ciphertext_list.append(val)
         ciphertext = b''.join(ciphertext_list)
 
@@ -106,7 +113,7 @@ class DmRsa(object):
         plaintext_list = []
         for i in range(0, len(ciphertext), rsa_length):
             v = ciphertext[i:i + rsa_length]
-            val = raw_rsa.decrypt(v, pk)
+            val = self.raw_rsa.decrypt(v, pk)
             plaintext_list.append(val)
 
         plaintext = b''.join(plaintext_list)
@@ -124,7 +131,7 @@ class DmRsa(object):
         :return: 签名，16进制的str
         """
         privk = self.load_pk(privk=privk)
-        signature = raw_rsa.sign(message.encode('utf-8'), privk, hash_method=hash_method)
+        signature = self.raw_rsa.sign(message.encode('utf-8'), privk, hash_method=hash_method)
         # print('xxx', signature)
         signature = signature.hex()
         return signature
@@ -136,7 +143,7 @@ class DmRsa(object):
         signature = bytes.fromhex(signature)
         # print('xx3', signature)
         try:
-            raw_rsa.verify(message.encode('utf-8'), signature, pubk)
+            self.raw_rsa.verify(message.encode('utf-8'), signature, pubk)
             return True
         except Exception as e:
             print(f'Verify failed, {e}')

@@ -28,7 +28,7 @@ class SocketApp(object):
     @sio.event
     def server_run_func(sid, data):
         logger.info(f'server run_func, data: {data}')
-        # print(f'server run_func, data: {data}')
+        # print(f'server run_func, demo_for_dm.data: {demo_for_dm.data}')
         return 'dame', 'dame2'
 
     @sio.event

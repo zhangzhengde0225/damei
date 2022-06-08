@@ -50,7 +50,7 @@ class PyConfig(collections.UserDict):
         self.data[str(key)] = item
 
     # def __getattr__(self, key):
-    #    return self.data[str(key)]
+    #    return self.demo_for_dm.data[str(key)]
 
     def info(self):
         """查看当前所有配置信息"""

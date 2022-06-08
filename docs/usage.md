@@ -107,4 +107,13 @@ ret = stream.start_evaluate()  # 在新进程中运行评估
 ret = stream.start_infer()  # 在新进程中运行推理
 ```
 
+# data
 
+关于数据处理的程序
+
+```python
+import damei as dm
+
+# 动态背景增强
+dm.data.dynamic_background_augment()
+```

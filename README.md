@@ -38,7 +38,7 @@ import damei as dm
 使用示例查看[usage.md](https://github.com/zhangzhengde0225/damei/blob/master/docs/usage.md)
 文件
 
-# 3.Features
+# 3.更新日志
 
 ```python
 """
@@ -83,10 +83,14 @@ import damei as dm
          v1.1.1 # 新增dm.argparse，只读取默认值，不解析命令行参数
             parser = dm.argparse.ArgumentParser()
 
-# TODO v1.2.0版本起，damei不仅支持库使用，还作为一个应用程序使用，命令行输入dm [命令] [选项] [参数]
-# TODO v1.3.0版本起，damei提供高效波函数求解器wavelib。
 """
 ```
+
+# 4. TODO
+
++ 制定简单版本：移除必须加载的几个库 torch socketio tqdm eventlet
+
+
 
 
 

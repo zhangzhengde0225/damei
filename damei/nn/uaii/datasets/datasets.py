@@ -72,7 +72,7 @@ def create_dataloader(path, imgsz, batch_size, stride, opt, hyp=None, augment=Fa
                                     num_workers=nw,
                                     sampler=sampler,
                                     pin_memory=True,
-                                    collate_fn=LoadImagesAndLabels.collate_fn)  # torch.utils.data.DataLoader()
+                                    collate_fn=LoadImagesAndLabels.collate_fn)  # torch.utils.demo_for_dm.data.DataLoader()
     return dataloader, dataset
 
 
@@ -382,7 +382,7 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                 [x.replace('/', os.sep) for x in f if os.path.splitext(x)[-1].lower() in img_formats])
             assert len(self.img_files) > 0, 'No images found'
         except Exception as e:
-            raise Exception('Error loading data from %s: %s\nSee %s' % (path, e, help_url))
+            raise Exception('Error loading demo_for_dm.data from %s: %s\nSee %s' % (path, e, help_url))
 
         # Check cache
         self.label_files = img2label_paths(self.img_files)  # labels

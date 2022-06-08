@@ -8,6 +8,7 @@ __version__ = version.__version__
 __author__ = version.__author__
 
 # dmsystem
+from damei.utils.exception import exception_handler as EXCEPTION
 from damei.dmsystem.system import current_system, system_lib_suffix
 
 # controls
@@ -50,3 +51,6 @@ from damei.misc.scrcpy.scrcpy import Scrcpy
 # nn
 import damei.nn as nn
 from damei.nn.api.utils import Config
+
+# demo_for_dm.data
+import damei.data as data

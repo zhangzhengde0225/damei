@@ -11,7 +11,7 @@ parser.add_argument('--weights', nargs='+', type=str,
                     default=f'{os.environ["HOME"]}/weights/rsi_insulator'
                             f'/insulator_m_ep99_fogged_best.pt',
                     help='model.pt path(s)')
-parser.add_argument('--data', type=str, default='sources/sfid.yaml', help='*.data path')
+parser.add_argument('--demo_for_dm.data', type=str, default='sources/sfid.yaml', help='*.demo_for_dm.data path')
 parser.add_argument('--source', type=str, default=None, help='test set for evaluation, use val path in .yaml if None')
 parser.add_argument('--batch-size', type=int, default=64, help='size of each image batch')
 parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
@@ -32,7 +32,7 @@ parser.add_argument(f'--return-fmt', type=str, default='yolov5', help='yolov5 or
 opt = parser.parse_args()
 
 opt.save_json |= opt.data.endswith('coco.yaml')
-# opt.data = check_file(opt.data)  # check file
+# opt.demo_for_dm.data = check_file(opt.demo_for_dm.data)  # check file
 print('opt', opt)
 
 print(opt.data, type(opt.data))

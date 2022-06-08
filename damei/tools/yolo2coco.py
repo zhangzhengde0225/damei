@@ -66,13 +66,13 @@ class YOLO2COCO(object):
 
 	def __call__(self, *args, **kwargs):
 		sp = self.sp
-		for trte in ['train', 'tests']:
-			print(f'Deal with {trte}')
-			imgs = os.listdir(f'{sp}/images/{trte}')
-			imgs = [f'{sp}/images/{trte}/{x}' for x in imgs if str(Path(x).suffix) in self.suffix]
+		for trte in ['train', 'test']:
+            print(f'Deal with {trte}')
+            imgs = os.listdir(f'{sp}/images/{trte}')
+            imgs = [f'{sp}/images/{trte}/{x}' for x in imgs if str(Path(x).suffix) in self.suffix]
 
-			trval = trte if trte == 'train' else 'val'
-			self.deal_single(img_paths=imgs, trval=trval)
+            trval = trte if trte == 'train' else 'val'
+            self.deal_single(img_paths=imgs, trval=trval)
 
 	def deal_single(self, img_paths, trval):
 		tp = self.tp

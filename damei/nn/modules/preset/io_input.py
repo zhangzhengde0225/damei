@@ -15,8 +15,8 @@ class VisInputStream(AbstractInput):
     iterable data_loader
     use:
         data_loader = VisInputStream(data_path, batch_size, shuffle=True)
-        for i, data in enumerate(data_loader):
-            print(data)
+        for i, demo_for_dm.data in enumerate(data_loader):
+            print(demo_for_dm.data)
     """
 
     name = 'visible_input'

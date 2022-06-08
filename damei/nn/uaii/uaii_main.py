@@ -4,15 +4,22 @@ import logging
 from threading import Thread
 import time
 from pathlib import Path
-import eventlet
 import damei as dm
+
+try:
+    import eventlet
+    # from .socket.server import SocketApp
+except Exception as e:
+    dm.EXCEPTION(Exception, e, mute=True)
 
 from .utils.base_uaii import BaseUAII
 from .stream.streams import Streams
-# from .registry import MODULES, SCRIPTS, IOS
-from damei.nn.api.registry import MODULES, SCRIPTS, IOS
-from damei.nn.modules import *
-from .socket.server import SocketApp
+
+try:
+    from .. import MODULES, SCRIPTS, IOS
+except:
+    from damei.nn.api import MODULES, SCRIPTS, IOS
+
 from .utils.config_loader import PyConfigLoader as Config
 
 pydir = Path(os.path.abspath(__file__)).parent
@@ -93,9 +100,9 @@ class UAII(BaseUAII):
             t0 = time.time()
             if len(stream.que):
                 data = stream.get_last()
-                # data = stream.scan()
+                # demo_for_dm.data = stream.scan()
                 print(f'fetch times: {fetch_times} que lenth: {len(stream.que)}'
-                      f' data: {data[:3]}', end='')
+                      f' demo_for_dm.data: {data[:3]}', end='')
                 fetch_times += 1
                 print(f' {(time.time() - t0) * 1000:.6f} ms')
             time.sleep(0.0001)
@@ -124,7 +131,7 @@ class UAII(BaseUAII):
                 dict(
                     type='visible_input',
                     enable=True,
-                    source='/path/to/data',
+                    source='/path/to/demo_for_dm.data',
                     ...,
                 )
         :return: i/o instance from self._ios

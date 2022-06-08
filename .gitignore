@@ -1,14 +1,15 @@
 *.pem
-build
+build/*
 damei.egg-info
 dist
 .idea
 .vscode
 __pycache__/
-./examples/sources
-./docs/sources
-./docs/make.bat
-./docs/Makefile
-./docs/source/
+examples/sources
+
+docs/sources
+docs/make.bat
+docs/Makefile
+docs/source/
 
 

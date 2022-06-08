@@ -86,12 +86,6 @@ import damei as dm
 """
 ```
 
-# 4. TODO
-
-+ 制定简单版本：移除必须加载的几个库 torch socketio tqdm eventlet
-
-
-
 
 
 

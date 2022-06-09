@@ -235,7 +235,6 @@
 
   // Is a given value a typed array?
   var typedArrayPattern = /\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;
-
   function isTypedArray(obj) {
     // `ArrayBuffer.isView` is the most future-proof, so use it when available.
     // Otherwise, fall back on the above regular expression.
@@ -655,7 +654,6 @@
   function toPath$1(path) {
     return isArray(path) ? path : [path];
   }
-
   _$1.toPath = toPath$1;
 
   // Internal wrapper for `_.toPath` to enable minification.
@@ -761,7 +759,6 @@
   function iteratee(value, context) {
     return baseIteratee(value, context, Infinity);
   }
-
   _$1.iteratee = iteratee;
 
   // The function we call internally to generate a callback. It invokes
@@ -933,7 +930,7 @@
         'variable is not a bare identifier: ' + argument
       );
     } else {
-      // If a variable is not specified, place demo_for_dm.data values in local scope.
+      // If a variable is not specified, place data values in local scope.
       source = 'with(obj||{}){\n' + source + '}\n';
       argument = 'obj';
     }
@@ -983,7 +980,6 @@
   // Generate a unique integer id (unique within the entire client session).
   // Useful for temporary DOM ids.
   var idCounter = 0;
-
   function uniqueId(prefix) {
     var id = ++idCounter + '';
     return prefix ? prefix + id : id;
@@ -1618,7 +1614,6 @@
 
   // Safely create a real, live array from anything iterable.
   var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
-
   function toArray(obj) {
     if (!obj) return [];
     if (isArray(obj)) return slice.call(obj);

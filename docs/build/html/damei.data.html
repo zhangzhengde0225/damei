@@ -183,8 +183,8 @@
                             <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
                         </ul>
                         <ul class="current">
-                            <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">damei.data</a>
-                            </li>
+                            <li class="toctree-l1 current current-page"><a class="current reference internal"
+                                                                           href="#">damei.data</a></li>
                         </ul>
 
                     </div>
@@ -237,17 +237,18 @@
                                                      title="Permalink to this heading">#</a></h2>
                             <dl class="py function">
                                 <dt class="sig sig-object py" id="damei.data.augment">
-                                    <span class="sig-prename descclassname"><span
-                                            class="pre">damei.data.</span></span><span class="sig-name descname"><span
+                                      <span class="sig-prename descclassname"><span
+                                              class="pre">damei.data.</span></span><span class="sig-name descname"><span
                                         class="pre">augment</span></span><span class="sig-paren">(</span><em
                                         class="sig-param"><span class="n"><span
-                                        class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span
-                                        class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em
-                                        class="sig-param"><span class="n"><span
-                                        class="pre">target_path</span></span><span class="p"><span class="pre">:</span></span><span
-                                        class="w"> </span><span class="n"><span class="pre">Optional</span><span
-                                        class="p"><span class="pre">[</span></span><span class="pre">str</span><span
-                                        class="p"><span class="pre">]</span></span></span><span class="w"> </span><span
+                                        class="pre">source_path</span></span><span class="p"><span
+                                        class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                                        class="pre">str</span></span></em>, <em class="sig-param"><span
+                                        class="n"><span class="pre">target_path</span></span><span class="p"><span
+                                        class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                                        class="pre">Optional</span><span class="p"><span
+                                        class="pre">[</span></span><span class="pre">str</span><span class="p"><span
+                                        class="pre">]</span></span></span><span class="w"> </span><span
                                         class="o"><span class="pre">=</span></span><span class="w"> </span><span
                                         class="default_value"><span class="pre">None</span></span></em>, <em
                                         class="sig-param"><span class="n"><span
@@ -255,49 +256,61 @@
                                         class="pre">:</span></span><span class="w"> </span><span class="n"><span
                                         class="pre">Optional</span><span class="p"><span
                                         class="pre">[</span></span><span class="pre">str</span><span class="p"><span
-                                        class="pre">]</span></span></span><span class="w"> </span><span class="o"><span
-                                        class="pre">=</span></span><span class="w"> </span><span
-                                        class="default_value"><span class="pre">None</span></span></em>, <em
-                                        class="sig-param"><span class="n"><span class="pre">anno_fmt</span></span><span
-                                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
-                                        class="n"><span class="pre">str</span></span><span class="w"> </span><span
+                                        class="pre">]</span></span></span><span class="w"> </span><span
                                         class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                        class="default_value"><span class="pre">None</span></span></em>, <em
+                                        class="sig-param"><span class="n"><span
+                                        class="pre">anno_fmt</span></span><span class="p"><span
+                                        class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                                        class="pre">str</span></span><span class="w"> </span><span class="o"><span
+                                        class="pre">=</span></span><span class="w"> </span><span
                                         class="default_value"><span class="pre">'labelme'</span></span></em>, <em
                                         class="sig-param"><span class="n"><span class="pre">out_fmt</span></span><span
                                         class="p"><span class="pre">:</span></span><span class="w"> </span><span
                                         class="n"><span class="pre">str</span></span><span class="w"> </span><span
                                         class="o"><span class="pre">=</span></span><span class="w"> </span><span
                                         class="default_value"><span class="pre">'YOLOfmt'</span></span></em>, <em
-                                        class="sig-param"><span class="n"><span class="pre">use_noise_background</span></span><span
-                                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
-                                        class="n"><span class="pre">bool</span></span><span class="w"> </span><span
-                                        class="o"><span class="pre">=</span></span><span class="w"> </span><span
-                                        class="default_value"><span class="pre">False</span></span></em>, <em
-                                        class="sig-param"><span class="n"><span class="pre">out_size</span></span><span
-                                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
-                                        class="n"><span class="pre">int</span></span><span class="w"> </span><span
-                                        class="o"><span class="pre">=</span></span><span class="w"> </span><span
-                                        class="default_value"><span class="pre">640</span></span></em>, <em
                                         class="sig-param"><span class="n"><span
-                                        class="pre">num_augment_images</span></span><span class="p"><span
+                                        class="pre">use_noise_background</span></span><span class="p"><span
+                                        class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                                        class="pre">bool</span></span><span class="w"> </span><span class="o"><span
+                                        class="pre">=</span></span><span class="w"> </span><span
+                                        class="default_value"><span class="pre">False</span></span></em>, <em
+                                        class="sig-param"><span class="n"><span
+                                        class="pre">out_size</span></span><span class="p"><span
                                         class="pre">:</span></span><span class="w"> </span><span class="n"><span
                                         class="pre">int</span></span><span class="w"> </span><span class="o"><span
                                         class="pre">=</span></span><span class="w"> </span><span
+                                        class="default_value"><span class="pre">640</span></span></em>, <em
+                                        class="sig-param"><span class="n"><span
+                                        class="pre">num_augment_images</span></span><span
+                                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                        class="n"><span class="pre">int</span></span><span class="w"> </span><span
+                                        class="o"><span class="pre">=</span></span><span class="w"> </span><span
                                         class="default_value"><span class="pre">8000</span></span></em>, <em
                                         class="sig-param"><span class="n"><span
-                                        class="pre">train_ratio</span></span><span class="p"><span class="pre">:</span></span><span
-                                        class="w"> </span><span class="n"><span class="pre">float</span></span><span
-                                        class="w"> </span><span class="o"><span class="pre">=</span></span><span
-                                        class="w"> </span><span class="default_value"><span
-                                        class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span
-                                        class="pre">erase_ratio</span></span><span class="p"><span class="pre">:</span></span><span
-                                        class="w"> </span><span class="n"><span class="pre">float</span></span><span
-                                        class="w"> </span><span class="o"><span class="pre">=</span></span><span
-                                        class="w"> </span><span class="default_value"><span
-                                        class="pre">0.0</span></span></em>, <em class="sig-param"><span class="o"><span
-                                        class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>,
-                                    <em class="sig-param"><span class="o"><span class="pre">**</span></span><span
-                                            class="n"><span class="pre">kwargs</span></span></em><span
+                                        class="pre">train_ratio</span></span><span class="p"><span
+                                        class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                                        class="pre">float</span></span><span class="w"> </span><span class="o"><span
+                                        class="pre">=</span></span><span class="w"> </span><span
+                                        class="default_value"><span class="pre">0.8</span></span></em>, <em
+                                        class="sig-param"><span class="n"><span
+                                        class="pre">erase_ratio</span></span><span class="p"><span
+                                        class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                                        class="pre">float</span></span><span class="w"> </span><span class="o"><span
+                                        class="pre">=</span></span><span class="w"> </span><span
+                                        class="default_value"><span class="pre">(0,</span> <span
+                                        class="pre">1)</span></span></em>,
+                                    <em class="sig-param"><span class="n"><span
+                                            class="pre">mean_scale_factor</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                                            class="pre">float</span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">1</span></span></em>, <em
+                                        class="sig-param"><span class="o"><span class="pre">*</span></span><span
+                                        class="n"><span class="pre">args</span></span></em>, <em
+                                        class="sig-param"><span class="o"><span class="pre">**</span></span><span
+                                        class="n"><span class="pre">kwargs</span></span></em><span
                                         class="sig-paren">)</span><a class="headerlink" href="#damei.data.augment"
                                                                      title="Permalink to this definition">#</a></dt>
                                 <dd><p>A script to augment dataset from small annotated dataset. The target is random
@@ -315,16 +328,16 @@
                                                 <li><p><strong>backgrounds_path</strong> (<em>str</em>) – Path to
                                                     background images. Default is None, which means use background
                                                     source images.</p></li>
-                                                <li><p><strong>anno_fmt</strong> (<em>str</em>) – The labeling software
-                                                    used in annotation. Default is ‘labelme’.</p></li>
+                                                <li><p><strong>anno_fmt</strong> (<em>str</em>) – The labeling
+                                                    software used in annotation. Default is ‘labelme’.</p></li>
                                                 <li><p><strong>out_fmt</strong> (<em>str</em>) – The output format of
                                                     augmented dataset. Default is ‘YOLOfmt’.</p></li>
                                                 <li><p><strong>use_noise_background</strong> (<em>bool</em>) – Whether
-                                                    to generate an image using a noise background. Default is False.</p>
-                                                </li>
+                                                    to generate an image using a noise background. Default is False.
+                                                </p></li>
                                                 <li><p><strong>out_size</strong> (<em>int</em><em>
-                                                    or </em><em>tuple</em>) – The size of the output images. Default is
-                                                    640.</p></li>
+                                                    or </em><em>tuple</em>) – The size of the output images. Default
+                                                    is 640.</p></li>
                                                 <li><p><strong>num_augment_images</strong> (<em>int</em>) – The number
                                                     of augmented images. Default: 8000.</p></li>
                                                 <li><p><strong>train_ratio</strong> (<em>float</em>) – The ratio of
@@ -332,10 +345,13 @@
                                                 <li><p><strong>samples_ratio_per_class</strong> (<em>list</em>) – The
                                                     ratio of per class for samples equilibrium. Default: [1] *
                                                     len(classes).</p></li>
-                                                <li><p><strong>erase_ratio</strong> (<em>float</em>) – The ratio of
-                                                    target need to be erased (replaced by gray color) when using
-                                                    annotated image as background. Default: 0.0, which means no erase.
-                                                </p></li>
+                                                <li><p><strong>erase_ratio</strong> (<em>float</em><em> or </em><em>tuple</em>)
+                                                    – The ratio of target need to be erased (replaced by gray color)
+                                                    when using annotated image as background. Default: 0.0, which
+                                                    means no erase.</p></li>
+                                                <li><p><strong>mean_scale_factor</strong> (<em>float</em>) – The mean
+                                                    scale factor of gaussian distribustion, decide the num of targets
+                                                    in synthetic image. Default: 1.</p></li>
                                             </ul>
                                         </dd>
                                         <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -348,15 +364,107 @@
                                             <div class="doctest highlight-default notranslate">
                                                 <div class="highlight"><pre><span></span><span
                                                         class="gp">&gt;&gt;&gt; </span><span
-                                                        class="kn">import</span> <span class="nn">damei</span> <span
-                                                        class="k">as</span> <span class="nn">dm</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span><span class="o">.</span><span class="n">data</span><span
+                                                        class="kn">import</span> <span
+                                                        class="nn">damei</span> <span class="k">as</span> <span
+                                                        class="nn">dm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span><span class="o">.</span><span class="n">demo_for_dm</span><span
+                                                            class="o">.</span><span class="n">data</span><span
                                                             class="o">.</span><span class="n">augment</span><span
                                                             class="p">(</span><span class="s2">&quot;/path/to/dataset&quot;</span><span
                                                             class="p">)</span>
 </pre>
                                                 </div>
                                             </div>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                        </section>
+                        <section id="damei-data-check-yolo">
+                            <h2>damei.data.check_YOLO<a class="headerlink" href="#damei-data-check-yolo"
+                                                        title="Permalink to this heading">#</a></h2>
+                            <dl class="py function">
+                                <dt class="sig sig-object py" id="damei.data.check_YOLO">
+                                      <span class="sig-prename descclassname"><span
+                                              class="pre">damei.data.</span></span><span class="sig-name descname"><span
+                                        class="pre">check_YOLO</span></span><span class="sig-paren">(</span><em
+                                        class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em
+                                        class="sig-param"><span class="n"><span class="pre">trte</span></span><span
+                                        class="o"><span class="pre">=</span></span><span class="default_value"><span
+                                        class="pre">None</span></span></em>, <em class="sig-param"><span
+                                        class="n"><span class="pre">save_dir</span></span><span class="o"><span
+                                        class="pre">=</span></span><span class="default_value"><span
+                                        class="pre">None</span></span></em>, <em class="sig-param"><span
+                                        class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#damei.data.check_YOLO"
+                                                                     title="Permalink to this definition">#</a></dt>
+                                <dd><p>Check the YOLO dataset</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                                        <dd class="field-odd">
+                                            <ul class="simple">
+                                                <li><p><strong>sp</strong> (<em>str</em>) – The source path to YOLO
+                                                    format dataset, e.g: /xxx/xxx_yolo_format.</p></li>
+                                                <li><p><strong>trte</strong> (<em>str</em>) – Which type to check,
+                                                    e.g: ‘train, ‘test’ or ‘val’. Default is train</p></li>
+                                                <li><p><strong>save_dir</strong> (<em>str</em>) – The path to save the
+                                                    plotte image. Default is None, which means not save.</p></li>
+                                            </ul>
+                                        </dd>
+                                        <dt class="field-even">Returns<span class="colon">:</span></dt>
+                                        <dd class="field-even"><p>None</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                        </section>
+                        <section id="damei-data-check-coco">
+                            <h2>damei.data.check_COCO<a class="headerlink" href="#damei-data-check-coco"
+                                                        title="Permalink to this heading">#</a></h2>
+                            <dl class="py function">
+                                <dt class="sig sig-object py" id="damei.data.check_COCO">
+                                      <span class="sig-prename descclassname"><span
+                                              class="pre">damei.data.</span></span><span class="sig-name descname"><span
+                                        class="pre">check_COCO</span></span><span class="sig-paren">(</span><em
+                                        class="sig-param"><span class="n"><span
+                                        class="pre">json_path</span></span></em>, <em class="sig-param"><span
+                                        class="n"><span class="pre">img_dir</span></span><span class="o"><span
+                                        class="pre">=</span></span><span class="default_value"><span
+                                        class="pre">None</span></span></em>, <em class="sig-param"><span
+                                        class="n"><span class="pre">line_thicknes</span></span><span class="o"><span
+                                        class="pre">=</span></span><span class="default_value"><span
+                                        class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span
+                                        class="pre">only_show_id</span></span><span class="o"><span
+                                        class="pre">=</span></span><span class="default_value"><span
+                                        class="pre">None</span></span></em>, <em class="sig-param"><span
+                                        class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#damei.data.check_COCO"
+                                                                     title="Permalink to this definition">#</a></dt>
+                                <dd><p>Check the COCO dataset</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                                        <dd class="field-odd"><p><strong>example</strong>
+                                            (<em>json_path</em><em>, </em><em>path to coco json
+                                                file</em><em>, </em><em>for</em>) –
+                                            /xxx/annotations/instances_train2017.json</p>
+                                        </dd>
+                                    </dl>
+                                    <p>:param img_dir, image dir
+                                        :type img_dir: str</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                                        <dd class="field-odd">
+                                            <ul class="simple">
+                                                <li><p><strong>line_thicknes</strong> (<em>int</em>) – thickness for
+                                                    rectangle of bbox</p></li>
+                                                <li><p><strong>only_show_id</strong> (<em>int</em>) – only show the
+                                                    img with this id if is None</p></li>
+                                            </ul>
+                                        </dd>
+                                        <dt class="field-even">Returns<span class="colon">:</span></dt>
+                                        <dd class="field-even"><p>None</p>
                                         </dd>
                                     </dl>
                                 </dd>
@@ -419,7 +527,11 @@
                         <ul>
                             <li><a class="reference internal" href="#">damei.data</a>
                                 <ul>
-                                    <li><a class="reference internal" href="#damei-data-augment">damei.data.augment</a>
+                                    <li><a class="reference internal"
+                                           href="#damei-data-augment">damei.data.augment</a></li>
+                                    <li><a class="reference internal" href="#damei-data-check-yolo">damei.data.check_YOLO</a>
+                                    </li>
+                                    <li><a class="reference internal" href="#damei-data-check-coco">damei.data.check_COCO</a>
                                     </li>
                                 </ul>
                             </li>

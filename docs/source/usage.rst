@@ -9,4 +9,7 @@ Installation
 
         $ pip install damei
 
+.. code-block:: python
+
+        >>> import damei as dm
 

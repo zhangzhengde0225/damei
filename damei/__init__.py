@@ -38,7 +38,9 @@ ffmpeg = DmFFMPEG()
 from damei.tools.check_yolo import CheckYOLO
 
 # misc
-from damei.misc import misc
+# from damei.misc import misc
+import damei.misc as misc
+
 from damei.misc.logger import getLogger, get_logger
 from damei.misc.time import current_time, plus_time, within_time
 from damei.misc.dm_rsa import DmRsa

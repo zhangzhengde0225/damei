@@ -1,8 +1,3 @@
-.. damei documentation master file, created by
-sphinx-quickstart on Tue Jun  7 16:51:56 2022.
-You can adapt this file completely to your liking, but it should at least
-contain the root `toctree` directive.
-
 Welcome to damei's doc!
 ================================
 
@@ -12,6 +7,8 @@ It pulls data from the `Open Food
 Facts database <https://world.openfoodfacts.org/>`_ and offers a *simple* and
 *intuitive* API.
 
+Usage:
+    >>> import damei as dm
 
 
 .. note::
@@ -33,7 +30,15 @@ Contents
 
 .. toctree::
 
+    damei.nn
+
+.. toctree::
+
    damei.data
+
+.. toctree::
+
+   damei.misc
 
 Indices and tables
 ==================

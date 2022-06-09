@@ -9,15 +9,19 @@ import numpy as np
 def list2table(a, float_bit=2, alignment='<'):
     """
     格式化，列表变表格，返回能直接打印的字符串。
+
     :param a: list, 长度为n，每个元素内由是一个str bool int float None list或dict
-        example：
-            [['COLUME1', 'COLUME2', 'COLUME2'], [1, True, 3.1415926]]]
+
+    Example
+        >>> [['COLUME1', 'COLUME2', 'COLUME2'], [1, True, 3.1415926]]
+
     :param float_bit: 浮点数的小数位数
     :param alignment: 表格对齐方式
     :return: format str:
-        example:
-            COLUME1 COLUME2 COLUME3
-            1       True    3.14
+
+    Example
+        >>> COLUME1 COLUME2 COLUME3
+        >>> 1       True    3.14
     """
     assert isinstance(a, list)
 
@@ -72,6 +76,7 @@ def dict2string(info_dict):
 def dict2info(info_dict):
     """
     把一个字典的键和值展开为带缩进、带颜色的字符串，易于打印
+
     :param info_dict: 字典
     :return: str
     """
@@ -163,6 +168,13 @@ def rcfile2dict(rc_file):
 
 
 def count_codes(root_path, suffix=None, show_detail=False):
+    """
+    统计文件夹下的文件的代码行数和字符数
+
+    :param root_path: 根目录
+    :param suffix: 文件后缀，默认为所有文件
+    :param show_detail: 是否显示详细信息. Default: False
+    """
     return count_lines_and_chars(root_path, suffix, show_detail)
 
 

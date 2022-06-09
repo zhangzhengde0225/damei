@@ -555,7 +555,7 @@
         matches,
         contains,
 
-        // Instance-specific demo_for_dm.data
+        // Instance-specific data
         expando = "sizzle" + 1 * new Date(),
         preferredDoc = window.document,
         dirruns = 0,
@@ -903,7 +903,7 @@
 
       /**
        * Create key-value caches of limited size
-       * @returns {function(string, object)} Returns the Object demo_for_dm.data after storing it on itself with
+       * @returns {function(string, object)} Returns the Object data after storing it on itself with
        *  property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
        *  deleting the oldest entry
        */
@@ -1960,7 +1960,7 @@
 
                   start = [forward ? parent.firstChild : parent.lastChild];
 
-                  // non-xml :nth-child(...) stores cache demo_for_dm.data on `parent`
+                  // non-xml :nth-child(...) stores cache data on `parent`
                   if (forward && useCache) {
 
                     // Seek `elem` from a previously-cached index
@@ -2424,7 +2424,7 @@
             var oldCache, uniqueCache, outerCache,
               newCache = [dirruns, doneName];
 
-            // We can't set arbitrary demo_for_dm.data on XML nodes, so they don't benefit from combinator caching
+            // We can't set arbitrary data on XML nodes, so they don't benefit from combinator caching
             if (xml) {
               while ((elem = elem[dir])) {
                 if (elem.nodeType === 1 || checkNonElements) {
@@ -3377,7 +3377,7 @@
       if (elem.contentDocument != null &&
 
         // Support: IE 11+
-        // <object> elements with no `demo_for_dm.data` attribute has an object
+        // <object> elements with no `data` attribute has an object
         // `contentDocument` with a `null` prototype.
         getProto(elem.contentDocument)) {
 
@@ -3478,7 +3478,7 @@
       // Actual callback list
       list = [],
 
-      // Queue of execution demo_for_dm.data for repeatable lists
+      // Queue of execution data for repeatable lists
       queue = [],
 
       // Index of currently firing callback (modified by add/remove as needed)
@@ -3501,14 +3501,14 @@
             if (list[firingIndex].apply(memory[0], memory[1]) === false &&
               options.stopOnFalse) {
 
-              // Jump to end and forget the demo_for_dm.data so .add doesn't re-fire
+              // Jump to end and forget the data so .add doesn't re-fire
               firingIndex = list.length;
               memory = false;
             }
           }
         }
 
-        // Forget the demo_for_dm.data if we're done with it
+        // Forget the data if we're done with it
         if (!options.memory) {
           memory = false;
         }
@@ -3518,7 +3518,7 @@
         // Clean up if we're done firing for good
         if (locked) {
 
-          // Keep an empty list if we have demo_for_dm.data for future add calls
+          // Keep an empty list if we have data for future add calls
           if (memory) {
             list = [];
 
@@ -4000,7 +4000,7 @@
         // count of unprocessed arguments
         i = remaining,
 
-        // subordinate fulfillment demo_for_dm.data
+        // subordinate fulfillment data
         resolveContexts = Array(i),
         resolveValues = slice.call(arguments),
 
@@ -4210,7 +4210,7 @@
     return letter.toUpperCase();
   }
 
-// Convert dashed to camelCase; used by the css and demo_for_dm.data modules
+// Convert dashed to camelCase; used by the css and data modules
 // Support: IE <=9 - 11, Edge 12 - 15
 // Microsoft forgot to hump their vendor prefix (#9572)
   function camelCase(string) {
@@ -4246,7 +4246,7 @@
       if (!value) {
         value = {};
 
-        // We can accept demo_for_dm.data for non-element nodes in modern browsers,
+        // We can accept data for non-element nodes in modern browsers,
         // but we should not, see #8335.
         // Always return an empty object.
         if (acceptData(owner)) {
@@ -4258,7 +4258,7 @@
 
             // Otherwise secure it in a non-enumerable property
             // configurable must be true to allow the property to be
-            // deleted when demo_for_dm.data is removed
+            // deleted when data is removed
           } else {
             Object.defineProperty(owner, this.expando, {
               value: value,
@@ -4307,7 +4307,7 @@
       // which value to return, respectively either:
       //
       //   1. The entire cache object
-      //   2. The demo_for_dm.data stored at the key
+      //   2. The data stored at the key
       //
       if (key === undefined ||
         ((key && typeof key === "string") && value === undefined)) {
@@ -4324,7 +4324,7 @@
       this.set(owner, key, value);
 
       // Since the "set" path can have two possible entry points
-      // return the expected demo_for_dm.data based on which path was taken[*]
+      // return the expected data based on which path was taken[*]
       return value !== undefined ? value : key;
     },
     remove: function (owner, key) {
@@ -4360,7 +4360,7 @@
         }
       }
 
-      // Remove the expando if there's no more demo_for_dm.data
+      // Remove the expando if there's no more data
       if (key === undefined || jQuery.isEmptyObject(cache)) {
 
         // Support: Chrome <=35 - 45
@@ -4389,8 +4389,8 @@
 //	1. Enforce API surface and semantic compatibility with 1.9.x branch
 //	2. Improve the module's maintainability by reducing the storage
 //		paths to a single mechanism.
-//	3. Use the same single mechanism to support "private" and "user" demo_for_dm.data.
-//	4. _Never_ expose "private" demo_for_dm.data to user code (TODO: Drop _data, _removeData)
+//	3. Use the same single mechanism to support "private" and "user" data.
+//	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
 //	5. Avoid exposing implementation details on user objects (eg. expando properties)
 //	6. Provide a clear path for implementation upgrade to WeakMap in 2014
 
@@ -4426,9 +4426,9 @@
     var name;
 
     // If nothing was found internally, try to fetch any
-    // demo_for_dm.data from the HTML5 demo_for_dm.data-* attribute
+    // data from the HTML5 data-* attribute
     if (data === undefined && elem.nodeType === 1) {
-      name = "demo_for_dm.data-" + key.replace(rmultiDash, "-$&").toLowerCase();
+      name = "data-" + key.replace(rmultiDash, "-$&").toLowerCase();
       data = elem.getAttribute(name);
 
       if (typeof data === "string") {
@@ -4437,7 +4437,7 @@
         } catch (e) {
         }
 
-        // Make sure we set the demo_for_dm.data so it isn't changed later
+        // Make sure we set the data so it isn't changed later
         dataUser.set(elem, key, data);
       } else {
         data = undefined;
@@ -4489,7 +4489,7 @@
               // The attrs elements can be null (#14894)
               if (attrs[i]) {
                 name = attrs[i].name;
-                if (name.indexOf("demo_for_dm.data-") === 0) {
+                if (name.indexOf("data-") === 0) {
                   name = camelCase(name.slice(5));
                   dataAttr(elem, name, data[name]);
                 }
@@ -4516,28 +4516,28 @@
         // (and therefore has an element appears at this[ 0 ]) and the
         // `value` parameter was not undefined. An empty jQuery object
         // will result in `undefined` for elem = this[ 0 ] which will
-        // throw an exception if an attempt to read a demo_for_dm.data cache is made.
+        // throw an exception if an attempt to read a data cache is made.
         if (elem && value === undefined) {
 
-          // Attempt to get demo_for_dm.data from the cache
+          // Attempt to get data from the cache
           // The key will always be camelCased in Data
           data = dataUser.get(elem, key);
           if (data !== undefined) {
             return data;
           }
 
-          // Attempt to "discover" the demo_for_dm.data in
-          // HTML5 custom demo_for_dm.data-* attrs
+          // Attempt to "discover" the data in
+          // HTML5 custom data-* attrs
           data = dataAttr(elem, key);
           if (data !== undefined) {
             return data;
           }
 
-          // We tried really hard, but the demo_for_dm.data doesn't exist.
+          // We tried really hard, but the data doesn't exist.
           return;
         }
 
-        // Set the demo_for_dm.data...
+        // Set the data...
         this.each(function () {
 
           // We always store the camelCased key
@@ -5122,10 +5122,10 @@
     // Types can be a map of types/handlers
     if (typeof types === "object") {
 
-      // ( types-Object, selector, demo_for_dm.data )
+      // ( types-Object, selector, data )
       if (typeof selector !== "string") {
 
-        // ( types-Object, demo_for_dm.data )
+        // ( types-Object, data )
         data = data || selector;
         selector = undefined;
       }
@@ -5148,7 +5148,7 @@
         data = undefined;
       } else {
 
-        // ( types, demo_for_dm.data, fn )
+        // ( types, data, fn )
         fn = data;
         data = selector;
         selector = undefined;
@@ -5192,12 +5192,12 @@
         special, handlers, type, namespaces, origType,
         elemData = dataPriv.get(elem);
 
-      // Only attach events to objects that accept demo_for_dm.data
+      // Only attach events to objects that accept data
       if (!acceptData(elem)) {
         return;
       }
 
-      // Caller can pass in an object of custom demo_for_dm.data in lieu of the handler
+      // Caller can pass in an object of custom data in lieu of the handler
       if (handler.handler) {
         handleObjIn = handler;
         handler = handleObjIn.handler;
@@ -5367,7 +5367,7 @@
         }
       }
 
-      // Remove demo_for_dm.data and the expando if it's no longer used
+      // Remove data and the expando if it's no longer used
       if (jQuery.isEmptyObject(events)) {
         dataPriv.remove(elem, "handle events");
       }
@@ -5545,7 +5545,7 @@
         setup: function (data) {
 
           // For mutual compressibility with _default, replace `this` access with a local var.
-          // `|| demo_for_dm.data` is dead code meant only to preserve the variable through minification.
+          // `|| data` is dead code meant only to preserve the variable through minification.
           var el = this || data;
 
           // Claim the first handler
@@ -5562,7 +5562,7 @@
         trigger: function (data) {
 
           // For mutual compressibility with _default, replace `this` access with a local var.
-          // `|| demo_for_dm.data` is dead code meant only to preserve the variable through minification.
+          // `|| data` is dead code meant only to preserve the variable through minification.
           var el = this || data;
 
           // Force setup before triggering a click
@@ -5625,7 +5625,7 @@
         if ((event.isTrigger & 1) && this[type]) {
 
           // Interrupt processing of the outer synthetic .trigger()ed event
-          // Saved demo_for_dm.data should be false in such cases, but might be a leftover capture object
+          // Saved data should be false in such cases, but might be a leftover capture object
           // from an async native handler (gh-4350)
           if (!saved.length) {
 
@@ -5655,7 +5655,7 @@
               // Support: Chrome 86+
               // In Chrome, if an element having a focusout handler is blurred by
               // clicking outside of it, it invokes the handler synchronously. If
-              // that handler calls `.remove()` on the element, the demo_for_dm.data is cleared,
+              // that handler calls `.remove()` on the element, the data is cleared,
               // leaving `result` undefined. We need to guard against this.
               return result && result.value;
             }
@@ -5985,7 +5985,7 @@
       return;
     }
 
-    // 1. Copy private demo_for_dm.data: events, handlers, etc.
+    // 1. Copy private data: events, handlers, etc.
     if (dataPriv.hasData(src)) {
       pdataOld = dataPriv.get(src);
       events = pdataOld.events;
@@ -6001,7 +6001,7 @@
       }
     }
 
-    // 2. Copy user demo_for_dm.data
+    // 2. Copy user data
     if (dataUser.hasData(src)) {
       udataOld = dataUser.access(src);
       udataCur = jQuery.extend({}, udataOld);
@@ -7363,11 +7363,11 @@
         if (value === (hidden ? "hide" : "show")) {
 
           // Pretend to be hidden if this is a "show" and
-          // there is still demo_for_dm.data from a stopped show/hide
+          // there is still data from a stopped show/hide
           if (value === "show" && dataShow && dataShow[prop] !== undefined) {
             hidden = true;
 
-            // Ignore all other no-op show/hide demo_for_dm.data
+            // Ignore all other no-op show/hide data
           } else {
             continue;
           }
@@ -7391,7 +7391,7 @@
       // the overflowX value there.
       opts.overflow = [style.overflow, style.overflowX, style.overflowY];
 
-      // Identify a display type, preferring old show/hide demo_for_dm.data over the CSS cascade
+      // Identify a display type, preferring old show/hide data over the CSS cascade
       restoreDisplay = dataShow && dataShow.display;
       if (restoreDisplay == null) {
         restoreDisplay = dataPriv.get(elem, "display");
@@ -7830,7 +7830,7 @@
           timers = jQuery.timers,
           length = queue ? queue.length : 0;
 
-        // Enable finishing flag on private demo_for_dm.data
+        // Enable finishing flag on private data
         data.finish = true;
 
         // Empty the queue first
@@ -8659,7 +8659,7 @@
         event.target = elem;
       }
 
-      // Clone any incoming demo_for_dm.data and prepend the event, creating the handler arg list
+      // Clone any incoming data and prepend the event, creating the handler arg list
       data = data == null ?
         [event] :
         jQuery.makeArray(data, [event]);
@@ -9006,7 +9006,7 @@
 	 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
 	 * 2) These are called:
 	 *    - BEFORE asking for a transport
-	 *    - AFTER param serialization (s.demo_for_dm.data is a string if s.processData is true)
+	 *    - AFTER param serialization (s.data is a string if s.processData is true)
 	 * 3) key is the dataType
 	 * 4) the catchall symbol "*" can be used
 	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
@@ -9286,7 +9286,7 @@
 
       /*
 		timeout: 0,
-		demo_for_dm.data: null,
+		data: null,
 		dataType: null,
 		username: null,
 		password: null,
@@ -9536,7 +9536,7 @@
         }
       }
 
-      // Convert demo_for_dm.data if not already a string
+      // Convert data if not already a string
       if (s.data && s.processData && typeof s.data !== "string") {
         s.data = jQuery.param(s.data, s.traditional);
       }
@@ -9575,11 +9575,11 @@
         // Remember the hash so we can put it back
         uncached = s.url.slice(cacheURL.length);
 
-        // If demo_for_dm.data is available and should be processed, append demo_for_dm.data to url
+        // If data is available and should be processed, append data to url
         if (s.data && (s.processData || typeof s.data === "string")) {
           cacheURL += (rquery.test(cacheURL) ? "&" : "?") + s.data;
 
-          // #9682: remove demo_for_dm.data so that it's not used in an eventual retry
+          // #9682: remove data so that it's not used in an eventual retry
           delete s.data;
         }
 
@@ -9609,7 +9609,7 @@
         }
       }
 
-      // Set the correct header, if demo_for_dm.data is being sent
+      // Set the correct header, if data is being sent
       if (s.data && s.hasContent && s.contentType !== false || options.contentType) {
         jqXHR.setRequestHeader("Content-Type", s.contentType);
       }
@@ -9715,7 +9715,7 @@
         // Determine if successful
         isSuccess = status >= 200 && status < 300 || status === 304;
 
-        // Get response demo_for_dm.data
+        // Get response data
         if (responses) {
           response = ajaxHandleResponses(s, jqXHR, responses);
         }
@@ -9754,7 +9754,7 @@
           } else if (status === 304) {
             statusText = "notmodified";
 
-            // If we have demo_for_dm.data, let's convert it
+            // If we have data, let's convert it
           } else {
             statusText = response.state;
             success = response.data;
@@ -9773,7 +9773,7 @@
           }
         }
 
-        // Set demo_for_dm.data for the fake xhr object
+        // Set data for the fake xhr object
         jqXHR.status = status;
         jqXHR.statusText = (nativeStatusText || statusText) + "";
 
@@ -9821,7 +9821,7 @@
   jQuery.each(["get", "post"], function (_i, method) {
     jQuery[method] = function (url, data, callback, type) {
 
-      // Shift arguments if demo_for_dm.data argument was omitted
+      // Shift arguments if data argument was omitted
       if (isFunction(data)) {
         type = type || callback;
         callback = data;
@@ -10202,7 +10202,7 @@
           rjsonp.test(s.data) && "data"
       );
 
-    // Handle iff the expected demo_for_dm.data type is "jsonp" or we have a parameter to set
+    // Handle iff the expected data type is "jsonp" or we have a parameter to set
     if (jsonProp || s.dataTypes[0] === "jsonp") {
 
       // Get callback name, remembering preexisting value associated with it
@@ -10210,14 +10210,14 @@
         s.jsonpCallback() :
         s.jsonpCallback;
 
-      // Insert callback into url or form demo_for_dm.data
+      // Insert callback into url or form data
       if (jsonProp) {
         s[jsonProp] = s[jsonProp].replace(rjsonp, "$1" + callbackName);
       } else if (s.jsonp !== false) {
         s.url += (rquery.test(s.url) ? "&" : "?") + s.jsonp + "=" + callbackName;
       }
 
-      // Use demo_for_dm.data converter to retrieve json after script execution
+      // Use data converter to retrieve json after script execution
       s.converters["script json"] = function () {
         if (!responseContainer) {
           jQuery.error(callbackName + " was not called");
@@ -10282,7 +10282,7 @@
   })();
 
 
-// Argument "demo_for_dm.data" should be string of html
+// Argument "data" should be string of html
 // context (optional): If specified, the fragment will be created in this context,
 // defaults to document
 // keepScripts (optional): If true, will include scripts passed in the html string
@@ -10383,7 +10383,7 @@
           // Otherwise use the full result
           responseText);
 
-        // If the request succeeds, this function gets "demo_for_dm.data", "status", "jqXHR"
+        // If the request succeeds, this function gets "data", "status", "jqXHR"
         // but they are ignored because response was set above.
         // If it fails, this function gets "jqXHR", "status", "error"
       }).always(callback && function (jqXHR, status) {

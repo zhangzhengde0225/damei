@@ -22,7 +22,7 @@ pypi安装:
 pip install damei  
 ```
 
-源码安装：[Download](https://github.com/zhangzhengde0225/damei/archive/refs/heads/master.zip).
+或从源码安装：[Download](https://github.com/zhangzhengde0225/damei/archive/refs/heads/master.zip).
 
 ```
 unzip damei-master.zip

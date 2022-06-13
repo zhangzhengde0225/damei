@@ -6,5 +6,10 @@ dist
 .vscode
 __pycache__/
 
+docs/build
+docs/source/
+docs/make.bat
+docs/Makefile
+docs/requirements.txt
 
 

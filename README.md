@@ -4,7 +4,8 @@ https://github.com/zhangzhengde0225/damei)
 https://github.com/zhangzhengde0225/damei/issues)
 [![Source_codes](https://img.shields.io/static/v1?label=Download&message=src&color=orange)](
 https://github.com/zhangzhengde0225/damei/archive/refs/heads/master.zip)
-
+[![Source_codes](https://img.shields.io/static/v1?label=Docs&message=Available&color=orange)](
+http://47.114.37.111)
 # damei
 
 damei(大妹) library。
@@ -35,8 +36,9 @@ python setup.py install
 import damei as dm
 ```
 
-使用示例查看[usage.md](https://github.com/zhangzhengde0225/damei/blob/master/docs/usage.md)
-文件
+[//]: # (### 使用示例[usage.md]&#40;https://github.com/zhangzhengde0225/damei/blob/master/docs/usage.md&#41;.)
+
+### 详细文档请查阅[damei_doc](http://47.114.37.111).
 
 # 3.更新日志
 
@@ -82,7 +84,7 @@ import damei as dm
             uaii = dm.nn.api.UAII()
          v1.1.1 # 新增dm.argparse，只读取默认值，不解析命令行参数
             parser = dm.argparse.ArgumentParser()
-
+20220610 v1.1.7 # damei_doc上线
 """
 ```
 

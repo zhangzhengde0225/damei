@@ -1,26 +1,19 @@
-Welcome to damei's doc!
-================================
+Welcome to damei's documentation!
+==================================
 
-**Damei** is an Artificial Intelligence and Quantum Mechanics Intersection Library
+**Damei** is an Artificial Intelligence and Quantum Mechanics Intersection Python Library.
 
-It pulls data from the `Open Food
-Facts database <https://world.openfoodfacts.org/>`_ and offers a *simple* and
-*intuitive* API.
-
-Usage:
-    >>> import damei as dm
 
 
 .. note::
-   This documentation is generated from the source code.
-   If you want to contribute to the documentation, please refer to the
-   contributing guide.
+    The open source codes are available on `github.com/zhangzhengde0225/damei <https://github.com/zhangzhengde0225/damei>`_
+    and offers a *simple* and *intuitive* API.
+    Check out the :doc:`usage` section for further information.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-Check out the :doc:`usage` section for further information.
 
 Contents
 --------
@@ -38,7 +31,16 @@ Contents
 
 .. toctree::
 
+   damei.wavelib
+
+.. toctree::
+
    damei.misc
+
+Contributors
+=============
+
+The author of damei library is `Zhengde Zhang <https://zhangzhengde0225.github.io/>`_ .
 
 Indices and tables
 ==================

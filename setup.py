@@ -30,7 +30,8 @@ def read_requirements():
 		return f.read().splitlines()
 
 
-REQUIRED = read_requirements()
+# REQUIRED = read_requirements()
+REQUIRED = []
 # REQUIRED = [
 # 	"numpy==1.21.2",
 # 	"opencv-python",

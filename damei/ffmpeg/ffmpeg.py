@@ -12,6 +12,10 @@ logger = getLogger('DmFFMPEG')
 
 
 class DmFFMPEG(object):
+    """
+    object doc
+    """
+
     def __init__(
             self,
             ip='127.0.0.1',
@@ -22,6 +26,9 @@ class DmFFMPEG(object):
             acodec=None,
             **kwargs
     ):
+        """"
+        init doc
+        """
         self.ip = ip
         self.port = port
         self.stream_type = stream_type
@@ -98,7 +105,7 @@ class DmFFMPEG(object):
         ip = kwargs.pop('ip', self.ip)
         port = kwargs.pop('port', self.port)
         stream_type = kwargs.pop('stream_type', self.stream_type)
-        key = kwargs.pop('key', self.stream_type)
+        key = kwargs.pop('key', self.key)
         vcodec = kwargs.pop('vcodec', self.vcodec)
         acodec = kwargs.pop('acodec', self.acodec)
         key = f'/{key}' if key else ''

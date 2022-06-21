@@ -46,7 +46,7 @@ def augment(
 
     Example:
         >>> import damei as dm
-        >>> dm.demo_for_dm.data.augment("/path/to/dataset")
+        >>> dm.data.augment("/path/to/dataset")
     """
     ad = AugmentData(
         dp=source_path,

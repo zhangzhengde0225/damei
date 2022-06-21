@@ -141,9 +141,9 @@ const _displayNextItem = (
  * This is the same as ``\W+`` in Python, preserving the surrogate pair area.
  */
 if (typeof splitQuery === "undefined") {
-  var splitQuery = (query) => query
-    .split(/[^\p{Letter}\p{Number}_\p{Emoji_Presentation}]+/gu)
-    .filter(term => term)  // remove remaining empty strings
+    var splitQuery = (query) => query
+        .split(/[^\p{Letter}\p{Number}_\p{Emoji_Presentation}]+/gu)
+        .filter(term => term)  // remove remaining empty strings
 }
 
 /**
@@ -412,19 +412,19 @@ const Search = {
     searchTerms.forEach((word) => {
       const files = [];
       const arr = [
-        {files: terms[word], score: Scorer.term},
-        {files: titleTerms[word], score: Scorer.title},
+          {files: terms[word], score: Scorer.term},
+          {files: titleTerms[word], score: Scorer.title},
       ];
       // add support for partial matches
       if (word.length > 2) {
         const escapedWord = _escapeRegExp(word);
         Object.keys(terms).forEach((term) => {
           if (term.match(escapedWord) && !terms[word])
-            arr.push({files: terms[term], score: Scorer.partialTerm});
+              arr.push({files: terms[term], score: Scorer.partialTerm});
         });
         Object.keys(titleTerms).forEach((term) => {
           if (term.match(escapedWord) && !titleTerms[word])
-            arr.push({files: titleTerms[word], score: Scorer.partialTitle});
+              arr.push({files: titleTerms[word], score: Scorer.partialTitle});
         });
       }
 

@@ -19,7 +19,7 @@ def getLogger(name=None, **kwargs):
                         format=format_str,
                         # datefmt='%d %b %Y %H:%M:%S'
                         )
-    logg_dir = f'/tmp/{Path(os.getcwd()).name}'
+    logg_dir = f'{Path.home()}/.damei/logs/{Path(os.getcwd()).name}'
     if not os.path.exists(logg_dir):
         os.makedirs(logg_dir)
     fh = logging.FileHandler(f'{logg_dir}/{Path(os.getcwd()).name}.log')

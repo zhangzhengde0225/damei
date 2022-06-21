@@ -37,6 +37,10 @@ Contents
 
    damei.misc
 
+.. toctree::
+
+    damei.ffmpeg
+
 Contributors
 =============
 
@@ -48,3 +52,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+

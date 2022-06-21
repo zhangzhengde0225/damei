@@ -64,7 +64,7 @@ const _highlight = (node, addItems, text, className) => {
         rect.width.baseVal.value = bbox.width;
         rect.height.baseVal.value = bbox.height;
         rect.setAttribute("class", className);
-        addItems.push({parent: parent, target: rect});
+          addItems.push({parent: parent, target: rect});
       }
     }
   } else if (node.matches && !node.matches("button, select, textarea")) {
@@ -148,10 +148,10 @@ const Documentation = {
       document
         .createRange()
         .createContextualFragment(
-          '<p class="highlight-link">' +
-          '<a href="javascript:Documentation.hideSearchWords()">' +
-          Documentation.gettext("Hide Search Matches") +
-          "</a></p>"
+            '<p class="highlight-link">' +
+            '<a href="javascript:Documentation.hideSearchWords()">' +
+            Documentation.gettext("Hide Search Matches") +
+            "</a></p>"
         )
     );
   },

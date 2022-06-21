@@ -85,6 +85,7 @@ import damei as dm
          v1.1.1 # 新增dm.argparse，只读取默认值，不解析命令行参数
             parser = dm.argparse.ArgumentParser()
 20220610 v1.1.7 # damei_doc上线
+20220621 v1.1.8 # damei.ffmpeg.push_stream()  提供API文档
 """
 ```
 

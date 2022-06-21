@@ -6,6 +6,7 @@ from damei import version
 
 __version__ = version.__version__
 __author__ = version.__author__
+DATA_ROOT = version.DATA_ROOT
 
 # dmsystem
 from damei.utils.exception import exception_handler as EXCEPTION
@@ -31,9 +32,9 @@ from damei.tools.tools import Tools
 
 # from damei.tools.tools import video2frames
 tools = Tools()
-from damei.tools.ffmpeg import DmFFMPEG
+# from damei.tools.ffmpeg import DmFFMPEG
 
-ffmpeg = DmFFMPEG()
+# ffmpeg = DmFFMPEG()
 
 from damei.tools.check_yolo import CheckYOLO
 
@@ -56,3 +57,5 @@ from damei.nn.api.utils import Config
 
 # demo_for_dm.data
 import damei.data as data
+
+import damei.ffmpeg as ffmpeg

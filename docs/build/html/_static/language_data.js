@@ -20,15 +20,15 @@ var stopwords = ["a", "and", "are", "as", "at", "be", "but", "by", "for", "if", 
  */
 var Stemmer = function () {
 
-  var step2list = {
-    ational: 'ate',
-    tional: 'tion',
-    enci: 'ence',
-    anci: 'ance',
-    izer: 'ize',
-    bli: 'ble',
-    alli: 'al',
-    entli: 'ent',
+    var step2list = {
+        ational: 'ate',
+        tional: 'tion',
+        enci: 'ence',
+        anci: 'ance',
+        izer: 'ize',
+        bli: 'ble',
+        alli: 'al',
+        entli: 'ent',
     eli: 'e',
     ousli: 'ous',
     ization: 'ize',
@@ -54,31 +54,31 @@ var Stemmer = function () {
     ness: ''
   };
 
-  var c = "[^aeiou]";          // consonant
-  var v = "[aeiouy]";          // vowel
-  var C = c + "[^aeiouy]*";    // consonant sequence
-  var V = v + "[aeiou]*";      // vowel sequence
+    var c = "[^aeiou]";          // consonant
+    var v = "[aeiouy]";          // vowel
+    var C = c + "[^aeiouy]*";    // consonant sequence
+    var V = v + "[aeiou]*";      // vowel sequence
 
-  var mgr0 = "^(" + C + ")?" + V + C;                      // [C]VC... is m>0
-  var meq1 = "^(" + C + ")?" + V + C + "(" + V + ")?$";    // [C]VC[V] is m=1
-  var mgr1 = "^(" + C + ")?" + V + C + V + C;              // [C]VCVC... is m>1
-  var s_v = "^(" + C + ")?" + v;                         // vowel in stem
+    var mgr0 = "^(" + C + ")?" + V + C;                      // [C]VC... is m>0
+    var meq1 = "^(" + C + ")?" + V + C + "(" + V + ")?$";    // [C]VC[V] is m=1
+    var mgr1 = "^(" + C + ")?" + V + C + V + C;              // [C]VCVC... is m>1
+    var s_v = "^(" + C + ")?" + v;                         // vowel in stem
 
-  this.stemWord = function (w) {
-    var stem;
-    var suffix;
-    var firstch;
-    var origword = w;
+    this.stemWord = function (w) {
+        var stem;
+        var suffix;
+        var firstch;
+        var origword = w;
 
-    if (w.length < 3)
-      return w;
+        if (w.length < 3)
+            return w;
 
     var re;
     var re2;
     var re3;
     var re4;
 
-    firstch = w.substr(0, 1);
+        firstch = w.substr(0, 1);
     if (firstch == "y")
       w = firstch.toUpperCase() + w.substr(1);
 
@@ -87,36 +87,36 @@ var Stemmer = function () {
     re2 = /^(.+?)([^s])s$/;
 
     if (re.test(w))
-      w = w.replace(re, "$1$2");
+        w = w.replace(re, "$1$2");
     else if (re2.test(w))
-      w = w.replace(re2, "$1$2");
+        w = w.replace(re2, "$1$2");
 
     // Step 1b
     re = /^(.+?)eed$/;
     re2 = /^(.+?)(ed|ing)$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      re = new RegExp(mgr0);
-      if (re.test(fp[1])) {
-        re = /.$/;
-        w = w.replace(re, "");
-      }
-    } else if (re2.test(w)) {
-      var fp = re2.exec(w);
-      stem = fp[1];
-      re2 = new RegExp(s_v);
-      if (re2.test(stem)) {
-        w = stem;
-        re2 = /(at|bl|iz)$/;
-        re3 = new RegExp("([^aeiouylsz])\\1$");
-        re4 = new RegExp("^" + C + v + "[^aeiouwxy]$");
-        if (re2.test(w))
-          w = w + "e";
+        if (re.test(w)) {
+            var fp = re.exec(w);
+            re = new RegExp(mgr0);
+            if (re.test(fp[1])) {
+                re = /.$/;
+                w = w.replace(re, "");
+            }
+        } else if (re2.test(w)) {
+            var fp = re2.exec(w);
+            stem = fp[1];
+            re2 = new RegExp(s_v);
+            if (re2.test(stem)) {
+                w = stem;
+                re2 = /(at|bl|iz)$/;
+                re3 = new RegExp("([^aeiouylsz])\\1$");
+                re4 = new RegExp("^" + C + v + "[^aeiouwxy]$");
+                if (re2.test(w))
+                    w = w + "e";
         else if (re3.test(w)) {
-          re = /.$/;
-          w = w.replace(re, "");
-        } else if (re4.test(w))
-          w = w + "e";
+                    re = /.$/;
+                    w = w.replace(re, "");
+                } else if (re4.test(w))
+                    w = w + "e";
       }
     }
 
@@ -155,19 +155,19 @@ var Stemmer = function () {
     // Step 4
     re = /^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$/;
     re2 = /^(.+?)(s|t)(ion)$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      stem = fp[1];
-      re = new RegExp(mgr1);
-      if (re.test(stem))
-        w = stem;
-    } else if (re2.test(w)) {
-      var fp = re2.exec(w);
-      stem = fp[1] + fp[2];
-      re2 = new RegExp(mgr1);
-      if (re2.test(stem))
-        w = stem;
-    }
+        if (re.test(w)) {
+            var fp = re.exec(w);
+            stem = fp[1];
+            re = new RegExp(mgr1);
+            if (re.test(stem))
+                w = stem;
+        } else if (re2.test(w)) {
+            var fp = re2.exec(w);
+            stem = fp[1] + fp[2];
+            re2 = new RegExp(mgr1);
+            if (re2.test(stem))
+                w = stem;
+        }
 
     // Step 5
     re = /^(.+?)e$/;
@@ -183,8 +183,8 @@ var Stemmer = function () {
     re = /ll$/;
     re2 = new RegExp(mgr1);
     if (re.test(w) && re2.test(w)) {
-      re = /.$/;
-      w = w.replace(re, "");
+        re = /.$/;
+        w = w.replace(re, "");
     }
 
     // and turn initial Y back to y

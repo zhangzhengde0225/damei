@@ -90,6 +90,17 @@ def augment_mss(
     基于滑动窗口的多级尺寸切片算法，multi scale slice algorithm based on slide window, mss.
     输入一张图、文件夹或多张图，对每一张图，利用滑动窗口动态匹配方法，输出从较小尺寸（例如：640）到原始尺寸的多级尺寸切片
 
+    :param source_path: 图片路径或图片文件夹路径
+    :param target_path: 输出文件夹路径
+    :param min_wh: 最小尺寸，默认640
+    :param max_wh: 最大尺寸，默认None时，从最小尺寸自动递增至原图尺寸
+    :param stride_ratio: 滑动窗口每次移动的比例，默认0.5
+    :param pss_factor: 等比数列比例因子(proportional series scale factor)，默认1.25，控制窗口尺寸的增长
+    :param need_annotation: 是否需要标注，默认True，标注需与图像在同一路径下
+    :param anno_fmt: 标注文件格式，默认json
+
+    :return: None, 在输出文件夹路径下生成增强的图像
+
     Example:
         >>> dm.data.augment_mss("/path/to/img(fold) or imgs list", other_params)
     """

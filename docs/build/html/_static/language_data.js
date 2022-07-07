@@ -39,10 +39,10 @@ var Stemmer = function () {
         fulness: 'ful',
         ousness: 'ous',
         aliti: 'al',
-    iviti: 'ive',
-    biliti: 'ble',
-    logi: 'log'
-  };
+        iviti: 'ive',
+        biliti: 'ble',
+        logi: 'log'
+    };
 
     var step3list = {
         icate: 'ic',
@@ -82,8 +82,8 @@ var Stemmer = function () {
         if (firstch == "y")
             w = firstch.toUpperCase() + w.substr(1);
 
-    // Step 1a
-    re = /^(.+?)(ss|i)es$/;
+        // Step 1a
+        re = /^(.+?)(ss|i)es$/;
         re2 = /^(.+?)([^s])s$/;
 
         if (re.test(w))
@@ -121,14 +121,14 @@ var Stemmer = function () {
         }
 
         // Step 1c
-    re = /^(.+?)y$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      stem = fp[1];
-      re = new RegExp(s_v);
-      if (re.test(stem))
-        w = stem + "i";
-    }
+        re = /^(.+?)y$/;
+        if (re.test(w)) {
+            var fp = re.exec(w);
+            stem = fp[1];
+            re = new RegExp(s_v);
+            if (re.test(stem))
+                w = stem + "i";
+        }
 
     // Step 2
     re = /^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$/;
@@ -142,15 +142,15 @@ var Stemmer = function () {
     }
 
     // Step 3
-    re = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-        stem = fp[1];
-        suffix = fp[2];
-        re = new RegExp(mgr0);
-        if (re.test(stem))
-            w = stem + step3list[suffix];
-    }
+        re = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/;
+        if (re.test(w)) {
+            var fp = re.exec(w);
+            stem = fp[1];
+            suffix = fp[2];
+            re = new RegExp(mgr0);
+            if (re.test(stem))
+                w = stem + step3list[suffix];
+        }
 
         // Step 4
         re = /^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$/;
@@ -178,16 +178,16 @@ var Stemmer = function () {
             re2 = new RegExp(meq1);
             re3 = new RegExp("^" + C + v + "[^aeiouwxy]$");
             if (re.test(stem) || (re2.test(stem) && !(re3.test(stem))))
-        w = stem;
-    }
-    re = /ll$/;
-    re2 = new RegExp(mgr1);
-    if (re.test(w) && re2.test(w)) {
-        re = /.$/;
-        w = w.replace(re, "");
-    }
+                w = stem;
+        }
+        re = /ll$/;
+        re2 = new RegExp(mgr1);
+        if (re.test(w) && re2.test(w)) {
+            re = /.$/;
+            w = w.replace(re, "");
+        }
 
-    // and turn initial Y back to y
+        // and turn initial Y back to y
     if (firstch == "y")
       w = firstch.toLowerCase() + w.substr(1);
     return w;

@@ -73,25 +73,25 @@ class Tools(object):
 		cy(trte=trte, **kwargs)
 
 
-def video2frames(video_path, output_path=None, decoder='ffmpeg', *args, **kwargs):
-	""""""
-	output_path = output_path if output_path else f'{Path(video_path).parent}/{Path(video_path).stem}'
-	interval = kwargs.pop('interval', 5)
-	digits = kwargs.pop('digits', 6)
+def video2frames(video_path, output_path=None, decoder='comm', *args, **kwargs):
+    """"""
+    output_path = output_path if output_path else f'{Path(video_path).parent}/{Path(video_path).stem}'
+    interval = kwargs.pop('interval', 5)
+    digits = kwargs.pop('digits', 6)
 
-	# print(output_path)
+    # print(output_path)
 
-	if os.path.exists(output_path):
-		shutil.rmtree(output_path)
-	os.makedirs(output_path)
+    if os.path.exists(output_path):
+        shutil.rmtree(output_path)
+    os.makedirs(output_path)
 
-	if decoder == 'ffmpeg':
-		pass
-		code = \
-			fr'ffmpeg -i {video_path} -vf "select=not(mod(n\, {interval}))" ' \
-			fr'-y -acodec copy -vsync 0 {output_path}/%0{digits}d.jpg'
-		print(f'exec code: {code}')
-		os.system(code)
+    if decoder == 'comm':
+        pass
+        code = \
+            fr'comm -i {video_path} -vf "select=not(mod(n\, {interval}))" ' \
+            fr'-y -acodec copy -vsync 0 {output_path}/%0{digits}d.jpg'
+        print(f'exec code: {code}')
+        os.system(code)
 	elif decoder == 'cv2' or decoder == 'opencv':
 		# print "正在读取视频：", each_video
 		print("正在读取视频：", video_path)  # 我的是Python3.6

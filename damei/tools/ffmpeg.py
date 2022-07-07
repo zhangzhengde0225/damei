@@ -48,7 +48,7 @@ class DmFFMPEG(object):
         url = f'{stream_type}://{ip}:{port}/live{key}'
         h, w, c = img.shape
         command = [
-            'ffmpeg',
+            'comm',
             # 're',#
             # '-y', # 无需询问即可覆盖输出文件
             '-f', 'rawvideo',  # 强制输入或输出文件格式
@@ -107,7 +107,7 @@ class DmFFMPEG(object):
 
         # 推视频流
         if isinstance(source, str):
-            code = f'ffmpeg -i {source} {vcodec} {acodec} -f flv {stream_type}://{ip}:{port}/live{key}'
+            code = f'comm -i {source} {vcodec} {acodec} -f flv {stream_type}://{ip}:{port}/live{key}'
             if self.mute:
                 subprocess.Popen(code, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
             else:

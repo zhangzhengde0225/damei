@@ -32,9 +32,9 @@ from damei.tools.tools import Tools
 
 # from damei.tools.tools import video2frames
 tools = Tools()
-# from damei.tools.ffmpeg import DmFFMPEG
+# from damei.tools.comm import DmFFMPEG
 
-# ffmpeg = DmFFMPEG()
+# comm = DmFFMPEG()
 
 from damei.tools.check_yolo import CheckYOLO
 
@@ -58,4 +58,4 @@ from damei.nn.api.utils import Config
 # demo_for_dm.data
 import damei.data as data
 
-import damei.ffmpeg as ffmpeg
+import damei.comm as comm

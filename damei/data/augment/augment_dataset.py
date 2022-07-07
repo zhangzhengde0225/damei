@@ -28,6 +28,7 @@ class AugmentData(object):
                  suffix='.jpg',
                  use_noise_background=False,
                  out_size=640,
+                 save_mask=False,
                  *args,
                  **kwargs
                  ):
@@ -42,6 +43,7 @@ class AugmentData(object):
         self.adp = adp
         self.suffix = suffix
         self.use_noise_background = use_noise_background
+        self.save_mask = save_mask
         self.ad_bgs = self._init_additional_backgrounds()
         self.ns = (out_size, out_size) if isinstance(out_size, int) else out_size  # new_size, w, h
 
@@ -115,8 +117,9 @@ class AugmentData(object):
         os.makedirs(f'{tp}/images/test')
         os.makedirs(f'{tp}/labels/train')
         os.makedirs(f'{tp}/labels/test')
-        os.makedirs(f'{tp}/masks/train')
-        os.makedirs(f'{tp}/masks/test')
+        if self.save_mask:
+            os.makedirs(f'{tp}/masks/train')
+            os.makedirs(f'{tp}/masks/test')
 
         # 保存类别
         with open(f'{tp}/classes.txt', 'w') as f:
@@ -202,9 +205,10 @@ class AugmentData(object):
             with open(f'{tp}/labels/{trte}/{stem:0>6}.txt', 'w') as f:
                 f.writelines(bboxes_string)
             # 保存mask
-            masks = np.array(syn_masks)
-            with open(f'{tp}/masks/{trte}/{stem:0>6}.npy', 'wb') as f:
-                np.save(f, masks)
+            if self.save_mask:
+                masks = np.array(syn_masks)
+                with open(f'{tp}/masks/{trte}/{stem:0>6}.npy', 'wb') as f:
+                    np.save(f, masks)
 
             stem += 1
 

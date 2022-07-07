@@ -54,7 +54,7 @@ class UAII(BaseUAII):
     def init_streams(self, cfg):
         return Streams(cfg, parent=self)
 
-    def run(self):
+    def run_xxx_deprecated(self):
         """配置管道、初始化、运行流
         :param name:
         :param pipe: 指定管道，None是默认运行全部。

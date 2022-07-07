@@ -107,20 +107,23 @@ class BaseUAII(object):
         else:
             raise NotImplementedError(f'UAII get module name: {name} cls: {cls} not implemented.')
 
-    def build_stream(self, cfg=None, **kwargs):
+    def build_stream(self, cfg, **kwargs):
         """
         根据流配置文件创建新的流，注册到streams里
-        cfg: stream config, for example：
-            cfg = dict(
-                type='radar_detection_stream',
-                description='雷达目标探测流',
-                models=[
-                    dict(type='radardet', cfg=None)
-            ])
+        cfg: stream config, or module_name
+            for example:
+            >>> cfg = dict(
+            >>>    type='radar_detection_stream',
+            >>>    description='雷达目标探测流',
+            >>>    models=[
+            >>>        dict(type='radardet', cfg=None)
+            >>>    ])
+            for example2:
+            >>> cfg = 'radardet'
         return: stream object
         """
         is_req = kwargs.get('is_req', False)  # 是否gRPC的请求，如果是，返回值需要重新定义，不能返回对象
-        name = cfg['type']
+        name = f'{cfg}_stream' if isinstance(cfg, str) else cfg['type']
         # 判断算法流是否已经存在
         if name in self.streams.names:
             logger.warn(f'Build stream, name:{name} exist, return existing stream.')
@@ -128,7 +131,20 @@ class BaseUAII(object):
                 return 0, f'stream: {name} exist.'  # 失败0，成功1
             else:
                 return self.get_stream(name=name)
+
         # 创建新的算法流
+        if isinstance(cfg, str):  # 就自动配置一个单模块流
+            m_name = cfg
+            module_desc = self.get_module(m_name).description
+            cfg = dict(
+                type=f'{m_name}_stream',
+                description=f'mono {module_desc} stream',
+                models=[
+                    dict(
+                        type=m_name,
+                    )
+                ]
+            )
         # print(cfg)
         self.streams.build_new_stream(cfg, **kwargs)
 

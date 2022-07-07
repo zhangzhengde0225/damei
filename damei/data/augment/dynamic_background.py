@@ -28,7 +28,7 @@ class DynamicBackground(object):
         if os.path.isfile(sp):
             imgs = [sp]
         elif os.path.isdir(sp):
-            imgs = [f'{sp}/{x}' for x in os.listdir(sp) if x.endswith('.jpg')]
+            imgs = [f'{sp}/{x}' for x in os.listdir(sp) if x.endswith(self.suffix)]
         else:
             raise Exception(f'{sp} is not a file or dir')
         logger.info(f'Deal with {len(imgs)} images in {sp}')
@@ -39,7 +39,9 @@ class DynamicBackground(object):
         logger.info(f'Done! Total {count} sub-backgrounds')
 
     def gen_from_single_img(self, imgp, win_wh=None, save_dir=None, show=True, save=False, skip_exist=True, ):
-        """单图动态，输入一张图，输出动态步长、等比数列尺度的背景图"""
+        """
+        单图动态，输入一张图，输出动态步长、等比数列尺度的背景图
+        """
         save_dir = save_dir if save_dir else f'{Path(imgp).parent}/{Path(imgp).stem}'
         suffix = Path(imgp).suffix
         if os.path.exists(save_dir):
@@ -63,7 +65,7 @@ class DynamicBackground(object):
             bboxes = bboxes[num_sub_bgs[0]::]
         if show or save:
             for i, bbox in enumerate(bboxes):
-                x1, y1, x2, y2 = bbox
+                x1, y1, x2, y2 = bbox  # 这个bbox是指切片的位置
                 sub_bg = deepcopy(img)[y1:y2, x1:x2, :]
                 print(f'\r[{i + 1:>3}/{len(bboxes)}] bbox: {bbox} shape: {sub_bg.shape}', end='')
                 if show:

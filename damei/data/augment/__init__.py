@@ -1,4 +1,5 @@
 from .augment_dataset import AugmentData
+from .multiscale_slice import MultiScaleSlice, AugmentMSS
 
 
 def augment(
@@ -13,6 +14,8 @@ def augment(
         train_ratio: float = 0.8,
         erase_ratio: float or tuple = (0, 1),
         mean_scale_factor: float = 1,
+        save_mask: bool = False,
+        suffix: str = '.jpg',
         *args,
         **kwargs, ):
     """
@@ -42,6 +45,10 @@ def augment(
     :type erase_ratio: float or tuple
     :param mean_scale_factor: The mean scale factor of gaussian distribustion, decide the num of targets in synthetic image. Default: 1.
     :type mean_scale_factor: float
+    :param save_mask: Whether to save the mask of each target. Default is False. If True, If true, each mask will be saved as a binary mask in .npy format (w, h, 1), where 0 represents the background and 1 represents the target.
+    :type save_mask: bool
+    :param suffix: The raw image suffix. Default is .jpg
+    :type suffix: str
     :return: None
 
     Example:
@@ -56,6 +63,8 @@ def augment(
         out_fmt=out_fmt,
         use_noise_background=use_noise_background,
         out_size=out_size,
+        save_mask=save_mask,
+        suffix=suffix,
         *args,
         **kwargs
     )
@@ -64,3 +73,35 @@ def augment(
        erase_ratio=erase_ratio,
        mean_scale_factor=mean_scale_factor,
        *args, **kwargs)
+
+
+def augment_mss(
+        source_path: any,
+        target_path: str = None,
+        min_wh: int = 640,
+        max_wh: int = None,
+        stride_ratio: float = 0.5,
+        pss_factor: float = 1.25,
+        need_annotation: bool = True,
+        anno_fmt: str = 'json',
+
+):
+    """
+    基于滑动窗口的多级尺寸切片算法，multi scale slice algorithm based on slide window, mss.
+    输入一张图、文件夹或多张图，对每一张图，利用滑动窗口动态匹配方法，输出从较小尺寸（例如：640）到原始尺寸的多级尺寸切片
+
+    Example:
+        >>> dm.data.augment_mss("/path/to/img(fold) or imgs list", other_params)
+    """
+    mss = AugmentMSS(
+        sp=source_path,
+        tp=target_path,
+
+    )
+    mss(min_wh=min_wh,
+        max_wh=max_wh,
+        stride_ratio=stride_ratio,
+        pss_factor=pss_factor,
+        need_annotation=need_annotation,
+        anno_fmt=anno_fmt,
+        )

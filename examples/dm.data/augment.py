@@ -7,9 +7,9 @@ import damei as dm
 
 
 def augment():
-    source_path = f'{pydir.parent}/sources/data_dm.data/anno_dataset_Labelmefmt'
-    # target_path = f'{pydir.parent}/sources/data_for_dm.data/'
-    background_path = f'{pydir.parent}/sources/data_dm.data/backgrounds'
+    source_path = f'{pydir.parent}/sources/dm.data/anno_dataset_Labelmefmt'
+    target_path = f'{pydir.parent}/sources/dm.data/augmented_5images'
+    background_path = f'{pydir.parent}/sources/dm.data/backgrounds'
     dm.data.augment(
         source_path=source_path,
         target_path=None,  # 使用default

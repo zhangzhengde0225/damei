@@ -59,7 +59,7 @@ class Stream(object):
             _modules[mname] = module  # 存入模块
             setattr(self, mname, module)  # 存入属性, self.module_name = module
             # cfg = PyConfigLoader(module.default_cfg)  # 这是默认配置
-            assert module.default_cfg is not None, f'"{mname}" has no default_cfg'
+            # assert module.default_cfg is not None, f'"{mname}" has no default_cfg'
             cfg = Config(module.default_cfg)  # 使用模块的默认配置，的
 
             if model_cfg:  # 如果外部设置流的同时指定了配置文件，合并配置

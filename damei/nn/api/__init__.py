@@ -7,4 +7,4 @@ from .registry import MODULES, SCRIPTS, IOS
 from .utils import Config
 from damei.nn.uaii.uaii_main import UAII
 
-# pass
+from damei.nn.test import test_module, test_script, test_io

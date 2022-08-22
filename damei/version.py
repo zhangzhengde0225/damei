@@ -1,4 +1,4 @@
-__version__ = '1.1.10'
+__version__ = '1.1.11'
 __author__ = 'zhengzhengde  mail: drivener@163.com'
 
 from pathlib import Path

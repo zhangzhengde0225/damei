@@ -20,10 +20,17 @@ class Args(object):
 
         # self.short_name = kwargs.get('short_name', None)
         self.nargs = kwargs.get('nargs', None)
-        self.type = kwargs.get('type', None)
+        self._type = kwargs.get('type', None)
         self.default = kwargs.get('default', None)
         self.help = kwargs.get('help', None)
         self.action = kwargs.get('action', None)
+
+    @property
+    def type(self):
+        if self.nargs is None:
+            return self._type
+        else:
+            return list
 
     @property
     def value(self):
@@ -62,6 +69,9 @@ class FakeArgparse(object):
         stored_args = ', '.join(stored_args)
         format_str = f'Namespace({stored_args})'
         return format_str
+
+    def __dict__(self):
+        return self._args_dict
 
     @property
     def args(self):

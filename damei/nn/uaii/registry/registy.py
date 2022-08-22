@@ -259,6 +259,7 @@ class Registry:
                 the same name. Default: False.
             module (type): Module class to be registered.
         """
+        # print(f'reg: {name}')
         if not isinstance(force, bool):
             raise TypeError(f'force must be a boolean, but got {type(force)}')
         # NOTE: This is a walkaround to be compatible with the old api,

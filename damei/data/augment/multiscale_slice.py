@@ -61,7 +61,7 @@ class AugmentMSS(object):
             with open(f'{tp}/{slice_stem}.json', 'w') as f:
                 json.dump(anno, f, indent=4)
             count += 1
-            print(f'\rmss: [{count}/{i}] {img.shape} {Path(slice_path).stem}', end='')
+            print(f'\rmss: slice with targets: {count}, all slices {i}, {img.shape} {Path(slice_path).stem}', end='')
         print()
 
 
@@ -71,89 +71,112 @@ class MultiScaleSlice(object):
     """
 
     def __init__(self, img_paths, min_wh=640, max_wh=None, stride_ratio=0.5, pss_factor=1.25,
-                 need_annotation=True, anno_fmt='json'):
+                 need_annotation=True, anno_fmt='json', sort='min2max', maxl=4):
         """
         :param img_paths: 图片路径
         :param min_wh: 最小尺寸，即初始尺寸
         :param max_wh: 最大尺寸，默认是原始图像的最大尺寸
         :param stride_ratio: 切片移动的步长，默认的当前尺度的1/2
         :param pss_factor: 尺寸按等比数列缩放的等比因子，默认是1.25
-
+        :param need_annotation: 是否需要标注
+        :param anno_fmt: 标注格式，默认是json
+        :param sort: 排序方式，默认是min2max，最小到最大
+        :param maxl: 图像宽高最大支持位数，默认4，即9999*9999分辨率的图像
         """
-
+        assert len(img_paths) > 0, f'img_paths is empty, please check your source path: {img_paths}'
         # 关于图片的切片窗口的参数
         self.min_wh = (min_wh, min_wh) if isinstance(min_wh, int) else min_wh
         self.max_wh = max_wh
         self.stride_ratio = stride_ratio
         self.pss_factor = pss_factor
+        self.sort = sort
+        self.maxl = maxl  # 图像宽高最大支持位数，默认4，即9999*9999分辨率的图像
 
         # 关于返回真值的参数
         self.need_annotation = need_annotation
         self.anno_format = anno_fmt
 
-        # 初始化
-        self._slice_windows, self._num_slice_windows, self._img_paths = \
-            self._init(img_paths)
-        self._raw_img = None
+        self._current_img = None
+        self.img_idx = 0  # 用来记录当前图片的索引
 
-    def _init(self, img_paths):
-        """
-        初始化每张大图的每个尺度下的所有切片窗口
-        :param img_paths: 图片路径
-        :return:
-            slice_windows: 每张大图的每个尺度下的所有切片窗口，ndarray, (m*n, 4)  m张图，每张图n个子图
-            num_slice_windows: 对应的尺度特征，list
-        """
         if isinstance(img_paths, str):
             img_paths = [img_paths]
+        self._img_paths = img_paths
+        self._init_sw()  # 初始化，注，仅仅初始化第一张
+
+    def _init_sw(self):
+        """
+        初始化每张大图的每个尺度下的所有切片窗口
+        """
+
         # img_paths = sorted(img_paths)
 
         slice_windows = []
         num_slice_windows = []
-        for imgp in img_paths:
-            img = cv2.imread(imgp)
 
-            bboxes, num_sub_figs = self.cal_bboxes(
-                raw_wh=img.shape[:2],
-                win_wh=self.min_wh,
-                stride_ratio=self.stride_ratio,
-            )
-            slice_windows.extend(bboxes)
+        # assert os.path.exists(img_path), f'{img_path} not exists'
+        # img = cv2.imread(img_path)  # 读取图像分析很慢，需要优化
+        img = self.cimg
+        raw_wh = img.shape[:2]
 
-            num_sub_figs_sum = np.sum(num_sub_figs)
-            num_slice_windows.append(num_sub_figs_sum)
+        bboxes, num_sub_figs = self.cal_bboxes(
+            raw_wh=raw_wh,
+            win_wh=self.min_wh,
+            stride_ratio=self.stride_ratio,
+        )
+        slice_windows.extend(bboxes)
 
-            # print(bboxes, num_sub_figs)
+        num_sub_figs_sum = np.sum(num_sub_figs)
+        num_slice_windows.append(num_sub_figs_sum)
+        # print(f'\ranaylizing [{i+1:>3}/{len(img_paths)}]{imgp} ... {num_sub_figs_sum}', end='')
         slice_windows = np.array(slice_windows)
-        return slice_windows, num_slice_windows, img_paths
+
+        if self.sort == 'min2max':
+            pass
+        elif self.sort == 'max2min':
+            slice_windows = slice_windows[::-1]
+            num_slice_windows = num_slice_windows[::-1]
+        else:
+            raise NotImplementedError(f'{self.sort} is not implemented')
+
+        self._slice_windows = slice_windows
+        self._num_slice_windows = num_slice_windows
+        # self._img_paths = img_paths
 
     def __iter__(self):
-        self.count = 0
-        self.raw_img_idx = 0
+        self.img_idx = 0  # 用来记录当前图片的索引
+        self.slice_idx = -1  # 用来记录切片图像的索引
         return self
 
     def __next__(self):
         """
-        迭代器，每次返回从一张大图中的一个切片
+        迭代器，每次返回从一张大图中的一个切片，每次next仅取1个切片。
         :return:
             slicee: 切片，ndarray, (h, w, c)
-            slice_imgp: 原始图片路径，格式：原始图像路径_(滑动窗口x1y1x2y2)_(窗口高宽).后缀
+            slice_imgp: 原始图片路径，格式：原始图像路径_(窗口高宽)_(滑动窗口x1y1x2y2).后缀
             im0: 原始图片
         """
+        self.slice_idx += 1  # 初始是0，每次加1
 
+        # if self.img_idx >= len(self._img_paths):  # img_idx在在切片索引超过总切片时增加1
+        #     raise StopIteration
         im0 = self.cimg
         if im0 is None:
             raise StopIteration
-        imgp = self.img_paths[self.raw_img_idx]
-        sw = self.sw[self.count]  # slice window x1, y1, x2, y2
+        imgp = self.img_paths[self.img_idx]
+        sw = self.sw[self.slice_idx]  # slice window x1, y1, x2, y2
         w, h = sw[2] - sw[0], sw[3] - sw[1]
-        slice_imgp = f'{Path(imgp).parent}/{Path(imgp).stem}_{h},{w}_{",".join(map(str, sw))}{Path(imgp).suffix}'
+
+        slice_imgp = f'{Path(imgp).parent}/{Path(imgp).stem}_' \
+                     f'{h:0>{self.maxl}},{w:0>{self.maxl}}_' \
+                     f'{",".join([f"{x:0>{self.maxl}}" for x in sw])}' \
+                     f'{Path(imgp).suffix}'
 
         slicee = im0[sw[1]:sw[3], sw[0]:sw[2], :]  # 滑动窗口的切片，(h, w, 3), h和w是不同尺度的高宽
         # print(img.shape, slicee.shape, sw)
         # print(self.count, len(self.sw), self.sw.shape, self.nsw)
 
-        self.count += 1
+        # self.count += 1
         if self.need_annotation:
             anno = self.get_annotation(imgp, sw)
             return slicee, slice_imgp, im0, anno
@@ -161,28 +184,39 @@ class MultiScaleSlice(object):
         return slicee, slice_imgp, im0
 
     def __len__(self):
+        """不太准确，这里只是当前目标的窗口"""
         return len(self._slice_windows)
 
     @property
     def cimg(self):
-        """从raw img中读取"""
-        # 如果_raw_img是None，即第一张
-        if self._raw_img is None:
-            img_path = self.img_paths[self.raw_img_idx]
-            self._raw_img = cv2.imread(img_path)
-            return self._raw_img
+        """
+        读取当前原图
+        """
+        if self._current_img is None:  # 读取第一张
+            # img_path = self.img_paths[self.raw_img_idx]
+            img_path = self.img_paths[self.img_idx]
+            self._current_img = cv2.imread(img_path)
+            h, w, c = self._current_img.shape
+            assert len(str(h)) <= self.maxl, f'raw image is too large, {h} {len(str(h))}'
+            assert len(str(w)) <= self.maxl, f'raw image is too large, {w}'
+            return self._current_img
         else:  # 需要判断是否切换原始图片
-            called_num_slice_windows = np.sum(self.nsw[:self.raw_img_idx + 1:])
+            called_num_slice_windows = np.sum(self.nsw[:self.img_idx + 1:])
             # print(f'count: {self.count} called: {called_num_slice_windows}')
-            if self.count < called_num_slice_windows:  # 不切换
-                return self._raw_img
-            else:  # 切换
-                self.raw_img_idx += 1
-                if self.raw_img_idx >= len(self.img_paths):
+            if self.slice_idx < called_num_slice_windows:  # 不切换
+                return self._current_img
+            else:  # 切换，
+                self.img_idx += 1
+                if self.img_idx >= len(self.img_paths):
                     return None
-                img_path = self.img_paths[self.raw_img_idx]
-                self._raw_img = cv2.imread(img_path)
-                return self._raw_img
+                # 切换的同时slice_idx置零
+                img_path = self.img_paths[self.img_idx]
+                self._current_img = cv2.imread(img_path)
+                self.slice_idx = 0
+                h, w, c = self._current_img.shape
+                assert len(str(h)) <= self.maxl, f'raw image is too large, {h}'
+                assert len(str(w)) <= self.maxl, f'raw image is too large, {w}'
+                return self._current_img
 
     @property
     def sw(self):
@@ -210,8 +244,8 @@ class MultiScaleSlice(object):
         else:
             raise NotImplementedError(f'anno_format {self.anno_format} not implemented')
 
-    @staticmethod
-    def get_json_slice_anno(label_path, sw, iou_thresh_target_vs_window=0.3, iou_thresh_clipped_target_vs_target=0.3):
+    def get_json_slice_anno(self, label_path, sw, iou_thresh_target_vs_window=0.3,
+                            iou_thresh_clipped_target_vs_target=0.3):
         """
         读取labelme格式的json文件，获取滑动窗口内的标注，如果没有任何目标，返回None
         """
@@ -224,7 +258,11 @@ class MultiScaleSlice(object):
         new_anno['flags'] = anno['flags']
         imgp = Path(anno['imagePath'])
         w, h = sw[2] - sw[0], sw[3] - sw[1]
-        new_anno['imagePath'] = f'{imgp.stem}_{h},{w}_{",".join(map(str, sw))}{imgp.suffix}'
+        img_path = f'{Path(imgp).parent}/{Path(imgp).stem}_' \
+                   f'{h:0>{self.maxl}},{w:0>{self.maxl}}_' \
+                   f'{",".join([f"{x:0>{self.maxl}}" for x in sw])}' \
+                   f'{Path(imgp).suffix}'
+        new_anno['imagePath'] = img_path
         new_anno['imageData'] = None
         new_anno['imageHeight'] = int(h)
         new_anno['imageWidth'] = int(w)

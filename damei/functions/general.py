@@ -3,6 +3,7 @@ functions of dm
 """
 import math
 import random
+import collections
 from contextlib import contextmanager
 
 import cv2
@@ -360,18 +361,34 @@ def bbox_iou(box1, box2, x1y1x2y2=True, GIoU=False, DIoU=False, CIoU=False, retu
     return iou
 
 
-def confusion2score(cm, round=5):
+def bbox_contains(bbox1, bbox2):
+    """计算bbox1是否包含bbox2"""
+    b1_x1, b1_y1, b1_x2, b1_y2 = bbox1[0], bbox1[1], bbox1[2], bbox1[3]
+    b2_x1, b2_y1, b2_x2, b2_y2 = bbox2[0], bbox2[1], bbox2[2], bbox2[3]
+    inter_w = (np.min(b1_x2, b2_x2) - np.max(b1_x1, b2_x1))
+    inter_w = inter_w if inter_w > 0 else 0
+    inter_h = (np.min(b1_y2, b2_y2) - np.max(b1_y1, b2_y1))
+    inter_h = inter_h if inter_h > 0 else 0
+    inter_area = inter_w * inter_h
+    b2_area = (b2_x2 - b2_x1) * (b2_y2 - b2_y1)
+    return inter_area / (b2_area + 1e-16)
+
+
+def confusion2score(cm, round=5, with_background=False, return_type='list', names=None, percent=False):
     """
     input n*n confusion matrix, output: P R F1 score of each class and average ACC
     :param cm: confusion matrix, np.array, (n, n)
     :param round: default 5, decimal places
+    :param with_backgroud: default False, if True, indicate the last row is background class
     :return: P, R, F1 and ACC
         P, R, F1: np.array (n,)
         acc: float32
     """
     confusion = cm
-    assert confusion.shape[0] == confusion.shape[1]
-    nc = confusion.shape[0]
+    assert confusion.shape[0] == confusion.shape[1], 'confusion matrix must be square'
+    nc = confusion.shape[0]  # number of classes
+    actual_nc = nc - 1 if with_background else nc
+    # sum of each row
     P_sum = np.repeat(np.sum(confusion, axis=1) + 1e-10, nc).reshape(nc, nc)
     P = confusion / P_sum
     R_sum = np.repeat(np.sum(confusion, axis=0) + 1e-10, nc).reshape(nc, nc).transpose()
@@ -386,13 +403,53 @@ def confusion2score(cm, round=5):
     correct = np.diagonal(confusion, offset=0)
     acc = np.sum(correct) / (np.sum(confusion) + 1e-10)
     # print(confusion, P, R, F1, acc)
+    if percent:  # 变为百分比
+        P = P * 100
+        R = R * 100
+        F1 = F1 * 100
+        acc = acc * 100
+
     if isinstance(round, int):
         P = np.round(P, round)
         R = np.round(R, round)
         F1 = np.round(F1, round)
         acc = np.round(acc, round)
-    return P, R, F1, acc
 
+    if with_background:
+        P = P[:-1]
+        R = R[:-1]
+        F1 = F1[:-1]
+
+    mean_P = np.round(np.mean(P), round)
+    mean_R = np.round(np.mean(R), round)
+    mean_F1 = np.round(np.mean(F1), round)
+
+    if return_type == 'list':
+        if names is None:
+            names = ['class_%d' % i for i in range(actual_nc)]
+        assert len(names) == actual_nc, f'names must be same as number of classes {actual_nc} != {len(names)}'
+        ret = list()
+        head = [''] + names + ['mean']
+        ret.append(head)
+        ret.append(['P'] + list(P) + [mean_P])
+        ret.append(['R'] + list(R) + [mean_R])
+        ret.append(['F1'] + list(F1) + [mean_F1])
+        ret.append(['ACC'] + [acc])
+        return ret
+
+    elif return_type == 'dict':
+        ret = collections.OrderedDict()
+        ret['classes'] = names if names else ['class_%d' % i for i in range(actual_nc)]
+        ret['Precision'] = P
+        ret['Recall'] = R
+        ret['F1 score'] = F1
+        ret['Accuracy'] = acc
+        ret['Mean Precision'] = mean_P
+        ret['Mean Recall'] = mean_R
+        ret['Mean F1 score'] = mean_F1
+        return ret
+    else:
+        raise ValueError('return_type must be list or dict')
 
 @contextmanager
 def torch_distributed_zero_first(local_rank: int):

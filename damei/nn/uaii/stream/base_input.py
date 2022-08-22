@@ -1,7 +1,7 @@
 from .base_queue import AbstractQue
 
 
-class AbstractInput(object):
+class AbstractInput(object):  # 定义它是一个可遍历的对象
     name = 'default_input_name'
     status = 'stopped'
     description = 'default_input_description'
@@ -16,6 +16,8 @@ class AbstractInput(object):
 
         self._attrs = []
         self._items = dict()
+
+        self.data = None
 
     @property
     def attrs(self):
@@ -41,3 +43,13 @@ class AbstractInput(object):
         #
         # print(self.attrs)
         # print(self.items)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __next__(self):
+        return self.data.__next__()
+
+    def __iter__(self):
+
+        return self.data.__iter__()

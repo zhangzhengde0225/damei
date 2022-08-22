@@ -75,8 +75,8 @@ class Stream(object):
 
         return _modules, _module_cfgs, _module_cfgs_meta
 
-    def __call__(self, input, *args, **kwargs):
-        """单条目运行"""
+    def __call__(self, x, *args, **kwargs):
+        """模块前馈"""
         # 需要把input封装成mi对象
         self.parent.run_stream(
             self,
@@ -381,6 +381,9 @@ class Stream(object):
 
     def train(self, **kwargs):
         return self.parent.train(self, run_in_main_thread=True, **kwargs)
+
+    def infer(self, **kwargs):
+        return self.parent.infer(self, run_in_main_thread=True, **kwargs)
 
     def stop(self):
         if self.status == 'stopped':

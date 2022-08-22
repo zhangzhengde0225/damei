@@ -168,10 +168,10 @@ class UAII(BaseUAII):
         :return:
         """
         # 读取参数
-        run_in_main_thread = kwargs.get('run_in_main_thread', True)  # 是否在主进程运行
-        mtask = kwargs.get('task', 'infer')  # 任务：infer/train/evaluate
-        stream_cfg = kwargs.get('stream_cfg', None)  # 流配置
-        is_req = kwargs.get('is_req', False)  # 是否是请求
+        run_in_main_thread = kwargs.pop('run_in_main_thread', True)  # 是否在主进程运行
+        mtask = kwargs.pop('task', 'infer')  # 任务：infer/train/evaluate
+        stream_cfg = kwargs.pop('stream_cfg', None)  # 流配置
+        is_req = kwargs.pop('is_req', False)  # 是否是请求
         # mi = kwargs.get('mi', None)
         # mo = kwargs.get('mo', None)
 
@@ -203,7 +203,7 @@ class UAII(BaseUAII):
             if not is_first:  # 非第1个模块，用上一个模块的输出来覆盖mi
                 # print(f'last_generator: {last_generator}')
                 m.mi = last_generator
-            result = self.run_module(m=m, mtask=mtask, run_in_main_thread=run_in_main_thread)
+            result = self.run_module(m=m, mtask=mtask, run_in_main_thread=run_in_main_thread, **kwargs)
             # 返回值是generator，是一个生成器
             last_generator = result
 
@@ -214,13 +214,13 @@ class UAII(BaseUAII):
                 return 0, f'Run stream {stream.name} failed.'
         return last_generator
 
-    def run_module(self, m, mtask=None, mi=None, mo=None, daemon=True, run_in_main_thread=False):
+    def run_module(self, m, mtask=None, mi=None, mo=None, daemon=True, run_in_main_thread=False, **kwargs):
         """
         run module in stream.
         return: iterable result object if run in main thread, True/False if run in thread
         """
         if run_in_main_thread:
-            retsult = self.run_module_in_main_thread(m, mtask)
+            retsult = self.run_module_in_main_thread(m, mtask, **kwargs)
             return retsult
 
         else:
@@ -248,7 +248,7 @@ class UAII(BaseUAII):
 
         return True
 
-    def run_module_in_main_thread(self, m, mtask, mi=None, mo=None):
+    def run_module_in_main_thread(self, m, mtask, **kwargs):
         """在主进程跑任务"""
         # print(f'run: {m} {mtask} {mi} {mo}')
         # 调用call
@@ -256,14 +256,14 @@ class UAII(BaseUAII):
             return m.__call__()
         # 推理任务
         elif mtask == 'infer':
-            result = m.infer()
+            result = m.infer(**kwargs)
         # 训练任务
         elif mtask == 'train':  # TODO
-            result = m.train()
+            result = m.train(**kwargs)
         # 评估任务
         elif mtask == 'evaluate':
             # result = 0
-            result = m.evaluate()
+            result = m.evaluate(**kwargs)
             # m.status = 'stopped'
         else:
             raise KeyError(f'uaii module task error. module: {m} task: {mtask}.')
@@ -288,6 +288,13 @@ class UAII(BaseUAII):
         stream_cfg = kwargs.get('cfg', None)
         logger.info(f'Train monoflow: {stream_name}.')
         result = self.run_stream(stream=stream, task='train', stream_cfg=stream_cfg, **kwargs)
+        return result
+
+    def infer(self, stream, **kwargs):
+        stream_name = stream if isinstance(stream, str) else stream.name
+        stream_cfg = kwargs.get('cfg', None)
+        logger.info(f'Infer monoflow: {stream_name}.')
+        result = self.run_stream(stream=stream, task='infer', stream_cfg=stream_cfg, **kwargs)
         return result
 
 

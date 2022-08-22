@@ -2,3 +2,6 @@
 numpy==1.21.2
 opencv-python
 easydict
+
+# torch>=1.5.0  # if torch.nn is needed
+# pillow

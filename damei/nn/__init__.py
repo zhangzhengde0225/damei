@@ -26,7 +26,8 @@ internal_modules = [
     'modules/loader/vis_loader',
     'modules/exporter/vis_exporter',
 ]
-external_folders = ['dmapi', 'repos']
+# external_folders = ['dmapi', 'repos']
+external_folders = []
 
 init_register(
     internal_modules=internal_modules,

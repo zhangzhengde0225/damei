@@ -5,6 +5,8 @@ dist
 .idea
 .vscode
 __pycache__/
+.DS_Store
+docs/.DS_Store
 
 docs/build
 docs/source/

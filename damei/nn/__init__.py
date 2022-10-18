@@ -23,8 +23,8 @@ from .api import test_module, test_script, test_io
 
 # 导入内部模块和外部模块
 internal_modules = [
-    'modules/loader/vis_loader',
-    'modules/exporter/vis_exporter',
+#     'modules/loader/vis_loader',
+#     'modules/exporter/vis_exporter',
 ]
 # external_folders = ['dmapi', 'repos']
 external_folders = []

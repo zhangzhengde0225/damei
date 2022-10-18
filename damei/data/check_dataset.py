@@ -34,6 +34,9 @@ def check_YOLO(sp, trte=None, save_dir=None, **kwargs):
     :type trte: str
     :param save_dir: The path to save the plotte image. Default is None, which means not save.
     :type save_dir: str
+    :param classes: The classes of the dataset. Default is None, which means the classes is in the file 'classes.txt' in the source path.
+    :type classes: list
+
 
     :return: None
     """

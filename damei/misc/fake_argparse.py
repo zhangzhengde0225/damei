@@ -41,6 +41,8 @@ class Args(object):
         elif self.type == bool:
             return bool(self.default)
         elif self.type == int:
+            if self.default is None:
+                return None
             return int(self.default)
         elif self.type == float:
             return float(self.default)

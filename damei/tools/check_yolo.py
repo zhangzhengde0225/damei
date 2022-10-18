@@ -14,13 +14,13 @@ from ..functions import general
 class CheckYOLO(object):
     def __init__(self, dp=None):
         self.dp = dp
-        self.suffixes = ['.jpg', '.png', '.bmp']
+        self.suffixes = ['.jpg', '.png', '.bmp', '.tif', '.tiff', '.jpeg']
 
     def __call__(self, trte=None, **kwargs):
         dp = self.dp
         trte = trte if trte else 'train'
         print(dp)
-        self.classes = self.get_classes()
+        self.classes = kwargs.pop('classes', self.get_classes())
 
         num_color = len(self.classes) if self.classes is not None else 1000
         self.colors = ColorControl(num=num_color, random_color=True).color
@@ -81,14 +81,14 @@ class CheckYOLO(object):
                     bbox[2] *= w
                     bbox[3] *= h
 
-                    label = f'{names[int(cls)]}' if names is not None else f'{cls}'
+                    label = f'{names[int(cls)]}' if names is not None else f'{int(cls)}'
                     lbs.append(label)
                     color = None
 
                     general.plot_one_box_trace_pose_status(
                         bbox, img, label=label, color=color)
 
-            print(f'stem: {stem} img shape: {img.shape} num_targets: {len(classes)} lbs: {lbs}')
+            print(f'Stem: {stem}. Image shape: {img.shape}. Num_targets: {len(classes)}. Labels: {lbs}')
             # cr = np.any(label[:, 0] == 1)
             if save_dir is not None:
                 save_path = f'{save_dir}/plotted_{stem}.jpg'

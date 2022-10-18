@@ -5,8 +5,12 @@ import numpy as np
 import damei as dm
 from copy import deepcopy
 
-import torch.backends.cudnn as cudnn
+# import torch.backends.cudnn as cudnn
 from .datasets import LoadStreams, LoadImages
+try:
+    import torch.backends.cudnn as cudnn
+except:
+    pass
 
 
 class Dataloader(object):

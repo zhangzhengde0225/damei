@@ -9,7 +9,8 @@ try:
     import torch.backends.cudnn as cudnn
     from .datasets import LoadStreams, LoadImages
 except ImportError as e:
-    dm.EXCEPTION(ImportError, e, info='You may need to install "torch" for full functionality', mute=True)
+    pass
+    # dm.EXCEPTION(ImportError, e, info='You may need to install "torch" for full functionality', mute=True)
 
 
 class Dataloader(object):

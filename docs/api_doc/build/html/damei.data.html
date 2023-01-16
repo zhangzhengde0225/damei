@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>damei.data &#8212; damei 1.1.7 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="damei.comm" href="damei.comm.html" />
+    <link rel="prev" title="damei.nn" href="damei.nn.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="damei-data">
+<h1>damei.data<a class="headerlink" href="#damei-data" title="Permalink to this headline">¶</a></h1>
+<p>There are functions for dealing this the data.</p>
+<section id="damei-data-augment">
+<h2>damei.data.augment<a class="headerlink" href="#damei-data-augment" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.data.augment">
+<span class="sig-prename descclassname"><span class="pre">damei.data.</span></span><span class="sig-name descname"><span class="pre">augment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backgrounds_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anno_fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'labelme'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'YOLOfmt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_noise_background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">640</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_augment_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">erase_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.jpg'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.data.augment" title="Permalink to this definition">¶</a></dt>
+<dd><p>A script to augment dataset from small annotated dataset. The target is random position, random size and random angle, and the background is dynamic and random.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> (<em>str</em>) – Annotated dataset path.</p></li>
+<li><p><strong>target_path</strong> (<em>str</em>) – Path to save augmented dataset. Default is the same directory of ‘source_path’, e.g. xxx_augmented_{out_fmt}.</p></li>
+<li><p><strong>backgrounds_path</strong> (<em>str</em>) – Path to background images. Default is None, which means use background source images.</p></li>
+<li><p><strong>anno_fmt</strong> (<em>str</em>) – The labeling software used in annotation. Default is ‘labelme’.</p></li>
+<li><p><strong>out_fmt</strong> (<em>str</em>) – The output format of augmented dataset. Default is ‘YOLOfmt’.</p></li>
+<li><p><strong>use_noise_background</strong> (<em>bool</em>) – Whether to generate an image using a noise background. Default is False.</p></li>
+<li><p><strong>out_size</strong> (<em>int</em><em> or </em><em>tuple</em>) – The size of the output images. Default is 640.</p></li>
+<li><p><strong>num_augment_images</strong> (<em>int</em>) – The number of augmented images. Default: 8000.</p></li>
+<li><p><strong>train_ratio</strong> (<em>float</em>) – The ratio of training dataset. Default: 0.8.</p></li>
+<li><p><strong>samples_ratio_per_class</strong> (<em>list</em>) – The ratio of per class for samples equilibrium. Default: [1] * len(classes).</p></li>
+<li><p><strong>erase_ratio</strong> (<em>float</em><em> or </em><em>tuple</em>) – The ratio of target need to be erased (replaced by gray color) when using annotated image as background. Default: 0.0, which means no erase.</p></li>
+<li><p><strong>mean_scale_factor</strong> (<em>float</em>) – The mean scale factor of gaussian distribustion, decide the num of targets in synthetic image. Default: 1.</p></li>
+<li><p><strong>save_mask</strong> (<em>bool</em>) – Whether to save the mask of each target. Default is False. If True, If true, each mask will be saved as a binary mask in .npy format (w, h, 1), where 0 represents the background and 1 represents the target.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em>) – The raw image suffix. Default is .jpg</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">damei</span> <span class="k">as</span> <span class="nn">dm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">augment</span><span class="p">(</span><span class="s2">&quot;/path/to/dataset&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-data-augment-mss">
+<h2>damei.data.augment_mss<a class="headerlink" href="#damei-data-augment-mss" title="Permalink to this headline">¶</a></h2>
+<p>多级尺度切片增强方法multi scale slice augmentation method (MSS)，适用于无人机等原始大尺寸图像。</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.data.augment_mss">
+<span class="sig-prename descclassname"><span class="pre">damei.data.</span></span><span class="sig-name descname"><span class="pre">augment_mss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_wh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">640</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_wh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pss_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">need_annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anno_fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.data.augment_mss" title="Permalink to this definition">¶</a></dt>
+<dd><p>基于滑动窗口的多级尺寸切片算法，multi scale slice algorithm based on slide window, mss.
+输入一张图、文件夹或多张图，对每一张图，利用滑动窗口动态匹配方法，输出从较小尺寸（例如：640）到原始尺寸的多级尺寸切片</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – 图片路径或图片文件夹路径</p></li>
+<li><p><strong>target_path</strong> – 输出文件夹路径</p></li>
+<li><p><strong>min_wh</strong> – 最小尺寸，默认640</p></li>
+<li><p><strong>max_wh</strong> – 最大尺寸，默认None时，从最小尺寸自动递增至原图尺寸</p></li>
+<li><p><strong>stride_ratio</strong> – 滑动窗口每次移动的比例，默认0.5</p></li>
+<li><p><strong>pss_factor</strong> – 等比数列比例因子(proportional series scale factor)，默认1.25，控制窗口尺寸的增长</p></li>
+<li><p><strong>need_annotation</strong> – 是否需要标注，默认True，标注需与图像在同一路径下</p></li>
+<li><p><strong>anno_fmt</strong> – 标注文件格式，默认json</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None, 在输出文件夹路径下生成增强的图像</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">augment_mss</span><span class="p">(</span><span class="s2">&quot;/path/to/img(fold) or imgs list&quot;</span><span class="p">,</span> <span class="n">other_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-data-check-yolo">
+<h2>damei.data.check_YOLO<a class="headerlink" href="#damei-data-check-yolo" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.data.check_YOLO">
+<span class="sig-prename descclassname"><span class="pre">damei.data.</span></span><span class="sig-name descname"><span class="pre">check_YOLO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trte</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.data.check_YOLO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the YOLO dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sp</strong> (<em>str</em>) – The source path to YOLO format dataset, e.g: /xxx/xxx_yolo_format.</p></li>
+<li><p><strong>trte</strong> (<em>str</em>) – Which type to check, e.g: ‘train, ‘test’ or ‘val’. Default is train</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em>) – The path to save the plotte image. Default is None, which means not save.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-data-check-coco">
+<h2>damei.data.check_COCO<a class="headerlink" href="#damei-data-check-coco" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.data.check_COCO">
+<span class="sig-prename descclassname"><span class="pre">damei.data.</span></span><span class="sig-name descname"><span class="pre">check_COCO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_thicknes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_show_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.data.check_COCO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the COCO dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>example</strong> (<em>json_path</em><em>, </em><em>path to coco json file</em><em>, </em><em>for</em>) – /xxx/annotations/instances_train2017.json</p>
+</dd>
+</dl>
+<p>:param img_dir, image dir
+:type img_dir: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line_thicknes</strong> (<em>int</em>) – thickness for rectangle of bbox</p></li>
+<li><p><strong>only_show_id</strong> (<em>int</em>) – only show the img with this id if is None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">damei</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.nn.html">damei.nn</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">damei.data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#damei-data-augment">damei.data.augment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-data-augment-mss">damei.data.augment_mss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-data-check-yolo">damei.data.check_YOLO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-data-check-coco">damei.data.check_COCO</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.comm.html">damei.comm</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.wavelib.html">damei.wavelib</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.misc.html">damei.misc</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="damei.nn.html" title="previous chapter">damei.nn</a></li>
+      <li>Next: <a href="damei.comm.html" title="next chapter">damei.comm</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Zhengde Zhang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/damei.data.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

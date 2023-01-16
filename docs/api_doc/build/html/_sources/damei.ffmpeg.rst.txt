@@ -1,0 +1,13 @@
+damei.ffmpeg
+=============
+
+A push stream tool based on ffmpeg.
+
++ push stream from numpy.array
++ push stream from video
++ push stream from imgs folder
+
+damei.ffmpeg.push_stream
+---------------------
+
+.. autofunction:: damei.ffmpeg.push_stream

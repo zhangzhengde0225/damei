@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>damei.misc &#8212; damei 1.1.7 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="damei.wavelib" href="damei.wavelib.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="damei-misc">
+<h1>damei.misc<a class="headerlink" href="#damei-misc" title="Permalink to this headline">¶</a></h1>
+<p>The are some miscellaneous functions.</p>
+<section id="damei-misc-list2table">
+<h2>damei.misc.list2table<a class="headerlink" href="#damei-misc-list2table" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.list2table">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">list2table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float_bit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.list2table" title="Permalink to this definition">¶</a></dt>
+<dd><p>格式化，列表变表格，返回能直接打印的字符串。</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>a</strong> – list, 长度为n，每个元素内由是一个str bool int float None list或dict</p>
+</dd>
+</dl>
+<dl>
+<dt>Example</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[[</span><span class="s1">&#39;COLUME1&#39;</span><span class="p">,</span> <span class="s1">&#39;COLUME2&#39;</span><span class="p">,</span> <span class="s1">&#39;COLUME2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mf">3.1415926</span><span class="p">]]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>float_bit</strong> – 浮点数的小数位数</p></li>
+<li><p><strong>alignment</strong> – 表格对齐方式</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>format str:</p>
+</dd>
+</dl>
+<dl>
+<dt>Example</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">COLUME1</span> <span class="n">COLUME2</span> <span class="n">COLUME3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>       <span class="kc">True</span>    <span class="mf">3.14</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-misc-flatten-list">
+<h2>damei.misc.flatten_list<a class="headerlink" href="#damei-misc-flatten-list" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.flatten_list">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">flatten_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.flatten_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>展平list</p>
+</dd></dl>
+
+</section>
+<section id="damei-misc-dict2info">
+<h2>damei.misc.dict2info<a class="headerlink" href="#damei-misc-dict2info" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.dict2info">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">dict2info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.dict2info" title="Permalink to this definition">¶</a></dt>
+<dd><p>把一个字典的键和值展开为带缩进、带颜色的字符串，易于打印</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>info_dict</strong> – 字典</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-misc-rcfile2dict">
+<h2>damei.misc.rcfile2dict<a class="headerlink" href="#damei-misc-rcfile2dict" title="Permalink to this headline">¶</a></h2>
+<p>Read a rc file and return a dictionary.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.rcfile2dict">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">rcfile2dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rc_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.rcfile2dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>读取.xxxrc文件，保存为dict.
+目前仅支持2层</p>
+</dd></dl>
+
+</section>
+<section id="damei-misc-uncomment">
+<h2>damei.misc.uncomment<a class="headerlink" href="#damei-misc-uncomment" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.uncomment">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">uncomment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.uncomment" title="Permalink to this definition">¶</a></dt>
+<dd><p>去除行内注释和换行符</p>
+</dd></dl>
+
+</section>
+<section id="damei-misc-count-codes">
+<h2>damei.misc.count_codes<a class="headerlink" href="#damei-misc-count-codes" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.count_codes">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">count_codes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.count_codes" title="Permalink to this definition">¶</a></dt>
+<dd><p>统计文件夹下的文件的代码行数和字符数</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root_path</strong> – 根目录</p></li>
+<li><p><strong>suffix</strong> – 文件后缀，默认为所有文件</p></li>
+<li><p><strong>show_detail</strong> – 是否显示详细信息. Default: False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-misc-current-time">
+<h2>damei.misc.current_time<a class="headerlink" href="#damei-misc-current-time" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.current_time">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">current_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%Y-%m-%d</span> <span class="pre">%H:%M:%S'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.current_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>读取当前时间</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>format</strong> – format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>time, str</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctime</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">current_time</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-misc-plus-time">
+<h2>damei.misc.plus_time<a class="headerlink" href="#damei-misc-plus-time" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.plus_time">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">plus_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%Y-%m-%d</span> <span class="pre">%H:%M:%S'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.plus_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>添加时间</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctime</strong> – current time, str</p></li>
+<li><p><strong>seconds</strong> – seconds, int</p></li>
+<li><p><strong>format</strong> – format, str</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>time, str</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">future_time</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">plus_time</span><span class="p">(</span><span class="n">ctime</span><span class="o">=</span><span class="n">ctime</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="damei-misc-within-time">
+<h2>damei.misc.within_time<a class="headerlink" href="#damei-misc-within-time" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="damei.misc.within_time">
+<span class="sig-prename descclassname"><span class="pre">damei.misc.</span></span><span class="sig-name descname"><span class="pre">within_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expiration_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%Y-%m-%d</span> <span class="pre">%H:%M:%S'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#damei.misc.within_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>输入到期时间，判断当前时间是否在到期时效内</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expiration_time</strong> – 到期时间, str</p></li>
+<li><p><strong>ctime</strong> – 当前时间，str. Default: current_time()</p></li>
+<li><p><strong>format</strong> – 格式，str</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True or False, bool</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_within</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">within_time</span><span class="p">(</span><span class="n">expiration_time</span><span class="o">=</span><span class="n">future_time</span><span class="p">,</span> <span class="n">current_t</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">damei</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.nn.html">damei.nn</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.data.html">damei.data</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.comm.html">damei.comm</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="damei.wavelib.html">damei.wavelib</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">damei.misc</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-list2table">damei.misc.list2table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-flatten-list">damei.misc.flatten_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-dict2info">damei.misc.dict2info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-rcfile2dict">damei.misc.rcfile2dict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-uncomment">damei.misc.uncomment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-count-codes">damei.misc.count_codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-current-time">damei.misc.current_time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-plus-time">damei.misc.plus_time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#damei-misc-within-time">damei.misc.within_time</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="damei.wavelib.html" title="previous chapter">damei.wavelib</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Zhengde Zhang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/damei.misc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -10,7 +10,8 @@ pydir = Path(os.path.abspath(__file__)).parent
 try:
     import torch
 except ImportError as e:
-    EXCEPTION(ImportError, e, info="You may need to install 'torch' for full functionality")
+    pass
+    # EXCEPTION(ImportError, e, info="You may need to install 'torch' for full functionality")
 
 from . import api
 # from .uaii.utils.config_loader import PyConfigLoader as Config

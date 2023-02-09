@@ -1,7 +1,7 @@
 
-numpy==1.21.2
-opencv-python
+numpy
 easydict
 
-# torch>=1.5.0  # if torch.nn is needed
-# pillow
+# opencv-python  # For some function, please install it by yourself if needed
+# torch>=1.5.0  # For some function, please install it by yourself if needed
+# pillow  # For some function, please install it by yourself if needed

@@ -1,11 +1,11 @@
 import os
-import cv2
 from pathlib import Path
 import numpy as np
 import damei as dm
 from copy import deepcopy
 
 try:
+    import cv2
     import torch.backends.cudnn as cudnn
     from .datasets import LoadStreams, LoadImages
 except ImportError as e:

@@ -6,10 +6,11 @@ import random
 import collections
 from contextlib import contextmanager
 
-import cv2
+# import cv2
 import numpy as np
 
 try:
+    import cv2
     import torch
 except Exception as e:
     pass

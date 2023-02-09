@@ -6,7 +6,10 @@ from pathlib import Path
 import json
 import numpy as np
 from copy import deepcopy
-import cv2
+try:
+    import cv2
+except:
+    pass
 import random
 import time
 import shutil

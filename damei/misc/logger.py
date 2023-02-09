@@ -2,6 +2,7 @@ import logging
 import os
 from pathlib import Path
 
+LOGGING_LEVEL = os.environ.get('LOGGING_LEVEL', logging.INFO)
 
 def get_logger(name=None, **kwargs):
     return getLogger(name, **kwargs)
@@ -12,7 +13,8 @@ def getLogger(name=None, **kwargs):
     name_lenth = kwargs.get('name_lenth', 12)
     name = f'{name:<{name_lenth}}'
     logger = logging.getLogger(name)
-    level = kwargs.get('level', logging.INFO)
+    level = kwargs.get('level', LOGGING_LEVEL)
+    # level = kwargs.get('level', logging.ERROR)
     format_str = f"\033[1;35m[%(asctime)s]\033[0m \033[1;32m[%(name)s]\033[0m " \
                  f"\033[1;36m[%(levelname)s]:\033[0m %(message)s"
     logging.basicConfig(level=level,

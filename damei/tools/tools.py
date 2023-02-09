@@ -3,7 +3,11 @@ import shutil
 import warnings
 from pathlib import Path
 
-import cv2
+try:
+    import cv2
+except:
+    pass
+# import cv2
 
 from .check_coco import CheckCOCO
 from .check_yolo import CheckYOLO

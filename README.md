@@ -85,8 +85,9 @@ import damei as dm
             uaii = dm.nn.api.UAII()
          v1.1.1 # 新增dm.argparse，只读取默认值，不解析命令行参数
             parser = dm.argparse.ArgumentParser()
-20220610 v1.1.7 # damei_doc上线
-20220621 v1.1.8 # damei.comm.push_stream()  提供API文档
+20220610 v1.1.11 # damei_doc上线
+20220621 v1.1.111 # damei.comm.push_stream()  提供API文档
+20230209 v1.1.134 # Lightweight, remove some larger dependencies.
 """
 ```
 

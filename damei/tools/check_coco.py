@@ -6,7 +6,11 @@ import random
 import os
 import argparse
 from pathlib import Path
-import cv2
+# import cv2
+try:
+	import cv2
+except:
+	pass
 import warnings
 
 from ..functions import general

@@ -1,5 +1,5 @@
 import os
-import cv2
+# import cv2
 from .ffmpeg import DmFFMPEG
 
 dmffmpeg = DmFFMPEG()
@@ -54,7 +54,7 @@ def push_stream(
     Display:
         >>> $ ffplay "rtmp://127.0.0.1:1935/live"  # to show the stream
     """
-
+    import cv2
     if isinstance(source, str) and os.path.isdir(source):
         img_files = [f'{source}/{x}' for x in os.listdir(source) if x.endswith(suffix)]
         for i, img_file in enumerate(img_files):

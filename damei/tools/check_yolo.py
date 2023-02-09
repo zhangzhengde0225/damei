@@ -4,7 +4,11 @@
 import os
 from pathlib import Path
 
-import cv2
+# import cv2
+try:
+	import cv2
+except:
+	pass
 import numpy as np
 
 from ..controls.color import ColorControl

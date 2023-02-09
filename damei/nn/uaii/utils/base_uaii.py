@@ -5,8 +5,13 @@ import collections
 import os, sys
 import numpy as np
 import damei as dm
-import cv2
+# import cv2
 import json
+
+try:
+    import cv2
+except:
+    pass
 
 logger = dm.getLogger('base_uaii')
 from . import general

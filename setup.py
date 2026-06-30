@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Note: To use the 'upload' functionality of this file, you must:
-#   $ pipenv install twine --dev
-
+import glob
 import io
 import os
+import subprocess
 import sys
 from shutil import rmtree
 
-from setuptools import find_packages, setup, Command
+from setuptools import Command, find_packages, setup
 
-# Package meta-demo_for_dm.data.
 NAME = 'damei'
 DESCRIPTION = 'Da Mei project with deep learning general functions.'
 URL = 'https://github.com/zhangzhengde0225/damei'
@@ -35,7 +33,6 @@ def read_requirements():
 # dependencies only when they are used.
 REQUIRED = []
 
-# What packages are optional?
 EXTRAS = {
     'array': ['numpy'],
     'cv': ['numpy', 'opencv-python', 'tqdm'],
@@ -44,25 +41,17 @@ EXTRAS = {
 }
 EXTRAS['all'] = sorted({pkg for deps in EXTRAS.values() for pkg in deps})
 
-# The rest you shouldn't have to touch too much :)
-# ------------------------------------------------
-# Except, perhaps the License and Trove Classifiers!
-# If you do change the License, remember to change the Trove Classifier for that!
-
 here = os.path.abspath(os.path.dirname(__file__))
 
-# Import the README and use it as the long-description.
-# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
 try:
     with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
         long_description = '\n' + f.read()
 except FileNotFoundError:
     long_description = DESCRIPTION
 
-# Load the package's __version__.py module as a dictionary.
 about = {}
 if not VERSION:
-    project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
+    project_slug = NAME.lower().replace('-', '_').replace(' ', '_')
     with open(os.path.join(here, project_slug, '__version__.py')) as f:
         exec(f.read(), about)
 else:
@@ -70,14 +59,13 @@ else:
 
 
 class UploadCommand(Command):
-    """Support setup.py upload."""
+    """Build, validate, upload, and tag a release."""
 
     description = 'Build and publish the package.'
     user_options = []
 
     @staticmethod
     def status(s):
-        """Prints things in bold."""
         print('\033[1m{0}\033[0m'.format(s))
 
     def initialize_options(self):
@@ -87,32 +75,57 @@ class UploadCommand(Command):
         pass
 
     def run(self):
+        for dirname in ('dist', 'build'):
+            try:
+                self.status(f'Removing previous {dirname}...')
+                rmtree(os.path.join(here, dirname))
+            except OSError:
+                pass
+
+        self.status('Building Source and Wheel (universal) distribution...')
+        subprocess.check_call([sys.executable, 'setup.py', 'sdist', 'bdist_wheel', '--universal'])
+
+        dists = sorted(glob.glob(os.path.join(here, 'dist', '*')))
+        if not dists:
+            raise RuntimeError('No distributions were built in dist/.')
+
+        self.status('Checking distributions with Twine...')
         try:
-            self.status('Removing previous builds…')
-            rmtree(os.path.join(here, 'dist'))
-        except OSError:
-            pass
+            import twine  # noqa: F401
+        except ImportError as e:
+            raise RuntimeError(
+                'Twine is required to publish. Install or upgrade publishing tools with: '
+                '"python -m pip install -U twine pkginfo build wheel setuptools".'
+            ) from e
 
-        self.status('Building Source and Wheel (universal) distribution…')
-        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
-
-        self.status('Uploading the package to PyPI via Twine…')
         try:
-            import twine  # 需要用twine上传，但twine不一定安装，如果没装报错
-        except:
-            raise NameError(
-                f'You need twine to upload the package to pypi.\n'
-                f'           Install twine with "pip install twine" or switch a environment with twine.')
-        os.system('twine upload dist/*')
+            subprocess.check_call([sys.executable, '-m', 'twine', 'check'] + dists)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(
+                'Twine failed to validate the distributions. If the error says metadata is missing '
+                'Name/Version while PKG-INFO or METADATA contains them, upgrade the publishing tools: '
+                '"python -m pip install -U twine pkginfo build wheel setuptools".'
+            ) from e
 
-        self.status('Pushing git tags…')
-        os.system('git tag v{0}'.format(about['__version__']))
-        os.system('git push --tags')
+        self.status('Uploading the package to PyPI via Twine...')
+        subprocess.check_call([sys.executable, '-m', 'twine', 'upload'] + dists)
+
+        self.status('Pushing git tag...')
+        tag = f'v{about["__version__"]}'
+        local_tag_exists = subprocess.call(
+            ['git', 'rev-parse', '-q', '--verify', f'refs/tags/{tag}'],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ) == 0
+        if local_tag_exists:
+            self.status(f'Local tag {tag} already exists; reusing it.')
+        else:
+            subprocess.check_call(['git', 'tag', tag])
+        subprocess.check_call(['git', 'push', 'origin', tag])
 
         sys.exit()
 
 
-# Where the magic happens:
 setup(
     name=NAME,
     version=about['__version__'],
@@ -123,28 +136,19 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
-    # If your package is a single module, use this instead of 'packages':
-    # py_modules=['mypackage'],
-
-    # entry_points={
-    #     'console_scripts': ['mycli=mymodule:cli'],
-    # },
+    packages=find_packages(exclude=['tests', '*.tests', '*.tests.*', 'tests.*']),
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
     license='MIT',
     classifiers=[
-        # Trove classifiers
-        # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy'
+        'Programming Language :: Python :: Implementation :: PyPy',
     ],
-    # $ setup.py publish support.
     cmdclass={
         'upload': UploadCommand,
     },

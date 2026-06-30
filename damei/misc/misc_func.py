@@ -3,8 +3,6 @@ from pathlib import Path
 import collections
 import functools
 
-import numpy as np
-
 
 def list2table(a, float_bit=2, alignment='<'):
     """
@@ -51,12 +49,11 @@ def list2table(a, float_bit=2, alignment='<'):
 
     # 处理空值
     a = [convert(x) for x in a]
-    max_lenth = np.max([len(x) for x in a])
+    max_lenth = max([len(x) for x in a])
     a = [complection(x, max_lenth=max_lenth) for x in a]
 
     # format string
-    lenth = np.array([[len(x) for x in xx] for xx in a])  # (n, max_lenth)
-    lenth = np.max(lenth, axis=0)  # (max_lenth,)
+    lenth = [max(len(row[i]) for row in a) for i in range(max_lenth)]
     format_str = [[f'{x:{alignment}{lenth[i]}}' for i, x in enumerate(xx)] for xx in a]
     format_str = '\n'.join(['  '.join(x) for x in format_str])
     return format_str
@@ -89,7 +86,7 @@ def dict2info(info_dict):
     info_dict = new_info_dict
 
     indents2color = {0: '32m', 1 * indent_space: '35m', 2 * indent_space: '36m', 3 * indent_space: '33m'}
-    lenth = np.max([len(x) for x in info_dict.keys()])
+    lenth = max([len(x) for x in info_dict.keys()])
     format_str = ''
     for i, (k, v) in enumerate(info_dict.items()):
         indent = indents[i]

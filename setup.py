@@ -30,19 +30,19 @@ def read_requirements():
         return f.read().splitlines()
 
 
-# REQUIRED = read_requirements()
+# Keep the base install dependency-free so `pip install damei` is fast and
+# usable for lightweight utilities. Feature modules import optional
+# dependencies only when they are used.
 REQUIRED = []
-# REQUIRED = [
-# 	"numpy==1.21.2",
-# 	"opencv-python",
-# 	"easydict",
-# ]
 
 # What packages are optional?
 EXTRAS = {
+    'array': ['numpy'],
+    'cv': ['numpy', 'opencv-python', 'tqdm'],
+    'nn': ['numpy', 'easydict', 'torch', 'torchvision', 'pillow', 'tqdm'],
     'rsa': ['rsa'],
-    # 'fancy feature': ['django'],
 }
+EXTRAS['all'] = sorted({pkg for deps in EXTRAS.values() for pkg in deps})
 
 # The rest you shouldn't have to touch too much :)
 # ------------------------------------------------

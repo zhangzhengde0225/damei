@@ -1,19 +1,55 @@
-*.pem
-build/*
-damei.egg-info
-dist
-.idea
-.vscode
-__pycache__/
+# OS files
 .DS_Store
-docs/.DS_Store
+Thumbs.db
 
-docs/build
+# Editors and IDEs
+.idea/
+.vscode/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Packaging and build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+pip-wheel-metadata/
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Type checker and linter caches
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Logs and local runtime files
+*.log
+*.pid
+
+# Secrets and generated keys
+*.pem
+
+# Project generated docs/examples
+docs/.DS_Store
+docs/build/
 docs/source/
 docs/make.bat
 docs/Makefile
 docs/requirements.txt
-
-examples/sources
-
-
+examples/sources/

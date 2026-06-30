@@ -1,7 +1,17 @@
+# Optional dependencies for local development or full feature testing.
+# The base package intentionally has no required third-party dependencies.
+#
+# Install feature groups instead of this file when possible:
+#   pip install damei[array]
+#   pip install damei[cv]
+#   pip install damei[nn]
+#   pip install damei[rsa]
 
 numpy
 easydict
-
-# opencv-python  # For some function, please install it by yourself if needed
-# torch>=1.5.0  # For some function, please install it by yourself if needed
-# pillow  # For some function, please install it by yourself if needed
+opencv-python
+tqdm
+# torch
+# torchvision
+# pillow
+# rsa

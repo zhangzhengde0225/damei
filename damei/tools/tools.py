@@ -9,10 +9,6 @@ except:
     pass
 # import cv2
 
-from .check_coco import CheckCOCO
-from .check_yolo import CheckYOLO
-
-
 class Tools(object):
     def __init__(self):
         pass
@@ -66,6 +62,7 @@ class Tools(object):
         :param line_thicknes: thickness for rectangle of bbox
         :param only_show_id: only show the img with this id if is None
         """
+        from .check_coco import CheckCOCO
         cc = CheckCOCO(json_path, img_dir=img_dir, line_thickness=line_thicknes)
         cc(only_show_id=only_show_id)
 
@@ -75,6 +72,7 @@ class Tools(object):
         :param dp: yolo dataset dir, for example: /xxx/xxx_yolo_format
         :return: None
         """
+        from .check_yolo import CheckYOLO
         cy = CheckYOLO(dp=dp)
         cy(trte=trte, **kwargs)
 

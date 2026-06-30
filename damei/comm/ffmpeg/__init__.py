@@ -1,8 +1,14 @@
 import os
-# import cv2
-from .ffmpeg import DmFFMPEG
 
-dmffmpeg = DmFFMPEG()
+dmffmpeg = None
+
+
+def _get_dmffmpeg():
+    global dmffmpeg
+    if dmffmpeg is None:
+        from .ffmpeg import DmFFMPEG
+        dmffmpeg = DmFFMPEG()
+    return dmffmpeg
 
 
 def push_stream(
@@ -60,7 +66,7 @@ def push_stream(
         for i, img_file in enumerate(img_files):
             assert os.path.exists(img_file), f'Could Not Found Image: {img_file}'
             img = cv2.imread(img_file)
-            dmffmpeg.push_stream(
+            _get_dmffmpeg().push_stream(
                 source=img,
                 ip=ip,
                 port=port,
@@ -72,7 +78,7 @@ def push_stream(
             )
 
     else:
-        dmffmpeg.push_stream(
+        _get_dmffmpeg().push_stream(
             source=source,
             ip=ip,
             port=port,

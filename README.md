@@ -88,6 +88,7 @@ import damei as dm
 20220610 v1.1.11 # damei_doc上线
 20220621 v1.1.111 # damei.comm.push_stream()  提供API文档
 20230209 v1.1.134 # Lightweight, remove some larger dependencies.
+20260630 v1.1.135 # Keep base install dependency-free and move feature dependencies to extras.
 """
 ```
 

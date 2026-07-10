@@ -51,3 +51,26 @@ print(json.dumps(result, sort_keys=True))
         "cv2": False,
         "torch": False,
     }
+
+
+def test_import_damei_survives_unwritable_log_location():
+    code = """
+import json
+from unittest.mock import patch
+
+with patch("pathlib.Path.mkdir", side_effect=PermissionError("blocked")), \\
+        patch("logging.FileHandler", side_effect=PermissionError("blocked")):
+    import damei
+
+print(json.dumps({"version": damei.__version__}))
+"""
+    proc = subprocess.run(
+        [sys.executable, "-c", code],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
+
+    result = json.loads(proc.stdout)
+    assert result["version"]
